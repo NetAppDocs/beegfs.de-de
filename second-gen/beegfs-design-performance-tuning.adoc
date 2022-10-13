@@ -1,0 +1,115 @@
+---
+sidebar: sidebar 
+permalink: beegfs-design-performance-tuning.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: Die BeeGFS-Lösung enthält Empfehlungen für Performance-Tuning, die auf Verifikationstests basieren. 
+---
+= Performance-Optimierung
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Die BeeGFS-Lösung enthält Empfehlungen für Performance-Tuning, die auf Verifikationstests basieren.
+
+Obwohl BeeGFS Out-of-the-Box-Performance bietet, hat NetApp eine Reihe von empfohlenen Tuning-Parametern entwickelt, um die Performance zu maximieren. Diese Parameter berücksichtigen die Funktionen der zugrunde liegenden Block-Nodes der E-Series und alle speziellen Anforderungen, die für die Ausführung von BeeGFS in einer HA-Architektur mit Shared-Festplatten erforderlich sind.
+
+
+
+== Performance-Tuning für Datei-Nodes
+
+Zu den verfügbaren Tuning-Parametern, die Sie konfigurieren können, gehören folgende:
+
+. *Systemeinstellungen im UEFI/BIOS von Datei-Nodes.* um die Leistung zu maximieren, empfehlen wir die Konfiguration der Systemeinstellungen auf dem Server-Modell, das Sie als Datei-Knoten verwenden. Sie konfigurieren die Systemeinstellungen, wenn Sie die Datei-Nodes einrichten, indem Sie entweder das System-Setup (UEFI/BIOS) oder die Redfish-APIs verwenden, die vom Baseboard-Management-Controller (BMC) bereitgestellt werden.
++
+Die Systemeinstellungen variieren je nach Servermodell, das Sie als Dateiknoten verwenden. Die Einstellungen müssen manuell auf der Grundlage des verwendeten Servermodells konfiguriert werden. Informationen zur Konfiguration der Systemeinstellungen für die validierten Lenovo SR665-Dateiknoten finden Sie unter link:beegfs-deploy-file-node-tuning.html["Optimieren Sie die System-Einstellungen des File Node für die Performance"].
+
+. *Standardeinstellungen für erforderliche Konfigurationsparameter.* die erforderlichen Konfigurationsparameter beeinflussen die Konfiguration von BeeGFS-Diensten und die Formatierung und Bereitstellung von E-Series-Volumes (Blockgeräte) durch Pacemaker. Die folgenden Konfigurationsparameter sind erforderlich:
++
+** BeeGFS Service-Konfigurationsparameter
++
+Sie können die Standardeinstellungen für die Konfigurationsparameter bei Bedarf überschreiben. Informationen zu den Parametern, die Sie sich für Ihre spezifischen Workloads oder Anwendungsfälle anpassen können, finden Sie im https://github.com/netappeseries/beegfs/blob/135d9a04ae96f4d202300bae870c6404b77b6865/roles/beegfs_ha_7_2/defaults/main.yml#L155["Parameter für BeeGFS-Service-Konfiguration"^].
+
+** Für die Volume-Formatierung und die Montage-Parameter gelten die empfohlenen Standardeinstellungen, die nur für erweiterte Anwendungsfälle angepasst werden sollten. Die Standardwerte führen folgende Schritte aus:
++
+*** Optimieren Sie die ursprüngliche Volume-Formatierung auf Basis des Zieltyps (beispielsweise Management, Metadaten oder Storage), zusammen mit der RAID-Konfiguration und Segmentgröße des zugrunde liegenden Volumes.
+*** Passen Sie an, wie Pacemaker die einzelnen Lautstärkerahmen einstellt, um sicherzustellen, dass Änderungen sofort an Block-Nodes der E-Series gespült werden. So wird Datenverlust verhindert, wenn bei aktiven Schreibvorgängen Datei-Nodes ausfallen.
++
+Informationen zu den Parametern, die Sie sich für Ihre spezifischen Workloads oder Anwendungsfälle anpassen können, finden Sie im https://github.com/netappeseries/beegfs/blob/135d9a04ae96f4d202300bae870c6404b77b6865/roles/beegfs_ha_7_2/defaults/main.yml#L258["Volume-Formatierung und Montage der Konfigurationsparameter"^].
+
+
+
+
+
+. *Systemeinstellungen im Linux-Betriebssystem, das auf den Dateiknoten installiert ist.* Sie können die standardmäßigen Linux-Betriebssystemeinstellungen überschreiben, wenn Sie den Ansible-Bestand in Schritt 4 von erstellen link:beegfs-deploy-beegfs-general-config.html["Erstellen des Ansible-Inventars"].
++
+Die Standardeinstellungen wurden zur Validierung der BeeGFS auf NetApp Lösung verwendet. Sie können sie jedoch an Ihre spezifischen Workloads oder Anwendungsfälle anpassen. Einige Beispiele für die Linux-Betriebssystemeinstellungen, die Sie ändern können, sind:
+
++
+** I/O-Warteschlangen an Block-Geräten der E-Series.
++
+Auf den als BeeGFS-Ziele verwendeten E-Series-Block-Geräten können Sie I/O-Warteschlangen folgendermaßen konfigurieren:
+
++
+*** Passen Sie den Planungsalgorithmus basierend auf dem Gerätetyp (NVMe, HDD usw.) an.
+*** Erhöhen Sie die Anzahl der ausstehenden Anfragen.
+*** Passen Sie Anfragegrößen an.
+*** Optimierung des Verhaltens beim Lesen.
+
+
+** Einstellungen für virtuellen Speicher.
++
+Sie können die Einstellungen für den virtuellen Speicher für eine optimale Streaming-Leistung anpassen.
+
+** CPU-Einstellungen.
++
+Sie können den CPU-Frequenzregler und andere CPU-Konfigurationen für maximale Leistung anpassen.
+
+** Anfragegröße lesen
++
+Sie können die maximale Lese-Anfraegröße für Mellanox HCAs erhöhen.
+
+
+
+
+
+
+
+== Performance-Tuning für Block-Nodes
+
+Basierend auf den Konfigurationsprofilen, die auf einen bestimmten BeeGFS-Baustein angewendet werden, ändern sich die auf den Block-Nodes konfigurierten Volume-Gruppen leicht. Beispiel mit einem EF600 Block-Node mit 24 Laufwerken:
+
+* Für den einzelnen Basis-Block, einschließlich BeeGFS-Management, Metadaten und Storage-Services:
++
+** 1x 2+2 RAID 10 Volume-Gruppe für BeeGFS Management und Metadaten-Services
+** 2 x 8+2 RAID 6-Volume-Gruppen für BeeGFS-Storage-Services
+
+
+* Für BeeGFS Metadaten + Storage-Baustein:
++
+** 1x 2+2 RAID 10 Volume-Gruppe für BeeGFS Metadaten-Services
+** 2 x 8+2 RAID 6-Volume-Gruppen für BeeGFS-Storage-Services
+
+
+* Nur für BeeGFS-Lagergebäude:
++
+** 2 x 10+2 RAID 6-Volume-Gruppen für BeeGFS-Storage-Services
+
+
+
+
+
+NOTE: Da BeeGFS für Management und Metadaten im Gegensatz zu Storage erheblich weniger Speicherplatz benötigt, besteht die Möglichkeit, für die RAID 10-Volume-Gruppen kleinere Laufwerke zu verwenden. Kleinere Laufwerke sollten in den äußeren Laufwerksteckplätzen befüllt werden. Weitere Informationen finden Sie im link:beegfs-deploy-overview.html["Implementierungsanleitungen"].
+
+Diese werden alle durch die Ansible-basierte Implementierung konfiguriert, und verschiedene andere allgemein empfohlene Einstellungen für Performance-/Verhaltensoptimierung:
+
+* Anpassung der globalen Cache-Blockgröße auf 32 KiB und Anpassung der bedarfsorientierten Cache-Flush auf 80 %.
+* Deaktivieren des automatischen Load-Balancing (sicherstellen, dass die Controller-Volume-Zuweisungen wie vorgesehen bleiben).
+* Aktivieren von Lese-Caching und Deaktivieren des Read-Ahead-Caching
+* Aktivieren des Schreib-Caches mit Spiegelung und Bedarf an Akku-Backups, sodass Caches während des Ausfalls eines Block-Node-Controllers bestehen.
+* Festlegen der Reihenfolge, in der Laufwerke Volume-Gruppen zugewiesen werden, und Ausgleich der I/O-Vorgänge über verfügbare Laufwerkskanäle
+

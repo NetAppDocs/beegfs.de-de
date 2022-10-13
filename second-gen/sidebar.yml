@@ -1,0 +1,54 @@
+---
+section: second-gen
+title: Verwenden Sie NVA der zweiten Generation
+entries:
+- title: Los geht's
+  entries:
+  - title: Lösungsüberblick
+    url: "/beegfs-solution-overview.html"
+  - title: Technische Anforderungen
+    url: "/beegfs-technology-requirements.html"
+- title: Konzipieren
+  entries:
+  - title: Überblick
+    url: "/beegfs-design-overview.html"
+  - title: Hardwaredesign
+    url: "/beegfs-design-hardware-architecture.html"
+  - title: Software-Design
+    url: "/beegfs-design-software-architecture.html"
+  - title: Authentifizierung
+    url: "/beegfs-design-solution-verification.html"
+  - title: Richtlinien für die Dimensionierung
+    url: "/beegfs-design-solution-sizing-guidelines.html"
+  - title: Performance-Optimierung
+    url: "/beegfs-design-performance-tuning.html"
+- title: Implementieren
+  entries:
+  - title: Überblick
+    url: "/beegfs-deploy-overview.html"
+  - title: Weitere Informationen zu Ansible
+    url: "/beegfs-deploy-learn-ansible.html"
+  - title: Best Practices in sich
+    url: "/beegfs-deploy-bestpractice.html"
+  - title: Implementierung von Hardware
+    url: "/beegfs-deploy-hardware.html"
+  - title: Implementierung von Software
+    entries:
+    - title: Richten Sie Datei- und Block-Nodes ein
+      url: "/beegfs-deploy-setup-nodes.html"
+    - title: Ansible-Steuerungsknoten einrichten
+      url: "/beegfs-deploy-setting-up-an-ansible-control-node.html"
+    - title: Ansible-Inventar erstellen
+      url: "/beegfs-deploy-beegfs-general-config.html"
+    - title: Definieren Sie BeeGFS-Bausteine
+      url: "/beegfs-deploy-beegfs-build-inventory.html"
+    - title: BeeGFS bereitstellen
+      url: "/beegfs-deploy-beegfs-playbook.html"
+    - title: Konfigurieren Sie BeeGFS-Client
+      url: "/beegfs-deploy-beegfs-configure-clients.html"
+    - title: Passen Sie die Systemeinstellungen für die Performance an
+      url: beegfs-deploy-file-node-tuning.html
+  - title: BeeGFS-Cluster skalieren
+    url: "/beegfs-deploy-beegfs-scale.html"
+  - title: Empfohlene Volumenprozentwerte
+    url: "/beegfs-deploy-recommended-volume-percentages.html"

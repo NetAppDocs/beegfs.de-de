@@ -1,0 +1,65 @@
+---
+sidebar: sidebar 
+permalink: beegfs-design-hardware-architecture.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: Die Hardware-Konfiguration für BeeGFS auf NetApp umfasst Datei-Nodes und Netzwerkverkabelung. 
+---
+= Hardwarekonfiguration
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Die Hardware-Konfiguration für BeeGFS auf NetApp umfasst Datei-Nodes und Netzwerkverkabelung.
+
+
+
+== Konfiguration der Datei-Nodes
+
+File-Nodes haben zwei CPU-Sockets als separate NUMA-Zonen konfiguriert, die lokalen Zugriff auf eine gleiche Anzahl von PCIe-Steckplätzen und Arbeitsspeicher enthalten.
+
+InfiniBand-Adapter müssen in die entsprechenden PCI-Risers oder Steckplätze gefüllt sein, damit die Workload über die verfügbaren PCIe-Lanes und Speicherkanäle ausgeglichen ist. Sie balancieren den Workload aus, indem einzelne BeeGFS-Services vollständig auf einen bestimmten NUMA-Node isoliert werden. Das Ziel besteht darin, bei jedem Datei-Node eine ähnliche Performance zu erreichen, als ob es sich um zwei unabhängige Single-Socket-Server handelte.
+
+Die folgende Abbildung zeigt die NUMA-Konfiguration des Dateiknotens.
+
+image:../media/beegfs-design-image5-small.png[""]
+
+Die BeeGFS-Prozesse sind an eine bestimmte NUMA-Zone gebunden, um sicherzustellen, dass sich die verwendeten Schnittstellen in der gleichen Zone befinden. Diese Konfiguration vermeidet den Remote-Zugriff über die Verbindung zwischen den Sockets. Die Verbindung zwischen den Sockeln wird manchmal als QPI oder GMI2 Link bezeichnet; selbst in modernen Prozessorarchitekturen können sie einen Engpass darstellen, wenn High-Speed-Netzwerke wie HDR InfiniBand eingesetzt werden.
+
+
+
+== Konfiguration der Netzwerkverkabelung
+
+Jeder Datei-Node ist innerhalb eines Bausteins mit zwei Block-Nodes verbunden. Dabei werden insgesamt vier redundante InfiniBand-Verbindungen verwendet. Zusätzlich verfügt jeder Datei-Node über vier redundante Verbindungen zum InfiniBand-Storage-Netzwerk.
+
+Beachten Sie in der folgenden Abbildung Folgendes:
+
+* Alle grün dargestellten Datei-Node-Ports werden zur Verbindung mit der Storage-Fabric verwendet. Alle anderen Datei-Node-Ports sind die direkten Verbindungen zu den Block-Nodes.
+* Zwei InfiniBand-Ports in einer bestimmten NUMA-Zone werden mit den A- und B-Controllern desselben Block-Nodes verbunden.
+* Ports im NUMA-Knoten 0 stellen immer eine Verbindung zum ersten Block-Knoten her.
+* Die Ports im NUMA-Knoten 1 verbinden sich mit dem zweiten Block-Knoten.
+
+
+image:../media/beegfs-design-image6.png[""]
+
+
+NOTE: Bei Speichernetzwerken mit redundanten Switches sollten die in hellgrün dargestellten Ports mit einem Switch verbunden werden. Die in Dunkelgrün-Ports sollten mit einem anderen Switch verbunden werden.
+
+Die in der Abbildung dargestellte Verkabelungskonfiguration ermöglicht jedem BeeGFS-Dienst Folgendes:
+
+* Laufen Sie in derselben NUMA-Zone, unabhängig davon, auf welchem Dateiknoten der BeeGFS-Service ausgeführt wird.
+* Sekundäre optimale Pfade zum Front-End-Storage-Netzwerk und zu den Back-End-Block-Nodes sind vorhanden, unabhängig davon, wo ein Ausfall auftritt.
+* Minimale Auswirkungen auf die Performance, wenn ein Datei-Node oder Controller in einem Block-Node gewartet werden muss
+
+
+Um die vollständige bidirektionale PCIe-Bandbreite zu nutzen, stellen Sie sicher, dass ein Port an jedem InfiniBand-Adapter mit der Storage-Fabric verbunden ist, und der andere Port mit einem Block-Node verbunden wird. Die theoretische Maximalgeschwindigkeit eines HDR InfiniBand-Ports beträgt 25 Gbit/s (nicht für Signalisierung und andere Gemeinkosten). Die maximale Bandbreite für eine Richtung in einem PCIe 4.0 x16-Steckplatz beträgt 32 Gbit/s und führt zu einem potenziellen Engpass bei der Implementierung von Datei-Nodes mit InfiniBand-Adaptern mit zwei Ports, die theoretisch 50 Gbit/s Bandbreite verarbeiten können.
+
+Die folgende Abbildung zeigt das Verkabelungsdesign, mit dem die vollständige bidirektionale PCIe-Bandbreite genutzt werden kann.
+
+image:../media/beegfs-design-image7.png[""]
+
+Verwenden Sie für jeden BeeGFS-Service denselben Adapter, um den bevorzugten Port für Client-Datenverkehr mit dem Pfad zu dem Block-Nodes-Controller zu verbinden, der der primäre Eigentümer dieser Service-Volumes ist. Weitere Informationen finden Sie unter link:beegfs-design-software-architecture.html["Softwarekonfiguration"].

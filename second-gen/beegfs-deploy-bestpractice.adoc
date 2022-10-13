@@ -1,0 +1,152 @@
+---
+sidebar: sidebar 
+permalink: beegfs-deploy-bestpractice.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: Beachten Sie bei der Implementierung der BeeGFS auf NetApp-Lösung die Best Practice-Richtlinien. 
+---
+= Besprechen der Best Practices
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Beachten Sie bei der Implementierung der BeeGFS auf NetApp-Lösung die Best Practice-Richtlinien.
+
+
+
+== Standardkonventionen
+
+Folgen Sie beim physischen Zusammenbau und Erstellen der Ansible-Bestandsdatei diesen Standardkonventionen (weitere Informationen finden Sie unter link:beegfs-deploy-beegfs-general-config.html["Erstellen des Ansible-Inventars"]).
+
+* Host-Namen der Dateiknoten werden nacheinander nummeriert (h01-HN) mit niedrigeren Zahlen oben im Rack und höheren Zahlen unten.
++
+Beispielsweise die Namenskonvention `[location][row][rack]hN` Sieht aus wie: `ictad22h01`.
+
+* Jeder Block-Node besteht aus zwei Storage-Controllern, die jeweils über einen eigenen Host-Namen verfügen.
++
+Mit einem Storage-Array-Namen wird im Rahmen eines Ansible-Inventars das gesamte Block-Storage-System bezeichnet. Die Namen des Speicher-Arrays sollten nacheinander nummeriert sein (a01 - an), und die Hostnamen für einzelne Controller werden aus dieser Namenskonvention abgeleitet.
+
++
+Beispiel: Ein Block-Node mit dem Namen `ictad22a01` Normalerweise können Host-Namen für jeden Controller wie konfiguriert sein `ictad22a01-a` Und `ictad22a01-b`, Aber als Ansible-Inventar bezeichnet werden `ictad22a01`.
+
+* File- und Block-Nodes innerhalb desselben Bausteins teilen sich das gleiche Nummerierungsschema und sind im Rack nebeneinander, wobei beide Datei-Nodes oben und beide Block-Nodes direkt darunter liegen.
++
+Im ersten Baustein sind beispielsweise die Datei-Nodes h01 und h02 direkt mit den Block-Nodes a01 und a02 verbunden. Von oben nach unten sind die Hostnamen h01, h02, a01 und a02.
+
+* Bausteine werden in sequenzieller Reihenfolge auf der Grundlage ihrer Hostnamen installiert, sodass sich die niedrigeren Host-Namen oben im Rack befinden und die höheren nummerierten Host-Namen sich unten befinden.
++
+Ziel ist es, die Länge des Kabels zu minimieren, das oben auf den Rack Switches läuft, und eine standardisierte Implementierungspraxis zu definieren, um die Fehlerbehebung zu vereinfachen. Für Rechenzentren, in denen dies nicht erlaubt ist, aufgrund von Bedenken um die Rack-Stabilität, ist die umgekehrte sicherlich erlaubt, das Befüllen des Racks von unten nach oben.
+
+
+
+
+
+== InfiniBand-Storage-Netzwerkkonfiguration
+
+Die Hälfte der InfiniBand-Ports an jedem Datei-Node werden für eine direkte Verbindung mit Block-Nodes verwendet. Die andere Hälfte ist mit den InfiniBand-Switches verbunden und wird für die BeeGFS-Client-Server-Konnektivität verwendet. Beim Bestimmen der Größe der IPoIB-Subnetze, die für BeeGFS-Clients und -Server verwendet werden, müssen Sie das erwartete Wachstum Ihres Compute/GPU-Clusters und BeeGFS-Dateisystems berücksichtigen. Wenn Sie von den empfohlenen IP-Bereichen abweichen müssen, beachten Sie, dass jede direkte Verbindung in einem einzelnen Baustein ein eigenes Subnetz hat und es keine Überschneidung mit Subnetzen gibt, die für die Client-Server-Konnektivität verwendet werden.
+
+
+
+=== Direkte Verbindungen
+
+Datei- und Block-Nodes innerhalb jedes Bausteins verwenden für ihre direkten Verbindungen immer die IPs in der folgenden Tabelle.
+
+
+NOTE: Dieses Adressprogramm entspricht der folgenden Regel: Das dritte Oktett ist immer ungerade oder gerade, was davon abhängt, ob der Datei-Node ungerade oder gerade ist.
+
+|===
+| Datei-Node | IB-Port | IP-Adresse | Block-Node | IB-Port | Physische IP-Adresse | Virtuelle IP 
+
+
+| ODD (h1) | i1a | 192.168.1.10 | Ungerade (c1) | 2 a | 192.168.1.100 | 192.168.1.101 
+
+
+| ODD (h1) | i2a | 192.168.3.10 | Ungerade (c1) | 2 a | 192.168.3.100 | 192.168.3.101 
+
+
+| ODD (h1) | i3a | 192.168.5.10 | Gleichmäßig (c2) | 2 a | 192.168.5.100 | 192.168.5.101 
+
+
+| ODD (h1) | I4a | 192.168.7.10 | Gleichmäßig (c2) | 2 a | 192.168.7.100 | 192.168.7.101 
+
+
+| Gleichmäßig (h2) | i1a | 192.168.2.10 | Ungerade (c1) | 2b | 192.168.2.100 | 192.168.2.101 
+
+
+| Gleichmäßig (h2) | i2a | 192.168.4.10 | Ungerade (c1) | 2b | 192.168.4.100 | 192.168.4.101 
+
+
+| Gleichmäßig (h2) | i3a | 192.168.6.10 | Gleichmäßig (c2) | 2b | 192.168.6.100 | 192.168.6.101 
+
+
+| Gleichmäßig (h2) | I4a | 192.168.8.10 | Gleichmäßig (c2) | 2b | 192.168.8.100 | 192.168.8.101 
+|===
+
+
+=== BeeGFS-Client-Server-IPoIB-Adressierschema (zwei Subnetze)
+
+Damit BeeGFS-Clients zwei InfiniBand-Ports verwenden können, sind zwei IPoIB-Subnetze erforderlich, wobei die Hälfte der BeeGFS-Serverdienste, die mit einer bevorzugten IP-Adresse in jedem Subnetz konfiguriert sind, um sicherzustellen, dass Clients zwei InfiniBand-Ports verwenden, um die Redundanz und den möglichen Durchsatz zum Dateisystem zu maximieren.
+
+Auf jedem Datei-Node werden mehrere BeeGFS-Serverservices ausgeführt (Management, Metadaten oder Storage). Damit jeder Service unabhängig vom anderen Datei-Node ein Failover durchführen kann, verfügt jeder über eindeutige IP-Adressen, die zwischen beiden Nodes schweben können (auch als logische Schnittstelle oder LIF bezeichnet).
+
+Diese Bereitstellung setzt zwar nicht zwingend voraus, dass für diese Verbindungen folgende IPoIB-Subnetzbereiche verwendet werden und definiert ein Standard-Adressierungsschema, das folgende Regeln anwendet:
+
+* Das zweite Oktett ist immer ungerade oder sogar, basierend darauf, ob der InfiniBand-Port des Datei-Nodes ungerade oder sogar ungerade ist.
+* BeeGFS Cluster-IPs sind immer `xxx. 127.100.yyy` Oder `xxx.128.100.yyy`.
+
+
+
+NOTE: Zusätzlich zur Schnittstelle, die für die bandinterne Betriebssystemverwaltung verwendet wird, können zusätzliche Schnittstellen von Corosync für Cluster Heart-Schläge und Synchronisation verwendet werden. So wird sichergestellt, dass der Verlust einer einzelnen Schnittstelle das gesamte Cluster nicht in den Fall bringt.
+
+* Der BeeGFS Management Service ist immer im Betrieb `xxx.yyy.101.0` Oder `xxx.yyy.102.0`.
+* BeeGFS Metadatendienste sind immer dabei `xxx.yyy.101.zzz` Oder `xxx.yyy.102.zzz`.
+* BeeGFS Storage Services befinden sich immer im `xxx.yyy.103.zzz` Oder `xxx.yyy.103.zzz`.
+* Adressen im Bereich `100.xxx.1.1` Bis `100.xxx.99.255` Sind für Kunden reserviert.
+
+
+In der folgenden Tabelle ist der Bereich für Subnetz A angegeben: 100.127.0.0/16.
+
+|===
+| Zweck | InfiniBand-Port | IP-Adresse oder Bereich 
+
+
+| BeeGFS Cluster-IP | i1b | 100.127.100.1 - 100.127.100.255 
+
+
+| BeeGFS Management | i1b | 100.127.101.0 
+
+
+| BeeGFS-Metadaten | i1b oder i3b | 100.127.101.1 - 100.127.101.255 
+
+
+| BeeGFS-Speicherung | i1b oder i3b | 100.127.103.1 - 100.127.103.255 
+
+
+| BeeGFS-Clients | (Je nach Kunde) | 100.127.1.1 - 100.127.99.255 
+|===
+In der folgenden Tabelle ist der Bereich für Subnetz B angegeben: 100.128.0.0/16.
+
+|===
+| Zweck | InfiniBand-Port | IP-Adresse oder Bereich 
+
+
+| BeeGFS Cluster-IP | I4b | 100.128.100.1 - 100.128.100.255 
+
+
+| BeeGFS Management | i2b | 100.128.102.0 
+
+
+| BeeGFS-Metadaten | i2b oder i4b | 100.128.102.1 - 100.128.102.255 
+
+
+| BeeGFS-Speicherung | i2b oder i4b | 100.128.104.1 - 100.128.104.255 
+
+
+| BeeGFS-Clients | (Je nach Kunde) | 100.128.1.1 - 100.128.99.255 
+|===
+
+NOTE: In dieser NetApp Verified Architecture werden nicht alle IPs in den oben genannten Bereichen verwendet. Sie zeigen, wie IP-Adressen vorzugewiesen werden können, um eine einfache Erweiterung des Dateisystems mit einem konsistenten IP-Adressierungschema zu ermöglichen. In diesem Schema entsprechen BeeGFS-Datei-Knoten und Service-IDs dem vierten Oktett eines bekannten IP-Bereichs. Das Filesystem konnte bei Bedarf auf jeden Fall über 255 Nodes oder Services skaliert werden.

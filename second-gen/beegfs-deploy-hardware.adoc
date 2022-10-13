@@ -1,0 +1,66 @@
+---
+sidebar: sidebar 
+permalink: beegfs-deploy-hardware.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: 'Jeder Baustein besteht aus zwei validierten x86-Datei-Nodes, die direkt über HDR (200 GB) InfiniBand mit zwei NetApp Block-Nodes verbunden sind.' 
+---
+= Implementierung von Hardware
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Jeder Baustein besteht aus zwei validierten x86-Datei-Nodes, die mithilfe von HDR-Kabeln (200 GB) direkt mit zwei Block-Nodes verbunden sind.
+
+
+NOTE: Da jeder Baustein zwei BeeGFS-Datei-Nodes enthält, sind mindestens zwei Bausteine erforderlich, um im Failover-Cluster ein Quorum einzurichten. Obwohl ein Cluster mit zwei Nodes konfiguriert werden kann, bestehen Einschränkungen bei dieser Konfiguration, die verhindern können, dass in einigen Szenarien ein erfolgreicher Failover auftritt. Wenn ein Cluster mit zwei Nodes erforderlich ist, kann ein drittes Gerät als Tiebreaker ebenfalls integriert werden, obwohl dieses Verfahren nicht abgedeckt ist.
+
+Sofern nicht anders angegeben, bestehen die folgenden Schritte für jeden Baustein im Cluster identisch, unabhängig davon, ob er zum Ausführen von BeeGFS Metadaten und Storage-Services oder Storage-Services nur verwendet wird.
+
+.Schritte
+. Konfigurieren Sie jeden BeeGFS-Dateiknoten mit vier PCIe 4.0 ConnectX-6 Host Channel-Adaptern (HCAs) im InfiniBand-Modus und installieren Sie diese in den PCIe-Steckplätzen 2, 3, 5 und 6.
+. Konfigurieren Sie jeden BeeGFS-Block-Node mit einer 200-GB-Host-Schnittstellenkarte (HIC) mit zwei Ports, und installieren Sie die HIC in jedem ihrer beiden Storage Controller.
++
+Stellen Sie die Bausteine so ein, dass die beiden BeeGFS-Datei-Nodes über den BeeGFS-Block-Nodes liegen. Die folgende Abbildung zeigt die richtige Hardwarekonfiguration für den BeeGFS-Baustein (Rückansicht).
+
++
+image:../media/buildingblock.png[""]
+
++
+
+NOTE: Die Konfiguration der Stromversorgung für Produktionsanwendungsfälle sollte in der Regel redundante Netzteile verwenden.
+
+. Installieren Sie bei Bedarf die Laufwerke in jedem BeeGFS-Block-Knoten.
++
+.. Wenn der Baustein zur Ausführung von BeeGFS-Metadaten und Speicherdiensten verwendet wird und kleinere Laufwerke für Metadaten-Volumes verwendet werden, vergewissern Sie sich, dass diese in den äußeren Laufwerksschächten gefüllt sind, wie in der Abbildung unten gezeigt.
+.. Wenn ein Laufwerkgehäuse nicht vollständig bestückt ist, stellen Sie bei allen Bausteinkonfigurationen sicher, dass eine gleiche Anzahl an Laufwerken in den Steckplätzen 0–11 und 12–23 gefüllt ist, um eine optimale Performance zu erzielen.
++
+image:../media/driveslots.png[""]
+
+
+
+. Um die Datei- und Block-Nodes zu verkabeln, verwenden Sie 1 m InfiniBand HDR 200 GB Direct Attach Kupferkabel, sodass sie mit der in der Abbildung unten dargestellten Topologie übereinstimmen.
++
+image:../media/directattachcable.png[""]
+
++
+
+NOTE: Die Nodes sind über mehrere Bausteine hinweg nie direkt miteinander verbunden. Jeder Baustein sollte als eigenständige Einheit behandelt werden und alle Kommunikation zwischen Bausteinen erfolgt über Netzwerk-Switches.
+
+. Verwenden Sie 2 m (oder die entsprechende Länge) InfiniBand HDR 200 GB Direct-Attach-Kupferkabel, um die übrigen InfiniBand-Ports auf jedem Dateiknoten mit den InfiniBand-Switches zu verkabeln, die für das Speichernetzwerk verwendet werden sollen.
++
+Wenn redundante InfiniBand-Switches verwendet werden, verkabeln Sie die in der folgenden Abbildung grün hervorgehobenen Ports mit verschiedenen Switches.
+
++
+image:../media/networkcable.png[""]
+
+. Montieren Sie bei Bedarf weitere Bausteine gemäß den gleichen Verkabelungsrichtlinien.
++
+
+NOTE: Die Gesamtzahl der Bausteine, die in einem einzigen Rack implementiert werden können, hängt von der verfügbaren Stromversorgung und Kühlung an jedem Standort ab.
+
+

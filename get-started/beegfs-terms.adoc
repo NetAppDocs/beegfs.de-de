@@ -1,0 +1,127 @@
+---
+sidebar: sidebar 
+permalink: beegfs-terms.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: Allgemeine Geschäftsbedingungen und Konzepte für BeeGFS auf NetApp Solution. 
+---
+= Begriffe und Konzepte
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Die folgenden Begriffe und Konzepte gelten für die BeeGFS auf NetApp Lösung.
+
+[cols="25h,~"]
+|===
+| Laufzeit | Beschreibung 
+
+
+ a| 
+KI
+ a| 
+Künstliche Intelligenz.
+
+
+
+ a| 
+Ansible-Bestandsaufnahme
+ a| 
+Verzeichnisstruktur mit YAML-Dateien, die zur Beschreibung des gewünschten BeeGFS HA-Clusters verwendet werden.
+
+
+
+ a| 
+BMC
+ a| 
+Baseboard Management Controller Und wird manchmal als Service-Prozessor bezeichnet.
+
+
+
+ a| 
+Block-Nodes
+ a| 
+Storage-Systeme.
+
+
+
+ a| 
+Clients
+ a| 
+Server-Knoten:
+
+
+
+ a| 
+DL
+ a| 
+Deep Learning.
+
+
+
+ a| 
+Datei-Nodes
+ a| 
+BeeGFS-Dateiserver.
+
+
+
+ a| 
+HOCHVERFÜGBARKEIT
+ a| 
+Hochverfügbarkeit,
+
+
+
+ a| 
+HIC
+ a| 
+Host-Schnittstellenkarte:
+
+
+
+ a| 
+HPC
+ a| 
+High Performance Computing:
+
+
+
+ a| 
+Workloads im HPC-Stil
+ a| 
+HPC Workloads werden in der Regel durch mehrere Computing-Nodes oder GPUs gekennzeichnet, die alle parallel auf denselben Datensatz zugreifen müssen, um ein verteiltes Computing- oder Trainingsjob zu ermöglichen. Diese Datensätze bestehen häufig aus großen Dateien, die auf mehrere physische Storage-Nodes verteilt werden sollten, um die herkömmlichen Hardwareengpässe zu beseitigen, die den gleichzeitigen Zugriff auf eine einzelne Datei verhindern würden.
+
+
+
+ a| 
+ML
+ a| 
+Maschinelles Lernen:
+
+
+
+ a| 
+NLP
+ a| 
+Natürliche Sprachverarbeitung.
+
+
+
+ a| 
+NLU
+ a| 
+Verständnis Natürlicher Sprachen.
+
+
+
+ a| 
+NVA
+ a| 
+Das NetApp Verified Architecture (NVA) Programm enthält Referenzkonfigurationen und Anleitungen zur Dimensionierung für spezifische Workloads und Anwendungsfälle. Diese Lösungen sind sorgfältig getestet und sollen Implementierungsrisiken minimieren und die Markteinführungszeit verkürzen.
+
+|===

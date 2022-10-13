@@ -1,0 +1,138 @@
+---
+sidebar: sidebar 
+permalink: beegfs-design-solution-verification.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: Das Design der zweiten Generation für die BeeGFS auf NetApp Lösung wurde mithilfe von drei Bausteinkonfigurationsprofilen verifiziert. 
+---
+= Design-Überprüfung
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Das Design der zweiten Generation für die BeeGFS auf NetApp Lösung wurde mithilfe von drei Bausteinkonfigurationsprofilen verifiziert.
+
+Die Konfigurationsprofile umfassen Folgendes:
+
+* Ein einzelner Baustein, einschließlich BeeGFS-Management, Metadaten und Storage-Services
+* Ein BeeGFS Metadaten plus ein Storage-Baustein.
+* Ein BeeGFS-Speicherbaustein.
+
+
+Die Bausteine wurden mit zwei Mellanox Quantum InfiniBand-Switches (MQM8700) verbunden. Zehn BeeGFS Clients wurden auch an die InfiniBand Switches angeschlossen und zur Ausführung von Synthetic Benchmark Utilities verwendet.
+
+Die folgende Abbildung zeigt die BeeGFS-Konfiguration, die zur Validierung der BeeGFS auf NetApp Lösung verwendet wird.
+
+image:beegfs-design-image12.png[""]
+
+
+
+== BeeGFS-Datei-Striping
+
+Ein Vorteil paralleler Dateisysteme besteht darin, einzelne Dateien über mehrere Storage-Ziele zu verteilen, wodurch Volumes auf demselben oder verschiedenen zugrunde liegenden Storage-Systemen dargestellt werden können.
+
+In BeeGFS können Sie Striping auf Verzeichnisbasis und pro Datei konfigurieren, um die Anzahl der für jede Datei verwendeten Ziele zu steuern und die für jeden Dateistripe verwendete Chunksize (oder Blockgröße) zu steuern. Bei dieser Konfiguration kann das Filesystem verschiedene Workload- und I/O-Profile unterstützen, ohne Services neu konfigurieren oder neu starten zu müssen. Sie können Stripe-Einstellungen mit dem anwenden `beegfs-ctl` Befehlszeilen-Tool oder Anwendungen, die die Striping-API verwenden. Weitere Informationen finden Sie in der BeeGFS-Dokumentation für https://doc.beegfs.io/latest/advanced_topics/striping.html["Striping"^] Und https://doc.beegfs.io/latest/reference/striping_api.html["Striping-API"^].
+
+Um eine optimale Leistung zu erzielen, wurden während des Tests Streifenmuster angepasst und die für jeden Test verwendeten Parameter werden notiert.
+
+
+
+== IOR-Bandbreitentests: Mehrere Clients
+
+Die IOR-Bandbreitentests verwendeten OpenMPI, um parallele Jobs des synthetischen E/A-Generatorwerkzeugs IOR auszuführen (verfügbar unter https://github.com/hpc/ior["HPC GitHub"^]) Über alle 10 Client-Knoten zu einem oder mehreren BeeGFS-Bausteinen. Sofern nicht anders angegeben:
+
+* Alle Tests verwendeten einen direkten I/O mit einer Übertragungsgröße von 1 MiB.
+* BeeGFS-Datei-Striping wurde auf 1 MB Chunksize und ein Ziel pro Datei eingestellt.
+
+
+Für IOR wurden die folgenden Parameter verwendet, wobei die Segmentanzahl angepasst wurde, um die aggregierte Dateigröße für einen Baustein auf 5 tib und 40 tib für drei Bausteine zu halten.
+
+....
+mpirun --allow-run-as-root --mca btl tcp -np 48 -map-by node -hostfile 10xnodes ior -b 1024k --posix.odirect -e -t 1024k -s 54613 -z -C -F -E -k
+....
+Die folgende Abbildung zeigt die IOR-Testergebnisse mit einem einzelnen BeeGFS-Basisspeicher (Management, Metadaten und Storage).
+
+image:beegfs-design-image13.png[""]
+
+Die folgende Abbildung zeigt die IOR-Testergebnisse mit einem einzelnen BeeGFS-Metadaten + einem Storage-Baustein.
+
+image:beegfs-design-image14.png[""]
+
+Die folgende Abbildung zeigt die IOR-Testergebnisse mit einem einzelnen BeeGFS-Storage-only-Baustein.
+
+image:beegfs-design-image15.png[""]
+
+Die folgende Abbildung zeigt die IOR-Testergebnisse mit drei BeeGFS-Bausteinen.
+
+image:beegfs-design-image16.png[""]
+
+Wie erwartet, ist der Performance-Unterschied zwischen dem Basis-Baustein und den nachfolgenden Metadaten + dem Storage-Baustein vernachlässigbar. Ein Vergleich zwischen Metadaten und Storage-Bausteinen und einem ausschließlich Storage-Baustein zeigt einen leichten Anstieg der Lese-Performance aufgrund der zusätzlichen Laufwerke, die als Storage-Ziele verwendet werden. Allerdings gibt es keinen wesentlichen Unterschied in der Schreib-Performance. Um eine höhere Performance zu erzielen, können Sie mehrere Bausteine gleichzeitig hinzufügen, um die Performance linear zu skalieren.
+
+
+
+== IOR-Bandbreitentests: Einzelner Client
+
+Der IOR-Bandbreitentest nutzte OpenMPI, um mehrere IOR-Prozesse mithilfe eines einzigen leistungsstarken GPU-Servers auszuführen, um die Performance zu untersuchen, die für einen einzelnen Client erreichbar ist.
+
+Dieser Test vergleicht auch das Verhalten und die Leistung von BeeGFS, wenn der Client so konfiguriert ist, dass er den Linux-Kernel-Page-Cache verwendet (`tuneFileCacheType = native`) Im Vergleich zum Standard `buffered` Einstellung.
+
+Der native Caching-Modus verwendet den Linux-Kernel-Page-Cache auf dem Client, sodass die Readervorgänge nicht über das Netzwerk übertragen werden, sondern aus dem lokalen Speicher stammen.
+
+Das folgende Diagramm zeigt die IOR-Testergebnisse mit drei BeeGFS-Bausteinen und einem einzelnen Client.
+
+image:beegfs-design-image17.png[""]
+
+
+NOTE: BeeGFS Striping für diese Tests wurde auf 1 MB Chunksize mit acht Zielen pro Datei eingestellt.
+
+Obwohl die Performance bei den Schreibzugriffen und beim ersten Lesen im standardmäßigen gepufferten Modus höher ist, werden bei Workloads, die dieselben Daten mehrmals lesen, eine deutliche Performance-Steigerung im nativen Caching-Modus erzielt. Diese verbesserte Performance bei erneuten Lesevorgängen ist für Workloads wie Deep Learning wichtig, die denselben Datensatz mehrmals in vielen Epoch-Durchläufen lesen.
+
+
+
+== Metadaten-Performance-Test
+
+Bei den Metadaten-Performance-Tests wurde das MDTest-Tool (im Rahmen von IOR enthalten) verwendet, um die Metadaten-Performance von BeeGFS zu messen. Die Tests verwendeten OpenMPI, um parallele Jobs auf allen zehn Client-Knoten auszuführen.
+
+Die folgenden Parameter wurden verwendet, um den Benchmark-Test mit der Gesamtzahl der Prozesse von 10 auf 320 in Schritt 2 x und mit einer Dateigröße von 4k durchgeführt.
+
+....
+mpirun -h 10xnodes –map-by node np $processes mdtest -e 4k -w 4k -i 3 -I 16 -z 3 -b 8 -u
+....
+Die Metadaten-Performance wurde zuerst mit ein bis zwei Metadaten + Storage-Bausteinen gemessen, um die Performance durch das Hinzufügen weiterer Bausteine zu verdeutlichen.
+
+Das folgende Diagramm zeigt die MDTest-Ergebnisse mit einer BeeGFS-Metadaten + Speicherbausteinen.
+
+image:beegfs-design-image18.png[""]
+
+Das folgende Diagramm zeigt die MDTest-Ergebnisse mit zwei BeeGFS-Metadaten + Speicherbausteinen.
+
+image:beegfs-design-image19.png[""]
+
+
+
+== Funktionsprüfung
+
+Im Rahmen der Validierung dieser Architektur führte NetApp mehrere Funktionstests durch, darunter:
+
+* Ausfall eines einzelnen InfiniBand-Ports des Clients durch Deaktivieren des Switch-Ports
+* Ausfall eines InfiniBand-Ports mit einem einzelnen Server durch Deaktivieren des Switch-Ports
+* Sofortige Abschaltung des Servers mithilfe des BMC.
+* Anmutig Platzierung eines Node im Standby-Modus und Failover-Betrieb zu einem anderen Node
+* Anmutig Setzen eines Node wieder online und Failback-Services auf den ursprünglichen Node.
+* Schalten Sie einen der InfiniBand-Switches mithilfe der PDU aus. Alle Tests wurden durchgeführt, während Belastungstests mit dem durchgeführt wurden `sysSessionChecksEnabled: false` Parameter auf BeeGFS-Clients gesetzt. Es wurden keine Fehler oder Störungen bei I/O festgestellt.
+
+
+
+NOTE: Es ist ein bekanntes Problem aufgetreten (siehe https://github.com/netappeseries/beegfs/blob/master/CHANGELOG.md["Changelog"^]) Wenn BeeGFS-Client/Server-RDMA-Verbindungen unerwartet unterbrochen werden, entweder durch Ausfall der primären Schnittstelle (wie in definiert `connInterfacesFile`) Oder ein BeeGFS-Server fällt aus. Aktive Client-I/O kann bis zu zehn Minuten lang aufhängen, bevor der Vorgang fortgesetzt wird. Dieses Problem tritt nicht auf, wenn BeeGFS-Knoten ordnungsgemäß für geplante Wartung in den Standby-Modus versetzt oder TCP verwendet wird.
+
+
+
+== NVIDIA DGX A100 SuperPOD- und BasePOD-Validierung
+
+NetApp validierte eine Storage-Lösung für IANVIDDGX A100 SuperPOD unter Verwendung eines ähnlichen BeeGFS Filesystem, das aus drei Bausteinen mit den Metadaten und angewandtem Storage-Konfigurationsprofil besteht. Die Qualifizierung bestand darin, die von dieser NVA beschriebene Lösung mit zwanzig DGX A100 GPU-Servern zu testen, auf denen eine Vielzahl von Storage-, Machine-Learning- und Deep-Learning-Benchmarks ausgeführt wurden. Der gesamte Storage, der für die Verwendung in NVIDIA DGX A100 SuperPOD zertifiziert ist, ist ebenfalls automatisch für die Verwendung in NVIDIA BasePOD-Architekturen zertifiziert.
+
+Weitere Informationen finden Sie unter https://www.netapp.com/pdf.html?item=/media/72718-nva-1167-DESIGN.pdf["NVIDIA DGX SuperPOD mit NetApp"^] Und https://www.nvidia.com/en-us/data-center/dgx-basepod/["NVIDIA DGX BasePOD"^].

@@ -1,0 +1,39 @@
+---
+sidebar: sidebar 
+permalink: beegfs-deploy-scale-building-blocks.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: Konfigurieren Sie Pacemaker und Corosync für eine Skalierung über fünf Bausteine hinaus. 
+---
+= Skalierung auf mehr als fünf Bausteine
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Pacemaker und Corosync können so konfiguriert werden, dass sie über fünf Bausteine (10 Datei-Knoten) hinausgehen. Allerdings gibt es Nachteile zu größeren Clustern, und schließlich Pacemaker und Corosync auferlegen ein Maximum von 32 Knoten.
+
+NetApp hat nur BeeGFS HA Cluster für bis zu 10 Nodes getestet. Es wird nicht empfohlen, einzelne Cluster über dieses Limit hinaus zu skalieren. BeeGFS-Filesysteme müssen jedoch immer noch weit über 10 Nodes skalieren, und NetApp hat dies in der BeeGFS on NetApp Lösung berücksichtigt.
+
+Durch die Implementierung mehrerer HA-Cluster mit einer Teilmenge der Bausteine in jedem Filesystem können Sie das gesamte BeeGFS Filesystem unabhängig von empfohlenen oder festen Grenzwerten für die zugrunde liegenden HA-Clustering-Mechanismen skalieren. Gehen Sie in diesem Szenario wie folgt vor:
+
+* Erstellen Sie einen neuen Ansible-Bestand, der die zusätzlichen HA-Cluster darstellt, und geben Sie dann das Konfigurieren eines anderen Managementservices nicht ein. Zeigen Sie stattdessen auf `beegfs_ha_mgmtd_floating_ip` Variable in jedem zusätzlichen Cluster enthalten `ha_cluster.yml` An die IP für den ersten BeeGFS Management Service.
+* Wenn Sie dem selben Dateisystem zusätzliche HA-Cluster hinzufügen, stellen Sie Folgendes sicher:
++
+** Die BeeGFS-Knoten-IDs sind eindeutig.
+** Die Dateinamen, die den einzelnen Diensten unter entsprechen `group_vars` Ist für alle Cluster eindeutig.
+** Die BeeGFS-Client- und Server-IP-Adressen sind für alle Cluster eindeutig.
+** Das erste HA-Cluster mit dem BeeGFS-Managementservice wird ausgeführt, bevor versucht wird, zusätzliche Cluster zu implementieren oder zu aktualisieren.
+
+
+* Inventarisierung für jedes HA-Cluster getrennt in der eigenen Verzeichnisstruktur
++
+Wenn Sie versuchen, die Bestandsdateien für mehrere Cluster in einem Verzeichnisbaum zu mischen, kann dies zu Problemen führen, wie die BeeGFS HA-Rolle die auf ein bestimmtes Cluster angewendete Konfiguration aggregiert.
+
+
+
+
+NOTE: Es ist nicht erforderlich, dass jedes HA-Cluster auf fünf Bausteine skaliert werden kann, bevor ein neues erstellt wird. In vielen Fällen lässt sich das Management mit weniger Bausteinen pro Cluster vereinfachen. Ein Ansatz besteht darin, die Bausteine in jedem einzelnen Rack als HA-Cluster zu konfigurieren.

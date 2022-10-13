@@ -1,0 +1,76 @@
+---
+sidebar: sidebar 
+permalink: beegfs-deploy-overview.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: Mit BeeGFS können Sie auf NetApp bereitstellen und Datei- und Block-Nodes mithilfe der zweiten Generation des NetApp BeeGFS-Bausteindesigns validieren. 
+---
+= Implementierungsübersicht
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Mit BeeGFS können Sie auf NetApp bereitstellen und Datei- und Block-Nodes mithilfe der zweiten Generation des NetApp BeeGFS-Bausteindesigns validieren.
+
+
+
+== Ansible-Sammlungen und -Funktionen
+
+Ansible implementiert die BeeGFS auf NetApp Lösung, eine beliebte IT-Automatisierungs-Engine, mit der Applikationsimplementierungen automatisiert werden. Ansible verwendet eine Reihe von Dateien, die gemeinsam als Inventar bezeichnet werden und mit denen das BeeGFS-Dateisystem, das bereitgestellt werden soll, modelliert wird.
+
+Ansible ermöglicht Unternehmen wie NetApp, mit Sammlungen auf Ansible Galaxy (siehe) die integrierte Funktionalität auszubauen https://galaxy.ansible.com/netapp_eseries["NetApp E-Series BeeGFS Sammlung"^]). Die Sammlungen umfassen Module, die bestimmte Funktionen oder Aufgaben ausführen (wie z. B. ein E-Series Volume erstellen) und enthalten Rollen, die mehrere Module und andere Rollen aufrufen können. Dieser automatisierte Ansatz reduziert die Zeit für die Implementierung des BeeGFS-Filesystems und des zugrunde liegenden HA-Clusters. Zudem vereinfacht es das Hinzufügen von Bausteinen, mit denen die bestehenden Filesysteme erweitert werden können.
+
+Weitere Informationen finden Sie unter link:beegfs-deploy-learn-ansible.html["Weitere Informationen zum Ansible Inventar"].
+
+
+NOTE: Da zahlreiche Schritte an der Implementierung der BeeGFS auf NetApp-Lösung beteiligt sind, unterstützt NetApp die manuelle Bereitstellung der Lösung nicht.
+
+
+
+== Konfigurationsprofile für BeeGFS-Bausteine
+
+Die Implementierungsverfahren umfassen die folgenden Konfigurationsprofile:
+
+* Ein einziger Baustein, der Management-, Metadaten- und Storage-Services umfasst
+* Ein zweiter Baustein, der Metadaten und Storage-Services umfasst.
+* Ein dritter Baustein, der nur Storage-Services umfasst.
+
+
+Diese Profile veranschaulichen die gesamte Palette der empfohlenen Konfigurationsprofile für die NetApp BeeGFS-Bausteine. Für jede Implementierung kann die Anzahl der Metadaten und Storage-Bausteine oder Storage-Services-only Bausteine in den Prozeduren je nach Kapazitäts- und Performance-Anforderungen variieren.
+
+
+
+== Übersicht über die einzelnen Implementierungsschritte
+
+Die Bereitstellung umfasst folgende allgemeine Aufgaben:
+
+.Hardwarebereitstellung
+. Stellen Sie jeden Baustein physisch zusammen.
+. Rack-und Kabelhardware: Ausführliche Verfahren finden Sie unter link:beegfs-deploy-hardware.html["Implementierung von Hardware"].
+
+
+.Softwareimplementierung
+. link:beegfs-deploy-setup-nodes.html["Richten Sie Datei- und Block-Nodes ein"].
++
+** Konfigurieren Sie BMC-IPs auf Datei-Knoten
+** Installieren Sie ein unterstütztes Betriebssystem und konfigurieren Sie Managementnetzwerk auf Datei-Knoten
+** Konfiguration der Management-IPs auf Block-Nodes
+
+
+. link:beegfs-deploy-setting-up-an-ansible-control-node.html["Richten Sie einen Ansible-Steuerungsknoten ein"].
+. link:beegfs-deploy-file-node-tuning.html["Passen Sie die Systemeinstellungen für die Performance an"].
+. link:beegfs-deploy-create-inventory.html["Erstellen des Ansible-Inventars"].
+. link:beegfs-deploy-define-inventory.html["Definieren Sie den Ansible-Bestand für BeeGFS-Bausteine"].
+. link:beegfs-deploy-playbook.html["Implementieren Sie BeeGFS mit Ansible"].
+. link:beegfs-deploy-configure-clients.html["Konfigurieren Sie BeeGFS-Clients"].
+
+
+
+NOTE: Die Bereitstellungsverfahren umfassen mehrere Beispiele, in denen Text in eine Datei kopiert werden muss. Achten Sie bei allen Inline-Kommentaren, die mit „#“- oder „/“-Zeichen gekennzeichnet sind, auf alles, was für eine bestimmte Bereitstellung geändert werden sollte oder werden kann. Beispiel:
+`beegfs_ha_ntp_server_pools:  # THIS IS AN EXAMPLE OF A COMMENT!
+  - "pool 0.pool.ntp.org iburst maxsources 3"
+  - "pool 1.pool.ntp.org iburst maxsources 3"`

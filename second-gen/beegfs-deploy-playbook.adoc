@@ -1,0 +1,111 @@
+---
+sidebar: sidebar 
+permalink: beegfs-deploy-playbook.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: Zur Implementierung und zum Management der Konfiguration werden ein oder mehrere Playbooks ausgeführt, die die Aufgaben enthalten, die Ansible ausführen muss, und das gesamte System in den gewünschten Zustand bringen. 
+---
+= BeeGFS bereitstellen
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Zur Implementierung und zum Management der Konfiguration werden ein oder mehrere Playbooks ausgeführt, die die Aufgaben enthalten, die Ansible ausführen muss, und das gesamte System in den gewünschten Zustand bringen.
+
+Zwar können alle Aufgaben in einem einzigen Playbook enthalten sein, doch bei komplexen Systemen ist dies schnell und schwerfällig. Mit Ansible können Sie Rollen erstellen und verteilen, um wiederverwendbare Playbooks und verwandte Inhalte (z. B. Standardvariablen, Aufgaben und Handler) zu verpacken. Weitere Informationen finden Sie in der Ansible-Dokumentation für https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html["Rollen"^].
+
+Rollen werden häufig im Rahmen einer Ansible Sammlung mit zugehörigen Rollen und Modulen verteilt. Daher importieren diese Playbooks in erster Linie mehrere Rollen, die in den verschiedenen NetApp E-Series Ansible Sammlungen verteilt sind.
+
+
+NOTE: Derzeit sind mindestens zwei Bausteine (vier Datei-Nodes) für die Bereitstellung von BeeGFS erforderlich, es sei denn, ein separates Quorum-Gerät ist als Tiebreaker konfiguriert, um Probleme beim Einrichten von Quorum mit einem Cluster mit zwei Nodes zu minimieren.
+
+.Schritte
+. Erstellen Sie eine neue `playbook.yml` Datei und schließen Sie Folgendes ein:
++
+....
+# BeeGFS HA (High Availability) cluster playbook.
+- hosts: eseries_storage_systems
+  gather_facts: false
+  collections:
+    - netapp_eseries.santricity
+  tasks:
+    - name: Configure NetApp E-Series block nodes.
+      import_role:
+        name: nar_santricity_management
+- hosts: all
+  any_errors_fatal: true
+  gather_facts: false
+  collections:
+    - netapp_eseries.beegfs
+  pre_tasks:
+    - name: Ensure a supported version of Python is available on all file nodes.
+      block:
+        - name: Check if python is installed.
+          failed_when: false
+          changed_when: false
+          raw: python --version
+          register: python_version
+        - name: Check if python3 is installed.
+          raw: python3 --version
+          failed_when: false
+          changed_when: false
+          register: python3_version
+          when: 'python_version["rc"] != 0 or (python_version["stdout"] | regex_replace("Python ", "")) is not version("3.0", ">=")'
+        - name: Install python3 if needed.
+          raw: |
+            id=$(grep "^ID=" /etc/*release* | cut -d= -f 2 | tr -d '"')
+            case $id in
+              ubuntu) sudo apt install python3 ;;
+              rhel|centos) sudo yum -y install python3 ;;
+              sles) sudo zypper install python3 ;;
+            esac
+          args:
+            executable: /bin/bash
+          register: python3_install
+          when: python_version['rc'] != 0 and python3_version['rc'] != 0
+          become: true
+        - name: Create a symbolic link to python from python3.
+          raw: ln -s /usr/bin/python3 /usr/bin/python
+          become: true
+          when: python_version['rc'] != 0
+      when: inventory_hostname not in groups[beegfs_ha_ansible_storage_group]
+    - name: Verify any provided tags are supported.
+      fail:
+        msg: "{{ item }} tag is not a supported BeeGFS HA tag. Rerun your playbook command with --list-tags to see all valid playbook tags."
+      when: 'item not in ["all", "storage", "beegfs_ha", "beegfs_ha_package", "beegfs_ha_configure", "beegfs_ha_configure_resource", "beegfs_ha_performance_tuning", "beegfs_ha_backup", "beegfs_ha_client"]'
+      loop: "{{ ansible_run_tags }}"
+  tasks:
+    - name: Verify before proceeding.
+      pause:
+        prompt: "Are you ready to proceed with running the BeeGFS HA role? Depending on the size of the deployment and network performance between the Ansible control node and BeeGFS file and block nodes this can take awhile (10+ minutes) to complete."
+    - name: Verify the BeeGFS HA cluster is properly deployed.
+      import_role:
+        name: beegfs_ha_7_2
+....
++
+
+NOTE: In diesem Playbook wird ein paar ausgeführt `pre_tasks` Überprüfen Sie, ob Python 3 auf den Datei-Nodes installiert ist, und überprüfen Sie, ob die angegebenen Ansible-Tags unterstützt werden.
+
+. Verwenden Sie die `ansible-playbook` Befehl mit den Inventar- und Playbook-Dateien, wenn Sie bereit sind BeeGFS zu implementieren.
++
+Die Bereitstellung wird komplett ausgeführt `pre_tasks`, Und dann zur Bestätigung des Benutzers aufgefordert, bevor mit der tatsächlichen BeeGFS-Bereitstellung.
+
++
+Führen Sie den folgenden Befehl aus, indem Sie die Anzahl der Gabeln nach Bedarf anpassen (siehe Hinweis unten):
+
++
+....
+ansible-playbook -i inventory.yml playbook.yml --forks 20
+....
++
+
+NOTE: Vor allem bei größeren Bereitstellungen überschreiben Sie die Standardanzahl der Gabeln (5) mit dem `forks` Der Parameter wird empfohlen, um die Anzahl der Hosts zu erhöhen, die Ansible parallel konfiguriert. (Weitere Informationen finden Sie unter  https://www.ansible.com/blog/ansible-performance-tuning["Ansible-Performance-Tuning"^] Und https://docs.ansible.com/ansible/latest/user_guide/playbooks_strategies.html["Kontrolle der Playbook-Ausführung"^].) Die Einstellung für den maximalen Wert hängt von der verfügbaren Verarbeitungsleistung des Ansible-Steuerungsknotens ab. Das oben genannte Beispiel von 20 wurde auf einem virtuellen Ansible-Steuerungsknoten mit 4 CPUs (Intel(R) Xeon(R) Gold 6146 CPU @ 3,20 GHz) ausgeführt.
+
++
+Je nach Größe der Implementierung und Netzwerk-Performance zwischen dem Ansible Control Node und BeeGFS File- und Block-Nodes kann die Implementierungszeit variieren.
+
+

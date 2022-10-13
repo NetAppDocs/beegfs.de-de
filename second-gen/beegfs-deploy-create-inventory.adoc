@@ -1,0 +1,417 @@
+---
+sidebar: sidebar 
+permalink: beegfs-deploy-create-inventory.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: Um die Konfiguration für Datei- und Block-Nodes zu definieren, erstellen Sie einen Ansible-Bestand für das BeeGFS-Dateisystem, das bereitgestellt werden soll. 
+---
+= Erstellen des Ansible-Inventars
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Um die Konfiguration für Datei- und Block-Nodes zu definieren, erstellen Sie einen Ansible-Bestand für das BeeGFS-Dateisystem, das bereitgestellt werden soll. Der Bestand umfasst Hosts, Gruppen und Variablen, die das gewünschte BeeGFS-Dateisystem beschreiben.
+
+
+
+== Schritt 1: Konfiguration für alle Bausteine definieren
+
+Legen Sie die Konfiguration fest, die für alle Bausteine gilt, unabhängig davon, welches Konfigurationsprofil Sie für sie einzeln anwenden können.
+
+.Bevor Sie beginnen
+* Verwenden Sie ein Quellkontrollsystem wie BitBucket oder Git, um den Inhalt des Verzeichnisses mit dem Ansible-Inventar und den Playbook-Dateien zu speichern.
+* Erstellen Sie ein `.gitignore` Datei, die die Dateien angibt, die Git ignorieren soll. Dadurch wird verhindert, dass große Dateien in Git gespeichert werden.
+
+
+.Schritte
+. Geben Sie auf dem Ansible-Steuerungsknoten ein Verzeichnis an, das Sie zum Speichern der Bestands- und Playbook-Dateien in Ansible verwenden möchten.
++
+Sofern nicht anders angegeben, werden alle in diesem Schritt erstellten Dateien und Verzeichnisse und die folgenden Schritte relativ zu diesem Verzeichnis erstellt.
+
+. Folgende Unterverzeichnisse erstellen:
++
+`host_vars`
+
++
+`group_vars`
+
++
+`packages`
+
+
+
+
+
+== Schritt: Konfiguration für einzelne Datei- und Block-Nodes definieren
+
+Legen Sie die Konfiguration für einzelne Datei-Nodes und einzelne Baustein-Nodes fest.
+
+. Unter `host_vars/`Erstellen Sie für jeden BeeGFS-Dateiknoten eine Datei mit dem Namen `<HOSTNAME>.yml` Mit dem folgenden Inhalt, besondere Aufmerksamkeit auf die Notizen über den Inhalt für BeeGFS Cluster-IPs und Host-Namen enden in ungerade oder gerade Zahlen.
++
+Zunächst stimmen die Schnittstellennamen der Dateiknoten mit dem überein, was hier aufgeführt ist (z. B. ib0 oder ibs1f0). Diese benutzerdefinierten Namen werden in konfiguriert  4: Define configuration that should apply to all file nodes.
+
++
+....
+ansible_host: “<MANAGEMENT_IP>”
+eseries_ipoib_interfaces:  # Used to configure BeeGFS cluster IP addresses.
+  - name: i1b
+    address: 100.127.100. <NUMBER_FROM_HOSTNAME>/16
+  - name: i4b
+    address: 100.128.100. <NUMBER_FROM_HOSTNAME>/16
+beegfs_ha_cluster_node_ips:
+  - <MANAGEMENT_IP>
+  - <i1b_BEEGFS_CLUSTER_IP>
+  - <i4b_BEEGFS_CLUSTER_IP>
+# NVMe over InfiniBand storage communication protocol information
+# For odd numbered file nodes (i.e., h01, h03, ..):
+eseries_nvme_ib_interfaces:
+  - name: i1a
+    address: 192.168.1.10/24
+    configure: true
+  - name: i2a
+    address: 192.168.3.10/24
+    configure: true
+  - name: i3a
+    address: 192.168.5.10/24
+    configure: true
+  - name: i4a
+    address: 192.168.7.10/24
+    configure: true
+# For even numbered file nodes (i.e., h02, h04, ..):
+# NVMe over InfiniBand storage communication protocol information
+eseries_nvme_ib_interfaces:
+  - name: i1a
+    address: 192.168.2.10/24
+    configure: true
+  - name: i2a
+    address: 192.168.4.10/24
+    configure: true
+  - name: i3a
+    address: 192.168.6.10/24
+    configure: true
+  - name: i4a
+    address: 192.168.8.10/24
+    configure: true
+....
++
+
+NOTE: Wenn Sie bereits das BeeGFS-Cluster implementiert haben, müssen Sie das Cluster beenden, bevor Sie statisch konfigurierte IP-Adressen hinzufügen oder ändern, einschließlich Cluster-IPs und IPs für NVMe/IB. Dies ist erforderlich, damit diese Änderungen ordnungsgemäß wirksam werden und Cluster-Vorgänge nicht unterbrechen.
+
+. Unter `host_vars/`Erstellen Sie für jeden BeeGFS-Block-Knoten eine Datei mit dem Namen `<HOSTNAME>.yml` Und geben Sie den folgenden Inhalt ein.
++
+Achten Sie besonders auf die Hinweise zum Inhalt, die für Speicher-Array-Namen ausgefüllt werden müssen, die mit ungeraden oder geraden Zahlen enden.
+
++
+Erstellen Sie für jeden Block-Node eine Datei, und geben Sie den an `<MANAGEMENT_IP>` Für einen der beiden Controller (normalerweise A).
+
++
+....
+eseries_system_name: <STORAGE_ARRAY_NAME>
+eseries_system_api_url: https://<MANAGEMENT_IP>:8443/devmgr/v2/
+eseries_initiator_protocol: nvme_ib
+# For odd numbered block nodes (i.e., a01, a03, ..):
+eseries_controller_nvme_ib_port:
+  controller_a:
+    - 192.168.1.101
+    - 192.168.2.101
+    - 192.168.1.100
+    - 192.168.2.100
+  controller_b:
+    - 192.168.3.101
+    - 192.168.4.101
+    - 192.168.3.100
+    - 192.168.4.100
+# For even numbered block nodes (i.e., a02, a04, ..):
+eseries_controller_nvme_ib_port:
+  controller_a:
+    - 192.168.5.101
+    - 192.168.6.101
+    - 192.168.5.100
+    - 192.168.6.100
+  controller_b:
+    - 192.168.7.101
+    - 192.168.8.101
+    - 192.168.7.100
+    - 192.168.8.100
+....
+
+
+
+
+== Schritt 3: Definieren Sie die Konfiguration, die für alle Datei- und Block-Nodes gelten soll
+
+Unter können Sie die gemeinsame Konfiguration für eine Gruppe von Hosts definieren `group_vars` In einem Dateinamen, der der Gruppe entspricht. Dadurch wird verhindert, dass eine gemeinsame Konfiguration an mehreren Orten wiederholt wird.
+
+Hosts können sich in mehr als einer Gruppe befinden. Ansible zur Laufzeit wählt Ansible aus, welche Variablen auf Basis seiner variablen Rangfolge für einen bestimmten Host gelten. (Weitere Informationen zu diesen Regeln finden Sie in der Ansible-Dokumentation für https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html["Variablen verwenden"^].)
+
+Host-zu-Gruppe-Zuweisungen werden in der tatsächlichen Ansible-Bestandsdatei definiert, die gegen Ende dieses Vorgangs erstellt wird.
+
+In Ansible können alle Konfigurationen, die auf alle Hosts angewendet werden sollen, in einer Gruppe mit dem Namen definiert werden `All`. Erstellen Sie die Datei `group_vars/all.yml` Mit folgenden Inhalten:
+
+....
+ansible_python_interpreter: /usr/bin/python3
+beegfs_ha_ntp_server_pools:  # Modify the NTP server addressess if desired.
+  - "pool 0.pool.ntp.org iburst maxsources 3"
+  - "pool 1.pool.ntp.org iburst maxsources 3"
+....
+
+
+== Schritt 4: Definieren Sie die Konfiguration, die für alle Datei-Knoten gelten soll
+
+Die gemeinsame Konfiguration für Dateiknoten ist in einer Gruppe mit dem Namen definiert `ha_cluster`. In den Schritten in diesem Abschnitt wird die Konfiguration erstellt, die in der enthalten sein sollte `group_vars/ha_cluster.yml` Datei:
+
+.Schritte
+. Legen Sie oben in der Datei die Standardeinstellungen fest, einschließlich des Kennworts, das als verwendet werden soll `sudo` Benutzer auf den Datei-Nodes.
++
+....
+### ha_cluster Ansible group inventory file.
+# Place all default/common variables for BeeGFS HA cluster resources below.
+### Cluster node defaults
+ansible_ssh_user: root
+ansible_become_password: <PASSWORD>
+eseries_ipoib_default_hook_templates:
+  - 99-multihoming.j2 # This is required when configuring additional static IPs (for example cluster IPs) when multiple IB ports are in the same IPoIB subnet.
+# If the following options are specified, then Ansible will automatically reboot nodes when necessary for changes to take effect:
+eseries_common_allow_host_reboot: true
+eseries_common_reboot_test_command: "systemctl --state=active,exited | grep eseries_nvme_ib.service"
+....
++
+
+NOTE: Speichern Sie Passwörter insbesondere für Produktionsumgebungen nicht im Klartext. Verwenden Sie stattdessen den Ansible Vault (siehe https://docs.ansible.com/ansible/latest/user_guide/vault.html["Verschlüsseln von Inhalten mit Ansible Vault"^]) Oder der `--ask-become-pass` Option beim Ausführen des Playbooks. Wenn der `ansible_ssh_user` Ist bereits `root`, Dann können Sie optional die weglassen `ansible_become_password`.
+
+. Konfigurieren Sie optional einen Namen für den Hochverfügbarkeits-Cluster und geben Sie einen Benutzer für die Cluster-interne Kommunikation an.
++
+Wenn Sie das private IP-Adressschema ändern, müssen Sie auch die Standardeinstellung aktualisieren `beegfs_ha_mgmtd_floating_ip`. Dies muss mit dem übereinstimmen, was Sie später für die BeeGFS Management Ressourcengruppe konfigurieren.
+
++
+Geben Sie eine oder mehrere E-Mails an, die Warnmeldungen für Cluster-Ereignisse mit empfangen sollen `beegfs_ha_alert_email_list`.
+
++
+....
+### Cluster information
+beegfs_ha_firewall_configure: True
+eseries_beegfs_ha_disable_selinux: True
+eseries_selinux_state: disabled
+# The following variables should be adjusted depending on the desired configuration:
+beegfs_ha_cluster_name: hacluster                  # BeeGFS HA cluster name.
+beegfs_ha_cluster_username: hacluster              # BeeGFS HA cluster username.
+beegfs_ha_cluster_password: hapassword             # BeeGFS HA cluster username's password.
+beegfs_ha_cluster_password_sha512_salt: randomSalt # BeeGFS HA cluster username's password salt.
+beegfs_ha_mgmtd_floating_ip: 100.127.101.0         # BeeGFS management service IP address.
+# Email Alerts Configuration
+beegfs_ha_enable_alerts: True
+beegfs_ha_alert_email_list: ["email@example.com"]  # E-mail recipient list for notifications when BeeGFS HA resources change or fail.  Often a distribution list for the team responsible for managing the cluster.
+beegfs_ha_alert_conf_ha_group_options:
+      mydomain: “example.com”
+# The mydomain parameter specifies the local internet domain name. This is optional when the cluster nodes have fully qualified hostnames (i.e. host.example.com).
+# Adjusting the following parameters is optional:
+beegfs_ha_alert_timestamp_format: "%Y-%m-%d %H:%M:%S.%N" #%H:%M:%S.%N
+beegfs_ha_alert_verbosity: 3
+#  1) high-level node activity
+#  3) high-level node activity + fencing action information + resources (filter on X-monitor)
+#  5) high-level node activity + fencing action information + resources
+....
++
+
+NOTE: Während scheinbar redundant, `beegfs_ha_mgmtd_floating_ip` Ist wichtig, wenn Sie das BeeGFS-Dateisystem über einen einzelnen HA-Cluster hinaus skalieren. Nachfolgende HA-Cluster werden ohne zusätzlichen BeeGFS-Managementservice bereitgestellt und Punkt am Managementservice des ersten Clusters.
+
+. Konfigurieren Sie einen Fechtagenten. (Weitere Informationen finden Sie unter https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_and_managing_high_availability_clusters/assembly_configuring-fencing-configuring-and-managing-high-availability-clusters["Konfigurieren Sie Fechten in einem Red hat High Availability Cluster"^].) Die folgende Ausgabe zeigt Beispiele für die Konfiguration von gemeinsamen Fechten-Agenten. Wählen Sie eine dieser Optionen.
++
+Beachten Sie bei diesem Schritt Folgendes:
+
++
+** Standardmäßig ist Fechten aktiviert, Sie müssen jedoch einen Fechten_Agent_ konfigurieren.
+** Der `<HOSTNAME>` Angegeben in `pcmk_host_map` Oder `pcmk_host_list` Der Hostname in der Ansible-Bestandsaufnahme entspricht.
+** Das BeeGFS-Cluster ohne Fencing wird insbesondere in der Produktion nicht unterstützt. Dies soll weitgehend sicherstellen, wenn BeeGFS-Services, einschließlich aller Ressourcenabhängigkeiten wie Blockgeräte, Failover aufgrund eines Problems durchführen, es besteht keine Möglichkeit des gleichzeitigen Zugriffs durch mehrere Nodes, die zu einer Beschädigung des Filesystems oder anderen unerwünschten oder unerwarteten Verhalten führen. Wenn das Fechten deaktiviert werden muss, lesen Sie die allgemeinen Hinweise in der BeeGFS HA-Rolle „erste Schritte“-Anleitung und „Set“ `beegfs_ha_cluster_crm_config_options["stonith-enabled"]` Mit FALSE innen `ha_cluster.yml`.
+** Es sind mehrere Fechtgeräte auf Node-Ebene verfügbar, und die BeeGFS HA-Rolle kann jeden Fechtagenten konfigurieren, der im Red hat HA Package Repository verfügbar ist. Wenn möglich, verwenden Sie einen Zaunsagenten, der über die unterbrechungsfreie Stromversorgung (USV) oder die Rack-Stromverteilereinheit (rPDU) arbeitet. Da einige Fechten-Agenten wie der Baseboard-Management-Controller (BMC) oder andere Lights-Out-Geräte, die in den Server integriert sind, möglicherweise nicht auf die Zaunanforderung unter bestimmten Ausfallszenarien reagieren.
++
+....
+### Fencing configuration:
+# OPTION 1: To enable fencing using APC Power Distribution Units (PDUs):
+beegfs_ha_fencing_agents:
+ fence_apc:
+   - ipaddr: <PDU_IP_ADDRESS>
+     login: <PDU_USERNAME>
+     passwd: <PDU_PASSWORD>
+     pcmk_host_map: "<HOSTNAME>:<PDU_PORT>,<PDU_PORT>;<HOSTNAME>:<PDU_PORT>,<PDU_PORT>"
+# OPTION 2: To enable fencing using the Redfish APIs provided by the Lenovo XCC (and other BMCs):
+redfish: &redfish
+  username: <BMC_USERNAME>
+  password: <BMC_PASSWORD>
+  ssl_insecure: 1 # If a valid SSL certificate is not available specify “1”.
+beegfs_ha_fencing_agents:
+  fence_redfish:
+    - pcmk_host_list: <HOSTNAME>
+      ip: <BMC_IP>
+      <<: *redfish
+    - pcmk_host_list: <HOSTNAME>
+      ip: <BMC_IP>
+      <<: *redfish
+# For details on configuring other fencing agents see https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_and_managing_high_availability_clusters/assembly_configuring-fencing-configuring-and-managing-high-availability-clusters.
+....
+
+
+. Aktivieren Sie die empfohlene Performance-Optimierung im Linux-Betriebssystem.
++
+Viele Benutzer finden die Standardeinstellungen für die Performance-Parameter zwar im Allgemeinen gut, Sie können jedoch optional die Standardeinstellungen für einen bestimmten Workload ändern. Daher sind diese Empfehlungen in die BeeGFS-Rolle enthalten, jedoch sind sie nicht standardmäßig aktiviert, um sicherzustellen, dass Benutzer die auf ihr Dateisystem angewendete Einstellung kennen.
+
++
+Um das Performance-Tuning zu aktivieren, geben Sie Folgendes an:
+
++
+....
+### Performance Configuration:
+beegfs_ha_enable_performance_tuning: True
+....
+. (Optional) Sie können die Leistungsparameter im Linux-Betriebssystem nach Bedarf anpassen.
++
+Eine umfassende Liste der verfügbaren Tuning-Parameter, die Sie anpassen können, finden Sie im Abschnitt Performance Tuning Defaults der BeeGFS HA-Rolle in https://github.com/netappeseries/beegfs/tree/master/roles/beegfs_ha_7_2/defaults/main.yml["E-Series BeeGFS GitHub-Website"^]. Die Standardwerte können für alle Nodes im Cluster in dieser Datei oder im außer Kraft gesetzt werden `host_vars` Datei für einen einzelnen Knoten.
+
+. Um eine vollständige 200-GB-/HDR-Konnektivität zwischen Block- und Datei-Nodes zu ermöglichen, verwenden Sie das OpenSubnetz Manager-Paket (OpenSM) aus der Mellanox Open Fabrics Enterprise Distribution (MLNX_OFED). (Posteingang `opensm` Das Paket unterstützt nicht die erforderlichen Virtualisierungsfunktionen.) Obwohl die Implementierung mit Ansible unterstützt wird, müssen Sie die gewünschten Pakete zuerst auf den Ansible-Kontroll-Node herunterladen, der zum Ausführen der BeeGFS-Rolle verwendet wird.
++
+.. Wird Verwendet `curl` Oder Ihr gewünschtes Tool, laden Sie die Pakete für die Version von OpenSM im Abschnitt Technologieanforderungen aufgeführt von Mellanox Website auf die `packages/` Verzeichnis. Beispiel:
++
+....
+curl -o packages/opensm-libs-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm https://linux.mellanox.com/public/repo/mlnx_ofed/5.4-1.0.3.0/rhel8.4/x86_64/opensm-libs-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
+
+curl -o packages/opensm-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm https://linux.mellanox.com/public/repo/mlnx_ofed/5.4-1.0.3.0/rhel8.4/x86_64/opensm-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
+....
+.. Füllen Sie die folgenden Parameter in aus `group_vars/ha_cluster.yml` (Passen Sie Pakete nach Bedarf an):
++
+....
+### OpenSM package and configuration information
+eseries_ib_opensm_allow_upgrades: true
+eseries_ib_opensm_skip_package_validation: true
+eseries_ib_opensm_rhel_packages: []
+eseries_ib_opensm_custom_packages:
+  install:
+    - files:
+        add:
+          "packages/opensm-libs-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm": "/tmp/"
+          "packages/opensm-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm": "/tmp/"
+    - packages:
+        add:
+          - /tmp/opensm-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
+          - /tmp/opensm-libs-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
+  uninstall:
+    - packages:
+        remove:
+          - opensm
+          - opensm-libs
+      files:
+        remove:
+          - /tmp/opensm-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
+          - /tmp/opensm-libs-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
+eseries_ib_opensm_options:
+  virt_enabled: "2"
+....
+
+
+. Konfigurieren Sie die `udev` Regel zur Sicherstellung einer konsistenten Zuordnung von logischen InfiniBand-Port-IDs zu zugrunde liegenden PCIe-Geräten.
++
+Der `udev` Die Regel muss für die PCIe-Topologie jeder Serverplattform, die als BeeGFS-Datei-Node verwendet wird, eindeutig sein.
+
++
+Für verifizierte Dateiknoten folgende Werte verwenden:
+
++
+....
+### Ensure Consistent Logical IB Port Numbering
+# OPTION 1: Lenovo SR665 PCIe address-to-logical IB port mapping:
+eseries_ipoib_udev_rules:
+  "0000:41:00.0": i1a
+  "0000:41:00.1": i1b
+  "0000:01:00.0": i2a
+  "0000:01:00.1": i2b
+  "0000:a1:00.0": i3a
+  "0000:a1:00.1": i3b
+  "0000:81:00.0": i4a
+  "0000:81:00.1": i4b
+
+# Note: At this time no other x86 servers have been qualified. Configuration for future qualified file nodes will be added here.
+....
+. (Optional) Aktualisieren des Metadaten-Zielauswahlalgorithmus.
++
+....
+beegfs_ha_beegfs_meta_conf_ha_group_options:
+  tuneTargetChooser: randomrobin
+....
++
+
+NOTE: Während der Verifizierungstests `randomrobin` Wurde in der Regel verwendet, um sicherzustellen, dass Testdateien während des Performance-Benchmarking gleichmäßig auf alle BeeGFS-Speicherziele verteilt wurden (weitere Informationen zu Benchmarking finden Sie auf der BeeGFS-Website für https://doc.beegfs.io/latest/advanced_topics/benchmark.html["Benchmarking eines BeeGFS-Systems"^]). Bei der realen Welt könnte dies dazu führen, dass sich die niedrigeren nummerierten Ziele schneller füllen als die höher nummerierten Ziele. Auslassung `randomrobin` Und nur mit dem Standard `randomized` Der Wert zeigt sich, dass er eine gute Leistung bietet und gleichzeitig alle verfügbaren Ziele nutzt.
+
+
+
+
+
+== Schritt 5: Definieren Sie die Konfiguration für den gemeinsamen Block-Node
+
+Die gemeinsame Konfiguration für Block-Knoten wird in einer Gruppe mit dem Namen definiert `eseries_storage_systems`. In den Schritten in diesem Abschnitt wird die Konfiguration erstellt, die in der enthalten sein sollte `group_vars/ eseries_storage_systems.yml` Datei:
+
+.Schritte
+. Setzen Sie die Ansible-Verbindung auf Local, geben Sie das Systemkennwort ein und geben Sie an, ob SSL-Zertifikate verifiziert werden sollen. (Normalerweise verwendet Ansible SSH für die Verbindung zu gemanagten Hosts. Bei Storage-Systemen der NetApp E-Series, die als Block-Nodes verwendet werden, verwenden die Module JEDOCH die REST-API für die Kommunikation.) Fügen Sie oben in der Datei Folgendes hinzu:
++
+....
+### eseries_storage_systems Ansible group inventory file.
+# Place all default/common variables for NetApp E-Series Storage Systems here:
+ansible_connection: local
+eseries_system_password: <PASSWORD>
+eseries_validate_certs: false
+....
++
+
+NOTE: Es wird nicht empfohlen, Kennwörter im Klartext zu verwenden. Verwenden Sie einen Ansible-Vault, oder stellen Sie die bereit `eseries_system_password` Bei Ausführung von Ansible mit `--extra-vars`.
+
+. Installieren Sie die für Block-Nodes in aufgeführten Versionen, um eine optimale Performance zu gewährleisten link:beegfs-technology-requirements.html["Technische Anforderungen"].
++
+Laden Sie die entsprechenden Dateien aus dem herunter https://mysupport.netapp.com/site/products/all/details/eseries-santricityos/downloads-tab["NetApp Support Website"^]. Sie können sie entweder manuell aktualisieren oder sie in das einbeziehen `packages/` Verzeichnis des Ansible-Steuerungsknotens, und füllen Sie dann die folgenden Parameter in aus `eseries_storage_systems.yml` So führen Sie ein Upgrade mit Ansible durch:
+
++
+....
+# Firmware, NVSRAM, and Drive Firmware (modify the filenames as needed):
+eseries_firmware_firmware: "packages/RCB_11.70.2_6000_61b1131d.dlp"
+eseries_firmware_nvsram: "packages/N6000-872834-D06.dlp"
+....
+. Laden Sie die neueste Laufwerk-Firmware herunter, die für die Laufwerke verfügbar ist, die in Ihren Block-Nodes installiert sind, von https://mysupport.netapp.com/NOW/download/tools/diskfw_eseries/["NetApp Support Website"^]. Sie können sie entweder manuell aktualisieren oder sie in das einbeziehen `packages/` Verzeichnis des Ansible-Steuerungsknotens, und füllen Sie dann die folgenden Parameter in aus `eseries_storage_systems.yml` So führen Sie ein Upgrade mit Ansible durch:
++
+....
+eseries_drive_firmware_firmware_list:
+  - "packages/<FILENAME>.dlp"
+eseries_drive_firmware_upgrade_drives_online: true
+....
++
+
+NOTE: Einstellung `eseries_drive_firmware_upgrade_drives_online` Bis `false` Beschleunigt das Upgrade, sollte aber erst nach dem Einsatz von BeeGFS durchgeführt werden. Der Grund dafür ist, dass bei dieser Einstellung sämtliche I/O-Vorgänge auf den Laufwerken vor dem Upgrade angehalten werden müssen, um Applikationsfehler zu vermeiden. Obwohl ein Online-Laufwerk-Firmware-Upgrade vor der Konfiguration von Volumes noch schnell durchgeführt wird, empfehlen wir Ihnen, diesen Wert immer auf zu setzen `true` Um später Probleme zu vermeiden.
+
+. Nehmen Sie zur Optimierung der Leistung folgende Änderungen an der globalen Konfiguration vor:
++
+....
+# Global Configuration Defaults
+eseries_system_cache_block_size: 32768
+eseries_system_cache_flush_threshold: 80
+eseries_system_default_host_type: linux dm-mp
+eseries_system_autoload_balance: disabled
+eseries_system_host_connectivity_reporting: disabled
+eseries_system_controller_shelf_id: 99 # Required.
+....
+. Um eine optimale Bereitstellung und ein optimales Verhalten von Volumes zu gewährleisten, geben Sie folgende Parameter an:
++
+....
+# Storage Provisioning Defaults
+eseries_volume_size_unit: pct
+eseries_volume_read_cache_enable: true
+eseries_volume_read_ahead_enable: false
+eseries_volume_write_cache_enable: true
+eseries_volume_write_cache_mirror_enable: true
+eseries_volume_cache_without_batteries: false
+eseries_storage_pool_usable_drives: "99:0,99:23,99:1,99:22,99:2,99:21,99:3,99:20,99:4,99:19,99:5,99:18,99:6,99:17,99:7,99:16,99:8,99:15,99:9,99:14,99:10,99:13,99:11,99:12"
+....
++
+
+NOTE: Der für angegebene Wert `eseries_storage_pool_usable_drives` Gibt einen spezifischen Block-Node der NetApp EF600 an und steuert die Reihenfolge, in der Laufwerke neuen Volume-Gruppen zugewiesen werden. Durch diese Bestellung wird sichergestellt, dass der I/O zu jeder Gruppe gleichmäßig über die Kanäle des Backend-Laufwerks verteilt wird.
+
+

@@ -1,0 +1,79 @@
+---
+sidebar: sidebar 
+permalink: beegfs-solution-overview.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: Die BeeGFS auf NetApp Lösung kombiniert das parallele BeeGFS Filesystem mit NetApp EF600 Storage-Systemen und bietet so eine zuverlässige, skalierbare und kostengünstige Infrastruktur, die mit anspruchsvollen Workloads Schritt hält. 
+---
+= Lösungsüberblick
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Die BeeGFS auf NetApp Lösung kombiniert das parallele BeeGFS Filesystem mit NetApp EF600 Storage-Systemen und bietet so eine zuverlässige, skalierbare und kostengünstige Infrastruktur, die mit anspruchsvollen Workloads Schritt hält.
+
+Dieses Design nutzt die Performance-Dichte, die von neuester Enterprise Server- und Storage-Hardware und Netzwerkgeschwindigkeiten bereitgestellt wird, Da File-Nodes mit dualen AMD EPYC 7003 „Mailand“-Prozessoren ausgestattet sind und PCIe 4.0 mit Direktverbindung über 200 GB (HDR) InfiniBand zu Block-Nodes unterstützt werden, die End-to-End-NVMe und NVMeOF unter Verwendung des NVMe/IB-Protokolls bieten.
+
+
+
+== NVA-Programm
+
+Die BeeGFS on NetApp Lösung ist Teil des NetApp Verified Architecture (NVA) Programms, das Kunden Referenzkonfigurationen und Orientierungshilfen zur Größenbestimmung für spezifische Workloads und Anwendungsfälle bietet. NVA-Lösungen werden ausführlich getestet und entwickelt, um Implementierungsrisiken zu minimieren und die Markteinführungszeit zu verkürzen.
+
+
+
+== Anwendungsfälle
+
+Die folgenden Anwendungsfälle gelten für die BeeGFS auf NetApp Lösung:
+
+* Künstliche Intelligenz (KI), einschließlich Machine Learning (ML), Deep Learning (DL), großzügiger natürlicher Sprachverarbeitung (NLP) und NLU (Natural Language Understanding) Weitere Informationen finden Sie unter https://www.netapp.com/blog/beefs-for-ai-fact-vs-fiction/["BeeGFS for AI: Fakt versus Fiction"^].
+* High-Performance Computing (HPC) einschließlich Applikationen, die mit MPI (Message Passing Interface) und anderen Distributed Computing-Techniken beschleunigt werden. Weitere Informationen finden Sie unter https://www.netapp.com/blog/beegfs-for-ai-ml-dl/["Warum BeeGFS das HPC übertrifft"^].
+* Applikations-Workloads zeichnen sich durch folgende Merkmale aus:
++
+** Lesen oder Schreiben auf Dateien mit einer Größe von mehr als 1 GB
+** Lesen oder Schreiben in dieselbe Datei durch mehrere Clients (10s, 100s und 1000s)
+
+
+* Datensätze mit mehreren Terabyte oder mehreren Petabyte.
+* Umgebungen, für die ein einziger Storage Namespace benötigt wird, der sich für eine Mischung aus großen und kleinen Dateien optimieren lässt
+
+
+
+
+== Vorteile
+
+Die wichtigsten Vorteile von BeeGFS auf NetApp:
+
+* Verfügbarkeit verifizierter Hardware-Designs mit vollständiger Integration von Hardware- und Softwarekomponenten, die zuverlässige Performance und Zuverlässigkeit gewährleisten.
+* Implementierung und Management mit Ansible für Einfachheit und Konsistenz nach Maß
+* Überwachung und Beobachtbarkeit mithilfe des E-Series Performance Analyzer und BeeGFS Plug-ins. Weitere Informationen finden Sie unter https://www.netapp.com/blog/monitoring-netapp-eseries/["Framework zur Überwachung von NetApp E-Series Lösungen"^].
+* Hochverfügbarkeit dank einer Shared-Disk-Architektur für Datenaufbewahrungszeit und -Verfügbarkeit
+* Unterstützung für modernes Workload-Management und moderne Orchestrierung mithilfe von Containern und Kubernetes Weitere Informationen finden Sie unter https://www.netapp.com/blog/kubernetes-meet-beegfs/["Kubernetes Meet BeeGFS: Eine Geschichte zukunftssichere Investition"^].
+
+
+
+
+== HA-Architektur
+
+BeeGFS auf NetApp erweitert die Funktionalität der BeeGFS Enterprise Edition durch Entwicklung einer vollständig integrierten Lösung mit NetApp Hardware, die eine HA-Architektur (Shared Disk High Availability, Shared-Hochverfügbarkeit) ermöglicht.
+
+
+NOTE: Die BeeGFS Community Edition kann zwar kostenlos genutzt werden, jedoch muss bei der Enterprise Edition ein Professional Support-Abonnementvertrag von einem Partner wie NetApp abgeschlossen werden. Die Enterprise-Version ermöglicht die Nutzung mehrerer zusätzlicher Funktionen wie Ausfallsicherheit, Kontingentzuverfolgung und Storage-Pools.
+
+In der folgenden Abbildung werden die HA-Architekturen ohne Shared-Festplatten verglichen.
+
+image:../media/beegfs-design-image1.png[""]
+
+Weitere Informationen finden Sie unter https://www.netapp.com/blog/high-availability-beegfs/["Ankündigung der Hochverfügbarkeit für BeeGFS mit Unterstützung von NetApp"^].
+
+
+
+== Ansible
+
+BeeGFS auf NetApp wird mittels Ansible-Automatisierung bereitgestellt und implementiert. Das Hosting wird auf GitHub und Ansible Galaxy (die BeeGFS-Sammlung ist über verfügbar https://galaxy.ansible.com/netapp_eseries/beegfs["Ansible-Galaxie"^] Und https://github.com/netappeseries/beegfs/["NetApp E-Series GitHub"^]). Obwohl Ansible vor allem mit der Hardware getestet wird, die zum Zusammenbauen der BeeGFS-Bausteine verwendet wird, können Sie es so konfigurieren, dass es auf nahezu jedem x86-basierten Server unter Verwendung einer unterstützten Linux-Distribution ausgeführt wird.
+
+Weitere Informationen finden Sie unter https://www.netapp.com/blog/deploying-beegfs-eseries/["Implementieren von BeeGFS mit E-Series Storage"^].

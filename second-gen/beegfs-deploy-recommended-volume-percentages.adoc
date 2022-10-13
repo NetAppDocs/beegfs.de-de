@@ -1,0 +1,39 @@
+---
+sidebar: sidebar 
+permalink: beegfs-deploy-recommended-volume-percentages.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: Beachten Sie die empfohlenen Prozentsätze, wenn Sie die standardmäßige Konfiguration von vier Volumes pro Speicherpool für Bausteine der zweiten Generation beachten. 
+---
+= Empfohlene Prozentsätze für die Überprovisionierung von Storage-Pools
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Wenn Sie den standardmäßigen vier Volumes pro Storage-Pool-Konfiguration für Bausteine der zweiten Generation folgen, finden Sie in der folgenden Tabelle.
+
+Diese Tabelle enthält empfohlene Prozentsätze, die als Volume-Größe im verwendet werden können `eseries_storage_pool_configuration` Für jede BeeGFS-Metadaten oder jedes Storage-Ziel:
+
+|===
+| Laufwerkgröße | Größe 
+
+
+| 1,92 TB | 18 
+
+
+| 3,84 TB | 21.5 
+
+
+| 7,68 TB | 22.5 
+
+
+| 15,3 TB | 24 
+|===
+
+NOTE: Die oben stehende Anleitung gilt nicht für den Speicherpool, der den Management-Service enthält. Dieser sollte die Größe von über 25 % verringern, um 1 % des Speicherpools für Management-Daten zuzuweisen.
+
+Um zu verstehen, wie diese Werte ermittelt wurden, lesen Sie https://www.netapp.com/media/17009-tr4800.pdf["TR-4800: Anhang A: Verständnis von SSD-Ausdauer und -Überprovisionierung"^].

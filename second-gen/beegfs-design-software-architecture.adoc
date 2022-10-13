@@ -1,0 +1,159 @@
+---
+sidebar: sidebar 
+permalink: beegfs-design-software-architecture.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: Die Software-Konfiguration für BeeGFS auf NetApp umfasst BeeGFS-Netzwerkkomponenten, EF600 Block-Nodes, BeeGFS-Datei-Nodes, Ressourcengruppen und BeeGFS-Services. 
+---
+= Softwarekonfiguration
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Die Software-Konfiguration für BeeGFS auf NetApp umfasst BeeGFS-Netzwerkkomponenten, EF600 Block-Nodes, BeeGFS-Datei-Nodes, Ressourcengruppen und BeeGFS-Services.
+
+
+
+== BeeGFS-Netzwerkkonfiguration
+
+Die BeeGFS-Netzwerkkonfiguration besteht aus den folgenden Komponenten.
+
+* *Schwimmende IPs* schwimmende IPs sind eine Art virtueller IP-Adresse, die dynamisch an jeden Server im selben Netzwerk weitergeleitet werden kann. Mehrere Server können dieselbe Floating-IP-Adresse besitzen, sie kann jedoch nur auf einem Server zu einem bestimmten Zeitpunkt aktiv sein.
++
+Jeder BeeGFS-Serverdienst hat eine eigene IP-Adresse, die sich je nach Ausführungsort des BeeGFS-Serverdienstes zwischen Datei-Nodes verschieben kann. Diese fließende IP-Konfiguration ermöglicht jedem Service ein unabhängiges Failover auf den anderen File-Node. Der Client muss einfach die IP-Adresse für einen bestimmten BeeGFS-Service kennen. Es muss nicht wissen, welcher Datei-Node derzeit diesen Service ausführt.
+
+* *BeeGFS-Server Multi-Homing-Konfiguration* um die Dichte der Lösung zu erhöhen, verfügt jeder Dateiknoten über mehrere Speicherschnittstellen mit IPs, die im gleichen IP-Subnetz konfiguriert sind.
++
+Es ist eine zusätzliche Konfiguration erforderlich, um sicherzustellen, dass diese Konfiguration wie erwartet mit dem Linux-Netzwerk-Stack funktioniert, da standardmäßig Anfragen an eine Schnittstelle auf einer anderen Schnittstelle beantwortet werden können, wenn ihre IPs im selben Subnetz sind. Neben anderen Nachteilen ist es bei diesem Standardverhalten unmöglich, RDMA-Verbindungen ordnungsgemäß einzurichten oder zu pflegen.
+
++
+Die Ansible-basierte Implementierung verarbeitet das Anziehen des Reverse Path (RP) und das ARP-Verhalten (Address Resolution Protocol) und stellt sicher, dass Floating IPs gestartet und gestoppt werden. Die entsprechenden IP-Routen und -Regeln werden dynamisch erstellt, damit die Multihomed-Netzwerkkonfiguration ordnungsgemäß funktioniert.
+
+* *BeeGFS Client Multi-Rail-Konfiguration* _Multi-Rail_ bezieht sich auf die Fähigkeit einer Anwendung, mehrere unabhängige Netzwerk-„Rails“ zu verwenden, um die Leistung zu steigern.
++
+BeeGFS kann zwar RDMA für die Konnektivität verwenden, doch nutzt BeeGFS IPoIB, um die Erkennung und Einrichtung von RDMA-Verbindungen zu vereinfachen. Damit BeeGFS-Clients mehrere InfiniBand-Schnittstellen verwenden können, können Sie jeden Client mit einer IP-Adresse in einem anderen Subnetz konfigurieren und dann die bevorzugten Schnittstellen für die Hälfte der BeeGFS-Serverdienste in jedem Subnetz konfigurieren.
+
++
+In der folgenden Abbildung sind hellgrün hervorgehobene Schnittstellen in einem IP-Subnetz (z. B. `100.127.0.0/16`) Und die dunkelgrünen Schnittstellen befinden sich in einem anderen Subnetz (z.B. `100.128.0.0/16`).
+
++
+Die folgende Abbildung zeigt die Verteilung des Datenverkehrs auf mehrere BeeGFS-Client-Schnittstellen.
+
++
+image:../media/beegfs-design-image8.png[""]
+
++
+Da jede Datei in BeeGFS normalerweise über mehrere Storage-Services verteilt wird, kann der Client dank der Multi-Rail-Konfiguration einen höheren Durchsatz erzielen als mit einem einzelnen InfiniBand-Port möglich. Die folgende Codeprobe zeigt beispielsweise eine allgemeine File-Striping-Konfiguration, die es dem Client ermöglicht, den Datenverkehr über beide Schnittstellen auszugleichen:
+
++
+....
+root@ictad21h01:/mnt/beegfs# beegfs-ctl --getentryinfo myfile
+Entry type: file
+EntryID: 11D-624759A9-65
+Metadata node: meta_01_tgt_0101 [ID: 101]
+Stripe pattern details:
++ Type: RAID0
++ Chunksize: 1M
++ Number of storage targets: desired: 4; actual: 4
++ Storage targets:
+  + 101 @ stor_01_tgt_0101 [ID: 101]
+  + 102 @ stor_01_tgt_0101 [ID: 101]
+  + 201 @ stor_02_tgt_0201 [ID: 201]
+  + 202 @ stor_02_tgt_0201 [ID: 201]
+....
++
+Die Verwendung von zwei IPoIB-Subnetzen ist ein logischer Unterschied. Sie können bei Bedarf ein einzelnes physisches InfiniBand Subnetz (Speichernetzwerk) verwenden.
+
++
+
+NOTE: In BeeGFS 7.3.0 wurde Multi-Rail-Unterstützung hinzugefügt, um die Verwendung mehrerer IB-Schnittstellen in einem IPoIB-Subnetz zu ermöglichen. Das Design für die BeeGFS auf NetApp Lösung wurde vor der allgemeinen Verfügbarkeit von BeeGFS 7.3 entwickelt und demonstriert somit den Einsatz von zwei IP-Subnetzen für die Nutzung von zwei IB-Schnittstellen auf den BeeGFS-Clients. Ein Vorteil des Ansatzes mit mehreren IP-Subnetzen besteht darin, dass Multihoming auf BeeGFS-Client-Nodes nicht mehr konfiguriert werden muss (weitere Informationen finden Sie unter https://doc.beegfs.io/7.3.0/advanced_topics/rdma_support.html["BeeGFS RDMA-Unterstützung"^]).
+
+
+
+
+
+== Konfiguration der EF600 Block-Node
+
+Block-Nodes bestehen aus zwei aktiv/aktiv-RAID-Controllern mit gemeinsamem Zugriff auf denselben Satz an Laufwerken. In der Regel besitzt jeder Controller die Hälfte der im System konfigurierten Volumes, jedoch kann für den anderen Controller nach Bedarf die Aufgaben übernehmen.
+
+Multipathing-Software auf den Datei-Knoten bestimmt den aktiven und optimierten Pfad zu jedem Volume und verschiebt sich automatisch nach einem Kabel-, Adapter- oder Controller-Ausfall zum alternativen Pfad.
+
+Das folgende Diagramm zeigt das Controller-Layout in EF600 Block-Nodes.
+
+image:../media/beegfs-design-image9.png[""]
+
+Um eine Shared-Disk-HA-Lösung zu erleichtern, werden Volumes beiden Datei-Nodes zugeordnet, sodass sie sich bei Bedarf gegenseitig übernehmen können. Das folgende Diagramm zeigt ein Beispiel, wie BeeGFS-Service und die bevorzugte Volumeneigentümer für maximale Performance konfiguriert sind. Die Schnittstelle links von jedem BeeGFS-Dienst gibt die bevorzugte Schnittstelle an, mit der die Clients und andere Dienste Kontakt aufnehmen.
+
+image:../media/beegfs-design-image10.png[""]
+
+Im vorherigen Beispiel kommunizieren Clients und Server Services lieber mit Storage Service 1 über Schnittstelle i1b. Storage Service 1 verwendet Schnittstelle i1a als bevorzugten Pfad zur Kommunikation mit seinen Volumes (Storage_tgt_101, 102) auf Controller A des ersten Block-Node. Diese Konfiguration nutzt die volle bidirektionale PCIe-Bandbreite, die dem InfiniBand-Adapter zur Verfügung steht, und erreicht mit einem Dual-Port-HDR-InfiniBand-Adapter eine bessere Leistung als bei PCIe 4.0.
+
+
+
+== BeeGFS-Dateiknoten-Konfiguration
+
+Die BeeGFS Datei-Nodes sind in einem HA-Cluster (High Availability) konfiguriert, um den Failover von BeeGFS-Services zwischen mehreren Datei-Nodes zu ermöglichen.
+
+Das HA Cluster Design basiert auf zwei weit verbreiteten Linux HA Projekten: Corosync für Cluster-Mitgliedschaft und Pacemaker für Cluster Resource Management. Weitere Informationen finden Sie unter https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_and_managing_high_availability_clusters/assembly_overview-of-high-availability-configuring-and-managing-high-availability-clusters["Red hat Training für Add-ons mit hoher Verfügbarkeit"^].
+
+NetApp hat mehrere Open Cluster Framework (OCF) Resource Agents entwickelt und erweitert, damit das Cluster die BeeGFS Ressourcen intelligent starten und überwachen kann.
+
+
+
+== BeeGFS HA Cluster
+
+Wenn Sie einen BeeGFS-Dienst starten (mit oder ohne HA), müssen in der Regel einige Ressourcen vorhanden sein:
+
+* IP-Adressen, in denen der Dienst erreichbar ist, werden normalerweise von Network Manager konfiguriert.
+* Zugrunde liegende Dateisysteme, die als Ziele für BeeGFS zum Speichern von Daten verwendet werden.
++
+Diese werden typischerweise in definiert `/etc/fstab` Und montiert von systemd.
+
+* Ein systemd-Service, der für den Start von BeeGFS-Prozessen verantwortlich ist, wenn die anderen Ressourcen bereit sind.
++
+Ohne zusätzliche Software werden diese Ressourcen nur auf einem einzelnen Datei-Node gestartet. Wenn der Datei-Node offline geschaltet wird, kann auf einen Teil des BeeGFS-Dateisystems zugegriffen werden.
+
+
+
+Da mehrere Nodes jeden BeeGFS-Service starten können, muss Pacemaker sicherstellen, dass jeder Service und die abhängigen Ressourcen nur auf jeweils einem Node ausgeführt werden. Wenn beispielsweise zwei Knoten versuchen, denselben BeeGFS-Service zu starten, besteht das Risiko einer Datenbeschädigung, wenn beide versuchen, auf dieselben Dateien auf dem zugrunde liegenden Ziel zu schreiben. Um dieses Szenario zu vermeiden, setzt Pacemaker auf Corosync, um den Zustand des gesamten Clusters zuverlässig über alle Knoten hinweg zu synchronisieren und Quorum zu schaffen.
+
+Wenn ein Fehler im Cluster auftritt, reagiert Pacemaker und startet BeeGFS-Ressourcen auf einem anderen Knoten neu. In einigen Fällen kann Pacemaker möglicherweise nicht mit dem ursprünglichen fehlerhaften Knoten kommunizieren, um zu bestätigen, dass die Ressourcen angehalten werden. Um zu überprüfen, ob der Knoten ausgefallen ist, bevor BeeGFS-Ressourcen an anderer Stelle neu gestartet werden, isoliert Pacemaker den fehlerhaften Knoten, idealerweise indem er die Stromversorgung entfernt.
+
+Es stehen zahlreiche Open-Source-Fechten-Agenten zur Verfügung, die es Pacemaker ermöglichen, einen Knoten mit einer Stromverteilungs-Einheit (PDU) oder den Server-Baseboard-Management-Controller (BMC) mit APIs wie Redfish zu Zaun.
+
+Wenn BeeGFS in einem HA-Cluster ausgeführt wird, werden alle BeeGFS-Services und zugrunde liegenden Ressourcen von Pacemaker in Ressourcengruppen gemanagt. Jeder BeeGFS-Service und die Ressourcen, auf die er angewiesen ist, werden in einer Ressourcengruppe konfiguriert, die sicherstellt, dass Ressourcen in der richtigen Reihenfolge gestartet und gestoppt werden und auf demselben Node zusammengelegt werden.
+
+Für jede BeeGFS-Ressourcengruppe führt Pacemaker eine benutzerdefinierte BeeGFS-Überwachungsressource aus, die für die Erkennung von Fehlerbedingungen und die intelligente Auslösung von Failover verantwortlich ist, wenn auf einem bestimmten Knoten kein BeeGFS-Dienst mehr verfügbar ist.
+
+Die folgende Abbildung zeigt die Pacemaker-gesteuerten BeeGFS-Dienste und -Abhängigkeiten.
+
+image:../media/beegfs-design-image11.png[""]
+
+
+NOTE: Damit mehrere BeeGFS-Dienste desselben Typs auf demselben Knoten gestartet werden, wird Pacemaker so konfiguriert, dass BeeGFS-Dienste mit der Multi-Mode-Konfigurationsmethode gestartet werden. Weitere Informationen finden Sie im https://doc.beegfs.io/latest/advanced_topics/multimode.html["BeeGFS-Dokumentation im Multi-Modus"^].
+
+Da BeeGFS-Dienste auf mehreren Nodes starten können müssen, muss die Konfigurationsdatei für jeden Dienst (normalerweise bei gefunden `/etc/beegfs`) Wird auf einem der E-Series Volumes gespeichert, die als BeeGFS-Ziel für diesen Service verwendet werden. Damit sind die Konfiguration zusammen mit den Daten für einen bestimmten BeeGFS Service für alle Nodes zugänglich, die den Service möglicherweise ausführen müssen.
+
+....
+# tree stor_01_tgt_0101/ -L 2
+stor_01_tgt_0101/
+├── data
+│   ├── benchmark
+│   ├── buddymir
+│   ├── chunks
+│   ├── format.conf
+│   ├── lock.pid
+│   ├── nodeID
+│   ├── nodeNumID
+│   ├── originalNodeID
+│   ├── targetID
+│   └── targetNumID
+└── storage_config
+    ├── beegfs-storage.conf
+    ├── connInterfacesFile.conf
+    └── connNetFilterFile.conf
+....

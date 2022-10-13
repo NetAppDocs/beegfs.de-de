@@ -1,0 +1,75 @@
+---
+sidebar: sidebar 
+permalink: beegfs-deploy-setup-nodes.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: 'Konfigurieren Sie das Netzwerk auf dem Baseboard Management Controller (BMC) jedes Servers und konfigurieren Sie den Management-Port auf jedem Controller.' 
+---
+= Einrichten von Datei-Nodes und Block-Nodes
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Während die meisten Software-Konfigurationsaufgaben mithilfe der von NetApp zur Verfügung gestellten Ansible Sammlungen automatisiert werden, müssen Sie das Netzwerk auf dem Baseboard Management Controller (BMC) jedes Servers konfigurieren und den Management-Port auf jedem Controller konfigurieren.
+
+
+
+== Richten Sie die Datei-Nodes ein
+
+. Konfigurieren Sie das Netzwerk auf dem Baseboard Management Controller (BMC) jedes Servers.
++
+Informationen zur Konfiguration von Netzwerken für die validierten Lenovo SR665-Dateiknoten finden Sie im https://thinksystem.lenovofiles.com/help/index.jsp?topic=%2F7D2W%2Fset_the_network_connection.html["Lenovo ThinkSystem Dokumentation"^].
+
++
+
+NOTE: Ein Baseboard Management Controller (BMC), der manchmal als Service-Prozessor bezeichnet wird, ist der generische Name für die Out-of-Band-Management-Funktion, die in verschiedenen Server-Plattformen integriert ist, die Remote-Zugriff bieten können, selbst wenn das Betriebssystem nicht installiert ist oder nicht zugänglich ist. Anbieter vermarkten diese Funktionalität in der Regel mit ihrem eigenen Branding. Auf dem Lenovo SR665 wird beispielsweise der BMC als _Lenovo XClarity Controller (XCC)_ bezeichnet.
+
+. Konfigurieren Sie die Systemeinstellungen für maximale Performance.
++
+Sie konfigurieren die Systemeinstellungen über das UEFI-Setup (früher BIOS) oder über die Redfish APIs, die von vielen BMCs bereitgestellt werden. Die Systemeinstellungen variieren je nach Servermodell, das als Dateiknoten verwendet wird.
+
++
+Informationen zur Konfiguration der Systemeinstellungen für die validierten Lenovo SR665-Dateiknoten finden Sie unter link:beegfs-deploy-file-node-tuning.html["Passen Sie die Systemeinstellungen für die Performance an"].
+
+. Installieren Sie Red hat 8.4 und konfigurieren Sie den Hostnamen und den Netzwerkport, mit dem das Betriebssystem verwaltet wird, einschließlich SSH-Konnektivität über den Ansible-Steuerungs-Node.
++
+Konfigurieren Sie derzeit keine IPs auf einem der InfiniBand-Ports.
+
++
+
+NOTE: Die nachfolgenden Abschnitte gehen davon aus, dass die Hostnamen sequenziell nummeriert sind (z. B. h1-HN), und beziehen sich auf Aufgaben, die auf ungeraden oder gar nummerierten Hosts ausgeführt werden sollten.
+
+. Verwenden Sie den RedHat Subscription Manager, um das System zu registrieren und zu abonnieren, damit die erforderlichen Pakete aus den offiziellen Red hat Repositorys installiert werden können und um Updates auf die unterstützte Version von Red hat zu beschränken: `subscription-manager release --set=8.4`. Anweisungen hierzu finden Sie unter https://access.redhat.com/solutions/253273["Registrieren und Abonnieren eines RHEL Systems"^] Und  https://access.redhat.com/solutions/2761031["Einschränken von Aktualisierungen"^].
+. Aktivieren Sie das Red hat Repository mit den für hohe Verfügbarkeit erforderlichen Paketen.
++
+....
+subscription-manager repo-override --repo=rhel-8-for-x86_64-highavailability-rpms --add=enabled:1
+....
+. Aktualisieren Sie alle ConnectX-6 HCA-Firmware auf die in empfohlene Version link:beegfs-technology-requirements.html["Technologieanforderungen erfüllt"].
++
+Dieses Update kann durch Herunterladen und Ausführen einer Version des mlxup-Tools durchgeführt werden, das die empfohlene Firmware bündelt. Sie können dieses Tool von herunterladen https://www.mellanox.com/support/firmware/mlxup-mft["Mlxup - Dienstprogramm zum Aktualisieren und Abfragen"^].
+
+
+
+
+
+== Richten Sie Block-Nodes ein
+
+Richten Sie die EF600 Block-Nodes ein, indem Sie den Managementport pro Controller konfigurieren.
+
+. Konfigurieren Sie den Managementport an jedem EF600 Controller.
++
+Anweisungen zum Konfigurieren von Ports finden Sie im https://docs.netapp.com/us-en/e-series/maintenance-ef600/hpp-overview-supertask-concept.html["E-Series Documentation Center"^].
+
+. Legen Sie optional den Speicher-Array-Namen für jedes System fest.
++
+Durch das Festlegen eines Namens kann es einfacher sein, in den nachfolgenden Abschnitten auf jedes System zu verweisen. Anweisungen zum Festlegen des Array-Namens finden Sie im https://docs.netapp.com/us-en/e-series/maintenance-ef600/hpp-overview-supertask-concept.html["E-Series Documentation Center"^].
+
+
+
+
+NOTE: Folgende Themen setzen voraus, dass die Namen der Speicherarrays nacheinander nummeriert sind (z. B. c1 - CN), und beziehen sich auf die Schritte, die auf ungeraden und nicht gerade nummerierten Systemen ausgeführt werden sollten.

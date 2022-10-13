@@ -1,0 +1,88 @@
+---
+sidebar: sidebar 
+permalink: beegfs-design-solution-sizing-guidelines.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: Die BeeGFS Lösung enthält Empfehlungen für das Performance- und Kapazitäts-Sizing, die auf Verifizierungstests basieren. 
+---
+= Richtlinien für die Dimensionierung
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Die BeeGFS Lösung enthält Empfehlungen für das Performance- und Kapazitäts-Sizing, die auf Verifizierungstests basieren.
+
+Die Bausteinarchitektur verfolgt das Ziel, eine Lösung zu entwickeln, die sich einfach dimensionieren lässt. Dazu werden mehrere Bausteine hinzugefügt, die die Anforderungen für ein bestimmtes BeeGFS-System erfüllen. Mithilfe der nachstehenden Richtlinien können Sie die Anzahl und die Arten von BeeGFS-Bausteinen schätzen, die für die Anforderungen Ihrer Umgebung benötigt werden.
+
+Beachten Sie, dass es sich bei diesen Schätzungen um die beste Performance handelt. Benchmark-Applikationen werden geschrieben und verwendet, um die Nutzung der zugrunde liegenden Filesysteme auf eine Weise zu optimieren, die reale Applikationen vielleicht nicht erreichen.
+
+
+
+== Performance-Dimensionierung
+
+Die folgende Tabelle enthält ein empfohlene Performance-Sizing.
+
+|===
+| Konfigurationsprofil | 1 MiB Lesevorgänge | 1 MiB Schreibvorgänge 
+
+
+| Metadaten + Storage | 62Gibps | 21Gibps 
+
+
+| Nur Storage | 64Gibps | 21Gibps 
+|===
+Die Schätzungen zur Größe der Metadaten-Kapazität basieren auf der „Faustregel“, dass eine Kapazität von 500 GB für etwa 150 Millionen Dateien in BeeGFS ausreichend ist. (Weitere Informationen finden Sie in der BeeGFS-Dokumentation für https://doc.beegfs.io/latest/system_design/system_requirements.html["Systemanforderungen"^].)
+
+Die Verwendung von Funktionen wie Zugriffssteuerungslisten und die Anzahl der Verzeichnisse und Dateien pro Verzeichnis wirkt sich auch darauf aus, wie schnell der Metadatenspeicherplatz verbraucht wird. Schätzungen zur Storage-Kapazität berücksichtigen neben RAID 6 und XFS-Overhead die nutzbare Laufwerkskapazität.
+
+
+
+== Kapazitätsdimensionierung für Metadaten + Storage-Bausteine
+
+Die folgende Tabelle enthält eine empfohlene Kapazitätsdimensionierung für Metadaten und Storage-Bausteine.
+
+|===
+| Laufwerksgröße (2+2 RAID 1) Metadaten-Volume-Gruppen | Metadaten-Kapazität (Anzahl der Dateien) | Laufwerksgröße (8+2 RAID 6) Storage-Volume-Gruppen | Speicherkapazität (File-Inhalte) 
+
+
+| 1,92 TB | 1,797,120,000 | 1,92 TB | 47,91 TB 
+
+
+| 3,84 TB | 3,594,240,000 | 3,84 TB | 95,84 TB 
+
+
+| 7,68 TB | 7,557,120,000 | 7,68 TB | 0,51 TB 
+
+
+| 15,3 TB | 16,156,800,000 | 15,3 TB | 28,84 TB 
+|===
+
+NOTE: Bei der Größenbestimmung von Metadaten und Storage-Bausteinen können die Kosten reduziert werden, da weniger Laufwerke für Metadaten-Volume-Gruppen anstelle von Storage-Volume-Gruppen verwendet werden.
+
+
+
+== Kapazitätsdimensionierung für reine Storage-Bausteine
+
+Die folgende Tabelle zeigt die Größenanpassung der Kapazität für reine Storage-Bausteine.
+
+|===
+| Laufwerksgröße (10+2 RAID 6) Storage-Volume-Gruppen | Speicherkapazität (File-Inhalte) 
+
+
+| 1,92 TB | 59,89 TB 
+
+
+| 3,84 TB | 119,80 TB 
+
+
+| 7,68 TB | 251,89 TB 
+
+
+| 15,3 TB | 538,5 TB 
+|===
+
+NOTE: Die Performance- und der Kapazitäts-Overhead, die durch das Einbinden des Management-Service in den Basis-Baustein (erster) verursacht werden, sind minimal, es sei denn, die globale Dateisperrung ist aktiviert.
