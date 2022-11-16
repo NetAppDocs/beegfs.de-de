@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  
+    
+    
+  
+
+  
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/beegfs-architecture-overview.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/beegfs-deploy-bestpractice.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/beegfs-deploy-configure-clients.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/beegfs-deploy-create-inventory.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/beegfs-deploy-define-inventory.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/beegfs-deploy-file-node-tuning.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/beegfs-deploy-hardware.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/beegfs-deploy-learn-ansible.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/beegfs-deploy-overview.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/beegfs-deploy-playbook.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/beegfs-deploy-recommended-volume-percentages.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/beegfs-deploy-scale-building-blocks.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/beegfs-deploy-setting-up-an-ansible-control-node.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/beegfs-deploy-setup-nodes.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/beegfs-design-hardware-architecture.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/beegfs-design-overview.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/beegfs-design-performance-tuning.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/beegfs-design-software-architecture.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/beegfs-design-solution-sizing-guidelines.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/beegfs-design-solution-verification.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/beegfs-gens.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/beegfs-solution-overview.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/beegfs-technology-requirements.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/beegfs-terms.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/legal-notices.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/upgrade/overview.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/troubleshoot/overview.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs//search.html</loc>
+      
+      <lastmod>2022-11-16T22:05:49+00:00</lastmod>
+      
+    </url>
+  
+    <url>
+      <loc>https://docs.netapp.com/de-de/beegfs/whats-included.html</loc>
+      
+      <lastmod>2022-11-16T22:05:29+00:00</lastmod>
+      
+    </url>
+  
+
+  
+  
+</urlset>
