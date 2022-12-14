@@ -56,6 +56,7 @@ Die in der Abbildung dargestellte Verkabelungskonfiguration ermöglicht jedem Be
 * Minimale Auswirkungen auf die Performance, wenn ein Datei-Node oder Controller in einem Block-Node gewartet werden muss
 
 
+.Verkabelung zur Nutzung der Bandbreite
 Um die vollständige bidirektionale PCIe-Bandbreite zu nutzen, stellen Sie sicher, dass ein Port an jedem InfiniBand-Adapter mit der Storage-Fabric verbunden ist, und der andere Port mit einem Block-Node verbunden wird. Die theoretische Maximalgeschwindigkeit eines HDR InfiniBand-Ports beträgt 25 Gbit/s (nicht für Signalisierung und andere Gemeinkosten). Die maximale Bandbreite für eine Richtung in einem PCIe 4.0 x16-Steckplatz beträgt 32 Gbit/s und führt zu einem potenziellen Engpass bei der Implementierung von Datei-Nodes mit InfiniBand-Adaptern mit zwei Ports, die theoretisch 50 Gbit/s Bandbreite verarbeiten können.
 
 Die folgende Abbildung zeigt das Verkabelungsdesign, mit dem die vollständige bidirektionale PCIe-Bandbreite genutzt werden kann.

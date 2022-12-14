@@ -108,6 +108,7 @@ NOTE: Zusätzlich zur Schnittstelle, die für die bandinterne Betriebssystemverw
 * Adressen im Bereich `100.xxx.1.1` Bis `100.xxx.99.255` Sind für Kunden reserviert.
 
 
+.Subnetz A: 100.127.0.0/16
 In der folgenden Tabelle ist der Bereich für Subnetz A angegeben: 100.127.0.0/16.
 
 |===
@@ -128,6 +129,7 @@ In der folgenden Tabelle ist der Bereich für Subnetz A angegeben: 100.127.0.0/1
 
 | BeeGFS-Clients | (Je nach Kunde) | 100.127.1.1 - 100.127.99.255 
 |===
+.Subnetz B: 100.128.0.0/16
 In der folgenden Tabelle ist der Bereich für Subnetz B angegeben: 100.128.0.0/16.
 
 |===

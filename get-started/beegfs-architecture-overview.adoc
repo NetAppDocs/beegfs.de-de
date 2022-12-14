@@ -31,7 +31,7 @@ Zur Bewältigung dieser Herausforderungen hat NetApp eine standardmäßige Baust
 
 Die einzige Hardware-Änderung zwischen diesen drei Optionen ist die Verwendung kleinerer Laufwerke für BeeGFS-Metadaten. Andernfalls werden alle Konfigurationsänderungen durch die Software übernommen. Und mit Ansible als Implementierungs-Engine gestaltet sich die Einrichtung des gewünschten Profils für einen bestimmten Baustein die Konfigurationsaufgaben unkompliziert.
 
-Weitere Informationen finden Sie unter  hardware design.
+Weitere Informationen finden Sie unter <<Verifiziertes Hardwaredesign>>.
 
 
 

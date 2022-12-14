@@ -54,18 +54,22 @@ Für IOR wurden die folgenden Parameter verwendet, wobei die Segmentanzahl angep
 ....
 mpirun --allow-run-as-root --mca btl tcp -np 48 -map-by node -hostfile 10xnodes ior -b 1024k --posix.odirect -e -t 1024k -s 54613 -z -C -F -E -k
 ....
+.Baustein für eine BeeGFS-Basis (Management, Metadaten und Storage
 Die folgende Abbildung zeigt die IOR-Testergebnisse mit einem einzelnen BeeGFS-Basisspeicher (Management, Metadaten und Storage).
 
 image:beegfs-design-image13.png[""]
 
+.BeeGFS Metadaten + Storage-Baustein
 Die folgende Abbildung zeigt die IOR-Testergebnisse mit einem einzelnen BeeGFS-Metadaten + einem Storage-Baustein.
 
 image:beegfs-design-image14.png[""]
 
+.BeeGFS-Speicherbaustein
 Die folgende Abbildung zeigt die IOR-Testergebnisse mit einem einzelnen BeeGFS-Storage-only-Baustein.
 
 image:beegfs-design-image15.png[""]
 
+.Drei BeeGFS-Bausteine
 Die folgende Abbildung zeigt die IOR-Testergebnisse mit drei BeeGFS-Bausteinen.
 
 image:beegfs-design-image16.png[""]
@@ -104,10 +108,12 @@ mpirun -h 10xnodes –map-by node np $processes mdtest -e 4k -w 4k -i 3 -I 16 -z
 ....
 Die Metadaten-Performance wurde zuerst mit ein bis zwei Metadaten + Storage-Bausteinen gemessen, um die Performance durch das Hinzufügen weiterer Bausteine zu verdeutlichen.
 
+.1 BeeGFS Metadaten + Storage-Baustein
 Das folgende Diagramm zeigt die MDTest-Ergebnisse mit einer BeeGFS-Metadaten + Speicherbausteinen.
 
 image:beegfs-design-image18.png[""]
 
+.Zwei BeeGFS Metadaten + Storage-Bausteine
 Das folgende Diagramm zeigt die MDTest-Ergebnisse mit zwei BeeGFS-Metadaten + Speicherbausteinen.
 
 image:beegfs-design-image19.png[""]
