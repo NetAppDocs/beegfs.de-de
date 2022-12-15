@@ -828,7 +828,7 @@
 <p class="page-details">
   
     
-    <time datetime="2022-11-16 22:05:29 +0000">11/16/2022</time>
+    <time datetime="2022-12-15 15:00:50 +0000">12/15/2022</time>
     
   
 
@@ -898,7 +898,7 @@
 <li>
 <p>Unter <code>host_vars/`Erstellen Sie für jeden BeeGFS-Dateiknoten eine Datei mit dem Namen `&lt;HOSTNAME&gt;.yml</code> Mit dem folgenden Inhalt, besondere Aufmerksamkeit auf die Notizen über den Inhalt für BeeGFS Cluster-IPs und Host-Namen enden in ungerade oder gerade Zahlen.</p>
 <div class="paragraph">
-<p>Zunächst stimmen die Schnittstellennamen der Dateiknoten mit dem überein, was hier aufgeführt ist (z. B. ib0 oder ibs1f0). Diese benutzerdefinierten Namen werden in konfiguriert  4: Define configuration that should apply to all file nodes.</p>
+<p>Zunächst stimmen die Schnittstellennamen der Dateiknoten mit dem überein, was hier aufgeführt ist (z. B. ib0 oder ibs1f0). Diese benutzerdefinierten Namen werden in konfiguriert <a href="#Schritt 4: Definieren Sie die Konfiguration">die für alle Datei-Knoten gelten soll</a>.</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -1008,12 +1008,14 @@ eseries_controller_nvme_ib_port:
 <p>Unter können Sie die gemeinsame Konfiguration für eine Gruppe von Hosts definieren <code>group_vars</code> In einem Dateinamen, der der Gruppe entspricht. Dadurch wird verhindert, dass eine gemeinsame Konfiguration an mehreren Orten wiederholt wird.</p>
 </div>
 <div class="paragraph">
+<div class="title">Über diese Aufgabe</div>
 <p>Hosts können sich in mehr als einer Gruppe befinden. Ansible zur Laufzeit wählt Ansible aus, welche Variablen auf Basis seiner variablen Rangfolge für einen bestimmten Host gelten. (Weitere Informationen zu diesen Regeln finden Sie in der Ansible-Dokumentation für <a href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html" target="_blank" rel="noopener">"Variablen verwenden"</a>.)</p>
 </div>
 <div class="paragraph">
 <p>Host-zu-Gruppe-Zuweisungen werden in der tatsächlichen Ansible-Bestandsdatei definiert, die gegen Ende dieses Vorgangs erstellt wird.</p>
 </div>
 <div class="paragraph">
+<div class="title">Schritt</div>
 <p>In Ansible können alle Konfigurationen, die auf alle Hosts angewendet werden sollen, in einer Gruppe mit dem Namen definiert werden <code>All</code>. Erstellen Sie die Datei <code>group_vars/all.yml</code> Mit folgenden Inhalten:</p>
 </div>
 <div class="literalblock">
