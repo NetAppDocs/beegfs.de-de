@@ -1,0 +1,43 @@
+---
+sidebar: sidebar 
+permalink: beegfs-deploy-high-capacity-building-block.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600, EF300, HDD, Expansion 
+summary: Die Implementierung gibt Varianten für einen Baustein mit hoher Kapazität an. 
+---
+= Baustein mit hoher Kapazität
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Im Standard BeeGFS Solution Deployment Guide werden Verfahren und Empfehlungen für High-Performance-Workload-Anforderungen beschrieben. Kunden, die hohe Kapazitätsanforderungen erfüllen möchten, sollten die hier aufgeführten Variationen bei Implementierung und Empfehlungen beobachten.
+
+image:high-capacity-rack-diagram.png[""]
+
+
+
+== Controller
+
+Wenn Sie Bausteine mit hoher Kapazität benötigen, sollten EF600 Controller durch EF300 Controller ersetzt werden, wobei jeweils eine Cascade HIC zur SAS-Erweiterung installiert ist. Jeder Block-Node verfügt über eine minimale Anzahl von NVMe-SSDs, die im Array-Gehäuse für BeeGFS-Metadaten-Storage befüllt sind, und wird an Erweiterungs-Shelfs mit NL-SAS-HDDs für BeeGFS-Storage-Volumes angeschlossen.
+
+Die Konfiguration des Datei-Node zu Block-Nodes bleibt unverändert.
+
+
+
+== Laufwerkplatzierung
+
+In jedem Block-Node sind mindestens 4 NVMe-SSDs für BeeGFS-Metadaten-Storage erforderlich. Diese Laufwerke sollten in den äußeren Steckplätzen des Gehäuses platziert werden.
+
+image:high-capacity-drive-slots-diagram.png[""]
+
+
+
+== Erweiterungsfächer
+
+Der Baustein mit hoher Kapazität kann mit 1-7, 60 Laufwerkserweiterungsfächern pro Speicher-Array dimensioniert werden.
+
+Anweisungen zum Kabelanschluss der einzelnen Erweiterungsfächer finden Sie unter link:https://docs.netapp.com/us-en/e-series/install-hw-cabling/driveshelf-cable-task.html#cabling-ef300^["Siehe EF300-Verkabelung für Laufwerk-Shelfs"].

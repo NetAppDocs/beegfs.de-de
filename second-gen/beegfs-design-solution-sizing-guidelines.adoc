@@ -49,16 +49,16 @@ Die folgende Tabelle enthält eine empfohlene Kapazitätsdimensionierung für Me
 | Laufwerksgröße (2+2 RAID 1) Metadaten-Volume-Gruppen | Metadaten-Kapazität (Anzahl der Dateien) | Laufwerksgröße (8+2 RAID 6) Storage-Volume-Gruppen | Speicherkapazität (File-Inhalte) 
 
 
-| 1,92 TB | 1,797,120,000 | 1,92 TB | 47,91 TB 
+| 1,92 TB | 1,938,577,200 | 1,92 TB | 51,77 TB 
 
 
-| 3,84 TB | 3,594,240,000 | 3,84 TB | 95,84 TB 
+| 3,84 TB | 3,880,388,400 | 3,84 TB | 103,5 TB 
 
 
-| 7,68 TB | 7,557,120,000 | 7,68 TB | 0,51 TB 
+| 7,68 TB | 8,125,278,000 | 7,68 TB | 216,74 TB 
 
 
-| 15,3 TB | 16,156,800,000 | 15,3 TB | 28,84 TB 
+| 15,3 TB | 17,269,854,000 | 15,3 TB | 460 TB 
 |===
 
 NOTE: Bei der Größenbestimmung von Metadaten und Storage-Bausteinen können die Kosten reduziert werden, da weniger Laufwerke für Metadaten-Volume-Gruppen anstelle von Storage-Volume-Gruppen verwendet werden.

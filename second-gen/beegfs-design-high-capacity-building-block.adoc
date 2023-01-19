@@ -1,0 +1,55 @@
+---
+sidebar: sidebar 
+permalink: beegfs-design-high-capacity-building-block.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600, EF300, HDD, Expansion 
+summary: Das Design ist für einen Baustein mit hoher Kapazität unterschiedlich. 
+---
+= Baustein mit hoher Kapazität
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Bei der Entwicklung der BeeGFS-Standardlösung wurde auf Workloads mit hoher Performance gedenkt. Kunden, die nach Anwendungsfällen mit hoher Kapazität suchen, sollten die hier beschriebenen Design- und Performance-Unterschiede beobachten.
+
+
+
+== Hardware- und Softwarekonfiguration
+
+Hardware- und Softwarekonfiguration für den Baustein mit hoher Kapazität ist Standard. Es sei denn, die EF600 Controller sollten durch einen EF300 Controller ersetzt werden. Sie können zwischen 1 und 7 IOM-Erweiterungsfächern mit jeweils 60 Laufwerken pro Storage-Array anschließen, Insgesamt 2 bis 14 Erweiterungsfächer pro Baustein.
+
+Unternehmen, die ein High-Capacity-Baustein-Design implementieren, verwenden wahrscheinlich nur die Basis-Bausteinkonfiguration, die aus BeeGFS-Management, Metadaten und Storage-Services für jeden Node besteht. Um die Kosteneffizienz zu steigern, sollten Storage-Nodes mit hoher Kapazität Metadaten-Volumes auf den NVMe-Laufwerken im EF300-Controller-Gehäuse bereitstellen und Storage-Volumes für die NL-SAS-Laufwerke in den Erweiterungsfächern bereitstellen.
+
+image:high-capacity-rack-diagram.png[""]
+
+
+
+== Richtlinien für die Dimensionierung
+
+Bei diesen Richtlinien zur Dimensionierung ist davon auszugehen, dass Bausteine mit hoher Kapazität mit einer NVMe-SSD-Volume-Gruppe von 2+2 für Metadaten im Basis-EF300-Gehäuse und 6 x 8+2 NL-SAS-Volume-Gruppen pro IOM-Erweiterungsfach für Storage konfiguriert sind.
+
+|===
+| Laufwerkgröße (Kapazitäts-HDDs) | Kapazität pro BB (1 Fach) | Kapazität pro BB (2 Einschübe) | Kapazität pro BB (3 Einschübe) | Kapazität pro BB (4 Einschübe) 
+
+
+| 4 TB | 439 TB | 878 TB | 1317 TB | 1756 TB 
+
+
+| 8 TB | 878 TB | 1756 TB | 2634 TB | 3512 TB 
+
+
+| 10 TB | 1097 TB | 2195 TB | 3292 TB | 4390 TB 
+
+
+| 12 TB | 1317 TB | 2634 TB | 3951 TB | 5268 TB 
+
+
+| 16 TB | 1756 TB | 3512 TB | 5268 TB | 7024 TB 
+
+
+| 18 TB | 1975 TB | 3951 TB | 5927 TB | 7902 TB 
+|===

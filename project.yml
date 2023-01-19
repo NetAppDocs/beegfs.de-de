@@ -39,6 +39,8 @@ sidebar:
       url: "/beegfs-design-solution-sizing-guidelines.html"
     - title: Performance-Optimierung
       url: "/beegfs-design-performance-tuning.html"
+    - title: Option mit hoher Kapazität
+      url: "/beegfs-design-high-capacity-building-block.html"
   - title: Implementieren der Lösung
     entries:
     - title: Implementierungsübersicht
@@ -69,6 +71,8 @@ sidebar:
       url: "/beegfs-deploy-scale-building-blocks.html"
     - title: Empfohlene Volumenprozentwerte
       url: "/beegfs-deploy-recommended-volume-percentages.html"
+    - title: Option mit hoher Kapazität
+      url: "/beegfs-deploy-high-capacity-building-block.html"
   - title: Rechtliche Hinweise
     url: "/legal-notices.html"
 product-family:

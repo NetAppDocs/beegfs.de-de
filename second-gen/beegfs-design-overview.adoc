@@ -24,3 +24,8 @@ Weitere Informationen:
 * link:beegfs-design-solution-sizing-guidelines.html["Richtlinien für die Dimensionierung"]
 * link:beegfs-design-performance-tuning.html["Performance-Optimierung"]
 
+
+Derivative Architekturen mit Variationen in Design und Performance:
+
+* link:beegfs-design-high-capacity-building-block.html["Baustein Mit Hoher Kapazität"]
+

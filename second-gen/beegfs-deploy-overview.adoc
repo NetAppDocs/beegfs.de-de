@@ -74,3 +74,8 @@ NOTE: Die Bereitstellungsverfahren umfassen mehrere Beispiele, in denen Text in 
 `beegfs_ha_ntp_server_pools:  # THIS IS AN EXAMPLE OF A COMMENT!
   - "pool 0.pool.ntp.org iburst maxsources 3"
   - "pool 1.pool.ntp.org iburst maxsources 3"`
+
+Derivative Architekturen mit Variationen bei Implementierungsempfehlungen:
+
+* link:beegfs-design-high-capacity-building-block.html["Baustein Mit Hoher Kapazität"]
+
