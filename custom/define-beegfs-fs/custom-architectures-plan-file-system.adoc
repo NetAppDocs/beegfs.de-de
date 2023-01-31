@@ -1,0 +1,83 @@
+---
+sidebar: sidebar 
+permalink: custom-architectures-plan-file-system.html 
+keywords: BeeGFS on NetApp, NetApp Custom Architectures, EF600 
+summary: Planen Sie die Filesystem-Implementierung, bevor Sie den Ansible-Bestand aufbauen. 
+---
+= Planen Sie das Dateisystem
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Planen Sie die Filesystem-Implementierung, bevor Sie den Ansible-Bestand aufbauen.
+
+
+
+== Überblick
+
+Vor der Bereitstellung des Dateisystems sollten Sie festlegen, welche IP-Adressen, Ports und andere Konfigurationen für alle Datei-Nodes, Block-Nodes und BeeGFS-Services im Cluster erforderlich sind. Während die genaue Konfiguration je nach Architektur des Clusters variiert, werden in diesem Abschnitt Best Practices und Schritte definiert, die allgemein anwendbar sind.
+
+
+
+== Schritte
+
+. Wenn Sie zum Verbinden von Datei-Nodes mit Block-Nodes ein IP-basiertes Storage-Protokoll (z. B. iSER, iSCSI, NVMe/IB oder NVMe/RoCE) verwenden, füllen Sie für jeden Baustein das folgende Arbeitsblatt aus. Jede direkte Verbindung in einem einzelnen Baustein sollte ein eigenes Subnetz haben, und es sollte keine Überschneidung mit Subnetzen geben, die für die Client-Server-Konnektivität verwendet werden.
++
+|===
+
+
+| Datei-Node | IB-Port | IP-Adresse | Block-Node | IB-Port | Physische IP-Adresse | Virtuelle IP (nur für EF600 mit HDR IB) 
+
+
+| <HOSTNAME> | <PORT> | <IP/SUBNET> | <HOSTNAME> | <PORT> | <IP/SUBNET> | <IP/SUBNET> 
+|===
++
+
+NOTE: Wenn Datei- und Block-Nodes in jedem Baustein direkt verbunden sind, können für mehrere Bausteine oft dieselben IPs/Schemas verwendet werden.
+
+. Füllen Sie unabhängig davon aus, ob Sie InfiniBand oder RDMA over Converged Ethernet (RoCE) für das Storage-Netzwerk verwenden, das folgende Arbeitsblatt aus, um die IP-Bereiche zu ermitteln, die für HA-Cluster-Services, BeeGFS-Fileservices und Clients verwendet werden, um zu kommunizieren:
++
+|===
+| Zweck | InfiniBand-Port | IP-Adresse oder Bereich 
+
+
+| BeeGFS Cluster-IP(s) | <INTERFACE(s)> | <RANGE> 
+
+
+| BeeGFS Management | <INTERFACE(s)> | <IP(s)> 
+
+
+| BeeGFS-Metadaten | <INTERFACE(s)> | <RANGE> 
+
+
+| BeeGFS-Speicherung | <INTERFACE(s)> | <RANGE> 
+
+
+| BeeGFS-Clients | <INTERFACE(s)> | <RANGE> 
+|===
++
+.. Wenn Sie ein einzelnes IP-Subnetz verwenden, ist nur ein Arbeitsblatt erforderlich. Füllen Sie andernfalls auch ein Arbeitsblatt für das zweite Subnetz aus.
+
+
+. Füllen Sie für jeden Baustein im Cluster das folgende Arbeitsblatt aus, um festzulegen, welche BeeGFS-Services ausgeführt werden sollen. Geben Sie für jeden Service die bevorzugten/sekundären Dateiknoten, Netzwerkport, fließende IP(s), NUMA-Zonenzuweisung (falls erforderlich) und welche Block-Nodes für ihre Ziele verwendet werden. Beachten Sie beim Ausfüllen des Arbeitsblatts die folgenden Richtlinien:
++
+.. Geben Sie BeeGFS-Dienste als entweder an `mgmt.yml`, `meta_<ID>.yml`, Oder `storage_<ID>.yml` Wobei ID eine eindeutige Nummer für alle BeeGFS-Dienste dieses Typs in diesem Dateisystem darstellt. Dieses Übereinkommen erleichtert die Rückverweisen auf dieses Arbeitsblatt in den nachfolgenden Abschnitten, während Dateien für die Konfiguration der einzelnen Dienste erstellt werden.
+.. Ports für BeeGFS-Dienste müssen nur in einem bestimmten Baustein einzigartig sein. Stellen Sie sicher, dass Dienste mit derselben Portnummer nicht jemals auf demselben Dateiknoten ausgeführt werden können, um Portkonflikte zu vermeiden.
+.. Bei Bedarf können Services Volumes von mehr als einem Block-Node und/oder Storage-Pool nutzen (und nicht alle Volumes müssen Eigentum desselben Controllers sein). Zudem können mehrere Services denselben Block-Node und/oder dieselbe Storage-Pool-Konfiguration nutzen (einzelne Volumes werden in einem späteren Abschnitt definiert).
++
+|===
+| BeeGFS-Dienst (Dateiname) | File-Nodes | Port | Fließende IPs | NUMA-Zone | Block-Node | Storage-Pool | Controller, der die LUN besitzt 
+
+
+| <SERVICE TYPE>_<ID>.yml | <PREFERRED FILE NODE> <SECONDARY FILE NODE(s)> | <PORT> | <INTERFACE>:<IP/SUBNET> <INTERFACE>:<IP/SUBNET> | <NUMA NODE/ZONE> | <BLOCK NODE> | <STORAGE POOL/VOLUME GROUP> | <A OR B> 
+|===
+
+
+
+
+Weitere Informationen zu Standardkonventionen, Best Practices und ausgefüllten Beispielarbeitsblättern finden Sie im link:beegfs-deploy-bestpractice.html["Best Practices in sich vereint"^] Und link:beegfs-deploy-define-inventory.html["Definieren Sie BeeGFS-Bausteine"^] Abschnitte des BeeGFS auf NetApp Verified Architecture.

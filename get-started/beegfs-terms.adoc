@@ -16,6 +16,9 @@ summary: Allgemeine Geschäftsbedingungen und Konzepte für BeeGFS auf NetApp So
 [role="lead"]
 Die folgenden Begriffe und Konzepte gelten für die BeeGFS auf NetApp Lösung.
 
+
+TIP: Siehe link:administer-clusters-overview.html["BeeGFS-Cluster verwalten"] Weitere Informationen zu Begriffen und Konzepten für die Interaktion mit BeeGFS-Clustern (High Availability, HA-Cluster) finden Sie in diesem Abschnitt.
+
 [cols="25h,~"]
 |===
 | Laufzeit | Beschreibung 
@@ -52,7 +55,7 @@ Storage-Systeme.
  a| 
 Clients
  a| 
-Server-Knoten:
+Nodes im HPC-Cluster führen Applikationen aus, die das Filesystem verwenden müssen. Gelegentlich auch als Computing- oder GPU-Nodes bezeichnet
 
 
 
@@ -123,5 +126,12 @@ Verständnis Natürlicher Sprachen.
 NVA
  a| 
 Das NetApp Verified Architecture (NVA) Programm enthält Referenzkonfigurationen und Anleitungen zur Dimensionierung für spezifische Workloads und Anwendungsfälle. Diese Lösungen sind sorgfältig getestet und sollen Implementierungsrisiken minimieren und die Markteinführungszeit verkürzen.
+
+
+
+ a| 
+Storage-Netzwerk/Client-Netzwerk
+ a| 
+Netzwerk, das für Clients zur Kommunikation mit dem BeeGFS-Dateisystem verwendet wird. Dies ist häufig dasselbe Netzwerk, das für MPI (Parallel Message Passing Interface) und andere Anwendungskommunikation zwischen HPC-Clusterknoten verwendet wird.
 
 |===

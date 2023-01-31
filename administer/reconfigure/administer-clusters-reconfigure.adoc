@@ -1,0 +1,65 @@
+---
+sidebar: sidebar 
+permalink: administer-clusters-reconfigure.html 
+keywords: BeeGFS on NetApp, HA, Cluster, Administration, Ansible, pcs 
+summary: Verwenden Sie Ansible, um das Cluster neu zu konfigurieren. 
+---
+= Konfigurieren Sie HA-Cluster und BeeGFS neu
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Verwenden Sie Ansible, um das Cluster neu zu konfigurieren.
+
+
+
+== Überblick
+
+Im Allgemeinen sollte für alle Aspekte des BeeGFS HA-Clusters eine Neukonfiguration durchgeführt werden, indem Sie Ihren Ansible-Bestand aktualisieren und den neu ausführen `ansible-playbook` Befehl. Dazu gehören das Aktualisieren von Warnungen, das Ändern der Konfiguration für permanente Fechten oder das Anpassen der BeeGFS-Servicekonfiguration. Diese werden mit dem angepasst `group_vars/ha_cluster.yml` Die Datei und eine vollständige Liste von Optionen finden Sie im link:custom-architectures-inventory-common-file-node-configuration.html["Festlegen Der Konfiguration Des Gemeinsamen Dateiknotens"^] Abschnitt.
+
+Weitere Informationen zu ausgewählten Konfigurationsoptionen finden Sie unten, die Administratoren bei der Wartung oder Wartung des Clusters beachten sollten.
+
+
+
+== So deaktivieren und aktivieren Sie Fechten
+
+Beim Einrichten des Clusters ist Fechten standardmäßig aktiviert/erforderlich. In einigen Fällen ist es wünschenswert, Fechten vorübergehend zu deaktivieren, um sicherzustellen, dass Knoten nicht versehentlich heruntergefahren werden, wenn bestimmte Wartungsvorgänge ausgeführt werden (z. B. ein Upgrade des Betriebssystems). Auch wenn dies manuell deaktiviert werden kann, sollte es auf die Kompromisse-Administratoren achten.
+
+
+
+=== OPTION 1: Deaktivieren Sie Fechten mit Ansible (empfohlen).
+
+Wenn das Fechten mit Ansible deaktiviert wird, wird die on-Fail-Aktion des BeeGFS-Monitors von „Zaun“ in „Standby“ geändert. Wenn der BeeGFS-Monitor einen Fehler erkennt, versucht er, den Knoten in den Standby-Modus zu stellen und alle BeeGFS-Dienste zu ausfallsicher. Außerhalb aktiver Fehlerbehebung/Tests ist dies in der Regel wünschenswerter als Option 2. Der Nachteil ergibt sich daraus, dass eine Ressource auf dem ursprünglichen Knoten nicht stoppt, dass sie an einem anderen Ort gestartet werden kann (weshalb normalerweise ein Fechten für Produktionscluster erforderlich ist).
+
+. In Ihrem Ansible-Inventar unter `groups_vars/ha_cluster.yml` Fügen Sie die folgende Konfiguration hinzu:
++
+[source, console]
+----
+beegfs_ha_cluster_crm_config_options:
+    stonith-enabled: False
+----
+. Führen Sie das Ansible-Playbook erneut aus, um die Änderungen auf das Cluster anzuwenden.
+
+
+
+
+=== OPTION 2: Manuelle Abwahl deaktivieren.
+
+In einigen Fällen möchten Sie die Fechten unter Umständen vorübergehend deaktivieren, ohne Ansible neu zu verwenden, um die Fehlerbehebung oder das Testen des Clusters zu erleichtern.
+
+
+WARNING: Wenn der BeeGFS-Monitor in dieser Konfiguration einen Fehler erkennt, versucht das Cluster, die entsprechende Ressourcengruppe zu stoppen. Es wird KEIN vollständiger Failover ausgelöst oder versucht, die betroffene Ressourcengruppe auf einen anderen Host neu zu starten oder zu verschieben. Zur Wiederherstellung sollten Sie alle Probleme beheben und anschließend ausführen `pcs resource cleanup` Oder setzen Sie den Knoten manuell in den Standby-Modus.
+
+Schritte
+
+. So legen Sie fest, ob Fechten (stonith) global aktiviert oder deaktiviert ist: `pcs property show stonith-enabled`
+. So deaktivieren Sie den Fechtlauf: `pcs property set stonith-enabled=false`
+. So aktivieren Sie den Fechtlauf: `pcs property set stonith-enabled=true`
+
+
+Hinweis: Diese Einstellung wird beim nächsten Ausführen des Ansible-Playbooks außer Kraft gesetzt.

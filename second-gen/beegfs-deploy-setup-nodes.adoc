@@ -51,7 +51,7 @@ subscription-manager repo-override --repo=rhel-8-for-x86_64-highavailability-rpm
 ....
 . Aktualisieren Sie alle ConnectX-6 HCA-Firmware auf die in empfohlene Version link:beegfs-technology-requirements.html["Technologieanforderungen erfüllt"].
 +
-Dieses Update kann durch Herunterladen und Ausführen einer Version des mlxup-Tools durchgeführt werden, das die empfohlene Firmware bündelt. Sie können dieses Tool von herunterladen https://www.mellanox.com/support/firmware/mlxup-mft["Mlxup - Dienstprogramm zum Aktualisieren und Abfragen"^].
+Dieses Update kann durch Herunterladen und Ausführen einer Version des mlxup-Tools durchgeführt werden, das die empfohlene Firmware bündelt. Sie können dieses Tool von herunterladen https://network.nvidia.com/support/firmware/mlxup-mft/["Mlxup - Dienstprogramm zum Aktualisieren und Abfragen"^] (link:https://docs.nvidia.com/networking/display/MLXUPFWUTILITY/mlxup+-+Firmware+Utility+User+Guide["Benutzerhandbuch"^]).
 
 
 

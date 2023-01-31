@@ -1,0 +1,30 @@
+---
+sidebar: sidebar 
+permalink: custom-architectures-setup-ansible-control-node.html 
+keywords: BeeGFS on NetApp, NetApp Custom Architectures, EF600 
+summary: Richten Sie einen Ansible-Steuerungsknoten ein, um das Dateisystem zu implementieren und zu managen. 
+---
+= Ansible-Steuerungsknoten Einrichten
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Richten Sie einen Ansible-Steuerungsknoten ein, um das Dateisystem zu implementieren und zu managen.
+
+
+
+== Überblick
+
+Ein Ansible-Steuerungsknoten ist eine physische oder virtuelle Linux-Maschine, die zum Verwalten des Clusters verwendet wird. Er muss folgende Anforderungen erfüllen:
+
+* Treffen Sie sich link:beegfs-technology-requirements.html#ansible-control-node-requirements["Anforderungen"^] Für die BeeGFS HA-Rolle, einschließlich der installierten Versionen von Ansible, Python und weiteren Python-Paketen.
+* Treffen Sie den Beamten link:https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#control-node-requirements["Ansible-Control-Node-Anforderungen"^] Einschließlich Betriebssystemversionen.
+* SSH- und HTTPS-Zugriff auf alle Datei- und Block-Nodes
+
+
+Detaillierte Installationsschritte sind zu finden link:beegfs-deploy-setting-up-an-ansible-control-node.html["Hier"^].

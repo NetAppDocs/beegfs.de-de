@@ -1,0 +1,297 @@
+---
+sidebar: sidebar 
+permalink: administer-clusters-troubleshoot.html 
+keywords: BeeGFS on NetApp, HA, Cluster, Administration, troubleshooting 
+summary: Fehlerbehebung für ein BeeGFS HA-Cluster. 
+---
+= Fehlerbehebung
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Fehlerbehebung für ein BeeGFS HA-Cluster.
+
+
+
+== Überblick
+
+In diesem Abschnitt wird erläutert, wie verschiedene Fehler und andere Szenarien untersucht und behoben werden können, die beim Betrieb eines BeeGFS HA-Clusters auftreten können.
+
+
+
+== Leitfäden Zur Fehlerbehebung
+
+
+
+=== Untersuchen Unerwarteter Failover
+
+Wenn ein Node unerwartet eingezäunt ist und seine Services auf einen anderen Node verschoben werden, sollte der erste Schritt darin bestehen, zu überprüfen, ob das Cluster auf mögliche Ressourcenausfälle an der Unterseite von hinweist `pcs status`. Normalerweise gibt es keine Daten, wenn das Fechten erfolgreich abgeschlossen wurde und die Ressourcen auf einem anderen Knoten neu gestartet wurden.
+
+Im Allgemeinen wird der nächste Schritt sein, durch die systemd-Logs mit zu suchen `journalctl` Auf einem beliebigen der übrigen Dateiknoten (Pacemaker-Protokolle werden auf allen Knoten synchronisiert). Wenn Sie wissen, wann der Fehler aufgetreten ist, können Sie die Suche kurz vor dem Auftreten des Fehlers starten (in der Regel mindestens zehn Minuten vor dem Auftreten des Fehlers empfohlen):
+
+[source, console]
+----
+journalctl --since "<YYYY-MM-DD HH:MM:SS>"
+----
+Die folgenden Abschnitte zeigen einen gemeinsamen Text, den Sie in den Protokollen grep können, um die Untersuchung weiter einzugrenzen.
+
+
+
+==== Schritte zur Untersuchung/Lösung
+
+
+
+===== Schritt 1: Prüfen, ob der BeeGFS-Monitor einen Fehler festgestellt hat:
+
+Wenn das Failover vom BeeGFS-Monitor ausgelöst wurde, sollte ein Fehler angezeigt werden (wenn nicht mit dem nächsten Schritt fortfahren).
+
+[source, console]
+----
+journalctl --since "<YYYY-MM-DD HH:MM:SS>" | grep -i unexpected
+[...]
+Jul 01 15:51:03 ictad22h01 pacemaker-schedulerd[9246]:  warning: Unexpected result (error: BeeGFS service is not active!) was recorded for monitor of meta_08-monitor on ictad22h02 at Jul  1 15:51:03 2022
+----
+In diesem Fall hat der BeeGFS-Service meta_08 aus irgendeinem Grund gestoppt. Um mit der Fehlerbehebung fortzufahren, sollten wir ictad22h02 und Logs für den Service unter überprüfen `/var/log/beegfs-meta-meta_08_tgt_0801.log`. Beispiel: Aufgrund eines internen Problems oder eines Problems mit dem Node konnte für den BeeGFS-Service ein Applikationsfehler aufgetreten sein.
+
+
+TIP: Im Gegensatz zu den Protokollen von Pacemaker werden Protokolle für BeeGFS-Services nicht auf alle Knoten im Cluster verteilt. Um diese Arten von Ausfällen zu untersuchen, sind die Protokolle vom ursprünglichen Knoten, auf dem der Fehler aufgetreten ist, erforderlich.
+
+Mögliche Fehler, die vom Monitor gemeldet werden könnten:
+
+* Auf Ziel(e) kann(n) nicht zugegriffen werden!
++
+** Beschreibung: Gibt an, auf die Block-Volumes nicht zugegriffen werden konnte.
+** Fehlerbehebung:
++
+*** Wenn auch der Service am alternativen Datei-Node nicht gestartet werden konnte, vergewissern Sie sich, dass der Block-Node ordnungsgemäß ist.
+*** Prüfen Sie auf physische Probleme, die den Zugriff auf die Block-Nodes durch diesen Datei-Node verhindern würden, z. B. fehlerhafte InfiniBand-Adapter oder Kabel.
+
+
+
+
+* Netzwerk ist nicht erreichbar!
++
+** Beschreibung: Keiner der Adapter, die von Clients verwendet wurden, um sich mit diesem BeeGFS-Dienst zu verbinden, war online.
+** Fehlerbehebung:
++
+*** Wenn mehrere/alle Dateiknoten betroffen waren, überprüfen Sie, ob ein Fehler im Netzwerk vorhanden ist, das zum Verbinden der BeeGFS-Clients und des Dateisystems verwendet wurde.
+*** Prüfen Sie, ob physikalische Probleme den Zugriff auf die Clients durch diesen Dateiknoten verhindern würden, z. B. fehlerhafte InfiniBand-Adapter oder Kabel.
+
+
+
+
+* BeeGFS-Service ist nicht aktiv!
++
+** Beschreibung: Ein BeeGFS-Dienst hat unerwartet gestoppt.
+** Fehlerbehebung:
++
+*** Überprüfen Sie auf dem Datei-Node, der den Fehler gemeldet hat, die Protokolle für den betroffenen BeeGFS-Dienst, ob er einen Absturz gemeldet hat. Öffnen Sie in diesem Fall einen Fall mit NetApp Support, damit der Absturz untersucht werden kann.
+*** Wenn im BeeGFS-Protokoll keine Fehler gemeldet werden, prüfen Sie in den Journalprotokollen, ob systemd einen Grund protokolliert hat, warum der Dienst angehalten wurde. In einigen Fällen wurde dem BeeGFS-Dienst möglicherweise keine Chance gegeben, Nachrichten zu protokollieren, bevor der Prozess beendet wurde (z. B. wenn jemand ausgeführt wurde `kill -9 <PID>`).
+
+
+
+
+
+
+
+
+===== Schritt 2: Prüfen Sie, ob der Node das Cluster unerwartet verlassen hat
+
+Falls auf dem Node ein schwerwiegender Hardware-Ausfall auftritt (z. B. die Systemplatine gestorben) oder ein Kernel-Panic oder ein ähnliches Softwareproblem auftritt, wird der BeeGFS-Monitor keinen Fehler melden. Suchen Sie stattdessen nach dem Hostnamen und Sie sollten Meldungen von Pacemaker sehen, die darauf hinweisen, dass der Knoten unerwartet verloren gegangen ist:
+
+[source, console]
+----
+journalctl --since "<YYYY-MM-DD HH:MM:SS>" | grep -i <HOSTNAME>
+[...]
+Jul 01 16:18:01 ictad22h01 pacemaker-attrd[9245]:  notice: Node ictad22h02 state is now lost
+Jul 01 16:18:01 ictad22h01 pacemaker-controld[9247]:  warning: Stonith/shutdown of node ictad22h02 was not expected
+----
+
+
+===== Schritt 3: Überprüfen Sie, ob Pacemaker in der Lage war, den Knoten einzuzäunen
+
+In allen Szenarien sollten Sie sehen, dass Pacemaker versucht, den Knoten einzuzäunen, um zu überprüfen, ob er tatsächlich offline ist (genaue Meldungen können von der Ursache des Fechts abweichen):
+
+[source, console]
+----
+Jul 01 16:18:02 ictad22h01 pacemaker-schedulerd[9246]:  warning: Cluster node ictad22h02 will be fenced: peer is no longer part of the cluster
+Jul 01 16:18:02 ictad22h01 pacemaker-schedulerd[9246]:  warning: Node ictad22h02 is unclean
+Jul 01 16:18:02 ictad22h01 pacemaker-schedulerd[9246]:  warning: Scheduling Node ictad22h02 for STONITH
+----
+Wenn die Fechtaktion erfolgreich abgeschlossen ist, werden folgende Meldungen angezeigt:
+
+[source, console]
+----
+Jul 01 16:18:14 ictad22h01 pacemaker-fenced[9243]:  notice: Operation 'off' [2214070] (call 27 from pacemaker-controld.9247) for host 'ictad22h02' with device 'fence_redfish_2' returned: 0 (OK)
+Jul 01 16:18:14 ictad22h01 pacemaker-fenced[9243]:  notice: Operation 'off' targeting ictad22h02 on ictad22h01 for pacemaker-controld.9247@ictad22h01.786df3a1: OK
+Jul 01 16:18:14 ictad22h01 pacemaker-controld[9247]:  notice: Peer ictad22h02 was terminated (off) by ictad22h01 on behalf of pacemaker-controld.9247: OK
+----
+Wenn die Fechten-Aktion aus irgendeinem Grund fehlgeschlagen ist, können die BeeGFS-Dienste auf einem anderen Node nicht neu starten, um Datenkorruption zu vermeiden. Das wäre ein Problem, separat zu untersuchen, wenn zum Beispiel das Fechten-Gerät (PDU oder BMC) unzugänglich oder falsch konfiguriert war.
+
+
+
+=== Adressen fehlgeschlagener Ressourcen Aktionen (am Ende des Stk-Status gefunden)
+
+Wenn eine Ressource, die zum Ausführen eines BeeGFS-Dienstes erforderlich ist, ausfällt, wird ein Failover durch den BeeGFS-Monitor ausgelöst. Falls dies der Fall ist, werden am Ende von wahrscheinlich keine „fehlgeschlagenen Ressourcenaktionen“ aufgeführt `pcs status` Und Sie sollten sich die Schritte zur Vorgehensweise link:administer-clusters-failover-failback.html["Failback nach einem ungeplanten Failover"^].
+
+Ansonsten sollte es in der Regel nur zwei Szenarien geben, in denen Sie „Aktionen für fehlgeschlagene Ressourcen“ sehen.
+
+
+
+==== Schritte zur Untersuchung/Lösung
+
+
+
+===== Szenario 1: Bei einem Fechten-Agent wurde ein temporäres oder dauerhaftes Problem erkannt und es wurde neu gestartet oder auf einen anderen Knoten verschoben.
+
+Einige Fechten-Agenten sind zuverlässiger als andere, und jeder implementiert seine eigene Überwachungsmethode, um sicherzustellen, dass die Fechtvorrichtung bereit ist. Insbesondere wurde festgestellt, dass der Fechtagent von Redfish fehlgeschlagene Ressourcenaktionen wie die folgenden meldet, obwohl er immer noch gestartet wird:
+
+[source, console]
+----
+  * fence_redfish_2_monitor_60000 on ictad22h01 'not running' (7): call=2248, status='complete', exitreason='', last-rc-change='2022-07-26 08:12:59 -05:00', queued=0ms, exec=0ms
+----
+Ein Fechten-Agent, der fehlgeschlagene Ressourcen-Aktionen auf einem bestimmten Knoten meldet, wird nicht erwartet, dass ein Failover der BeeGFS-Dienste ausgelöst wird, die auf diesem Knoten ausgeführt werden. Es sollte einfach automatisch auf demselben oder einem anderen Knoten neu gestartet werden.
+
+Schritte zur Lösung:
+
+. Wenn der Fechtagent sich immer wieder weigert, auf allen oder einer Untermenge von Knoten ausgeführt zu werden, überprüfen Sie, ob diese Knoten eine Verbindung zum Fechtagenten herstellen können, und überprüfen Sie, ob der Fechtagent im Ansible-Bestand korrekt konfiguriert ist.
++
+.. Wenn z. B. ein Fechten-Agent von Redfish (BMC) auf demselben Knoten ausgeführt wird, wie er für das Fechten verantwortlich ist, und die Betriebssystemverwaltung und BMC-IPs auf derselben physischen Schnittstelle sind, ermöglichen einige Netzwerk-Switch-Konfigurationen keine Kommunikation zwischen den beiden Schnittstellen (um Netzwerkschleifen zu verhindern). Standardmäßig versucht das HA-Cluster, keine Fechten-Agenten auf dem Node zu platzieren, den sie für Fechten verantwortlich sind, aber dies kann in einigen Szenarien/Konfigurationen geschehen.
+
+
+. Sobald alle Probleme behoben sind (oder das Problem scheinbar kurzlebig zu sein schien), führen Sie den folgenden Lauf aus `pcs resource cleanup` So setzen Sie die fehlgeschlagenen Ressourcenaktionen zurück.
+
+
+
+
+===== Szenario 2: Der BeeGFS-Monitor hat ein Problem erkannt und ein Failover ausgelöst, aber aus irgendeinem Grund konnte das System nicht auf einem sekundären Knoten starten.
+
+Sofern das Fechten aktiviert ist und die Ressource nicht vom Stoppen auf dem ursprünglichen Knoten blockiert wurde (siehe Abschnitt Fehlerbehebung für „Standby (on-fail)“)), sind die wahrscheinlichsten Gründe, warum Probleme auftreten, die die Ressource auf einem sekundären Knoten zu starten, weil:
+
+* Der sekundäre Node war bereits offline.
+* Ein physisches oder logisches Konfigurationsproblem verhindert, dass das sekundäre System auf die als BeeGFS-Ziele verwendeten Block-Volumes zugreift.
+
+
+Schritte zur Lösung:
+
+. Für jeden Eintrag in den Aktionen für fehlgeschlagene Ressourcen:
++
+.. Bestätigen Sie, dass die fehlgeschlagene Ressourcenaktion ein Startvorgang war.
+.. Basierend auf der in den Aktionen für fehlgeschlagene Ressourcen angegebenen Ressource und dem in den Knoten angegebenen Ressource:
++
+... Suchen Sie nach externen Problemen, die verhindern würden, dass der Knoten die angegebene Ressource startet, und beheben Sie diese. Wenn zum Beispiel BeeGFS IP-Adresse (Floating IP) nicht gestartet werden konnte, vergewissern Sie sich, dass mindestens eine der erforderlichen Schnittstellen angeschlossen/online ist und mit dem richtigen Netzwerk-Switch verbunden ist. Wenn ein BeeGFS-Ziel (Blockgerät/E-Series-Volume) fehlgeschlagen ist, überprüfen Sie, ob die physischen Verbindungen zu den Backend-Block-Nodes wie erwartet verbunden sind, und überprüfen Sie, ob die Block-Nodes ordnungsgemäß sind.
+
+
+.. Wenn es keine offensichtlichen externen Probleme gibt und Sie eine Ursache für diesen Vorfall wünschen, sollten Sie einen Case mit dem NetApp Support eröffnen, um ihn zu untersuchen, bevor Sie fortfahren, da die folgenden Schritte eine Ursachenanalyse (Root Cause Analysis, RCA) schwierig/unmöglich machen können.
+
+
+. Nach der Lösung externer Probleme:
++
+.. Kommentieren Sie alle nicht funktionierenden Nodes aus der Ansible Inventory.yml-Datei und führen Sie das vollständige Ansible-Playbook erneut aus, um sicherzustellen, dass die logische Konfiguration auf den/den sekundären Nodes korrekt eingerichtet ist.
++
+... Hinweis: Vergessen Sie nicht, diese Nodes zu kommentieren und das Playbook erneut auszuführen, sobald sich die Nodes in einem ordnungsgemäßen Zustand befinden und Sie zum Failback bereit sind.
+
+
+.. Alternativ können Sie versuchen, das Cluster manuell wiederherzustellen:
++
+... Platzieren Sie alle Offline-Nodes wieder online mithilfe von: `pcs cluster start <HOSTNAME>`
+... Löschen Sie alle fehlgeschlagenen Ressourcenaktionen mit: `pcs resource cleanup`
+... Stk-Status ausführen und überprüfen, ob alle Dienste wie erwartet beginnen.
+... Bei Bedarf ausführen `pcs resource relocate run` Verschieben von Ressourcen zurück auf den bevorzugten Node (sofern verfügbar)
+
+
+
+
+
+
+
+
+== Häufige Probleme
+
+
+
+=== BeeGFS-Services führen bei Anforderung kein Failover oder Failback durch
+
+*Wahrscheinliche Ausgabe:* das `pcs resource relocate` Befehl ausführen wurde ausgeführt, aber nie erfolgreich abgeschlossen.
+
+*So überprüfen Sie:* Lauf `pcs constraint --full` Und überprüfen Sie auf alle Standortbeschränkungen mit einer ID von `pcs-relocate-<RESOURCE>`.
+
+*Wie löst man:* Lauf `pcs resource relocate clear` Wiederholen Sie anschließend den Test `pcs constraint --full` Um zu überprüfen, ob die zusätzlichen Bedingungen entfernt wurden.
+
+
+
+=== Ein Knoten im Stk-Status zeigt „Standby (ein-aus)“ an, wenn das Fechten deaktiviert ist
+
+*Wahrscheinliche Ursache:* Pacemaker konnte nicht erfolgreich bestätigen, dass alle Ressourcen auf dem Knoten, der ausgefallen ist, angehalten wurden.
+
+*Wie löst man:*
+
+. Laufen `pcs status` Und überprüfen Sie, ob die Ressourcen nicht „gestartet“ sind, oder zeigen Sie Fehler an der Unterseite der Ausgabe an, und beheben Sie eventuelle Probleme.
+. Um den Node wieder in den Online-Modus zu versetzen, wird ausgeführt `pcs resource cleanup --node=<HOSTNAME>`.
+
+
+
+
+=== Nach einem unerwarteten Failover zeigen die Ressourcen „gestartet (ein-Fehler)“ im Stk-Status an, wenn das Fechten aktiviert ist
+
+*Wahrscheinliches Problem:* Es trat ein Problem auf, das einen Failover auslöste, Pacemaker konnte jedoch nicht überprüfen, ob der Knoten eingezäunt war. Dies kann passieren, weil Fechten falsch konfiguriert war oder es ein Problem mit dem Fechten Agent gab (Beispiel: Die PDU wurde vom Netzwerk getrennt).
+
+*Wie löst man:*
+
+. Vergewissern Sie sich, dass der Node tatsächlich ausgeschaltet ist.
++
+
+IMPORTANT: Wenn der von Ihnen angegebene Node nicht aktiv ist, der aber Cluster-Services oder -Ressourcen ausführt, treten Datenbeschädigungen/Cluster-Ausfälle auf.
+
+. Fechten manuell bestätigen mit: `pcs stonith confirm <NODE>`
+
+
+An diesem Punkt sollten die Dienste den Failover beenden und auf einem anderen gesunden Knoten neu gestartet werden.
+
+
+
+== Häufige Fehlerbehebungsaufgaben
+
+
+
+=== Starten Sie individuelle BeeGFS-Dienste neu
+
+Normalerweise, wenn ein BeeGFS-Service neu gestartet werden muss (z. B. um eine Konfigurationsänderung zu ermöglichen), sollte dies durch Aktualisierung des Ansible-Bestands und durch erneute Ausführung des Playbooks geschehen. In manchen Szenarien kann es wünschenswert sein, einzelne Services neu zu starten, um eine schnellere Fehlerbehebung zu ermöglichen, beispielsweise um das Protokollierungsniveau zu ändern, ohne auf die Ausführung des gesamten Playbooks zu warten.
+
+
+IMPORTANT: Wenn nicht auch manuelle Änderungen am Ansible-Inventar hinzugefügt werden, werden diese bei der nächsten Ausführung des Ansible-Playbooks zurückgesetzt.
+
+
+
+==== Option 1: Systemgesteuerter Neustart
+
+Wenn das Risiko besteht, dass der BeeGFS-Service mit der neuen Konfiguration nicht ordnungsgemäß neu gestartet wird, versetzen Sie das Cluster zuerst in den Wartungsmodus, um zu verhindern, dass der BeeGFS-Monitor den Service erkennt, angehalten wird und ein unerwünschtes Failover ausgelöst wird:
+
+[source, console]
+----
+pcs property set maintenance-mode=true
+----
+Nehmen Sie ggf. Änderungen an der Servicekonfiguration unter vor `/mnt/<SERVICE_ID>/*_config/beegfs-*.conf` (Beispiel: `/mnt/meta_01_tgt_0101/metadata_config/beegfs-meta.conf`) Dann systemd verwenden, um es neu zu starten:
+
+[source, console]
+----
+systemctl restart beegfs-*@<SERVICE_ID>.service
+----
+Beispiel: `systemctl restart beegfs-meta@meta_01_tgt_0101.service`
+
+
+
+==== Option 2: Schrittmachergesteuerter Neustart
+
+Wenn Sie keine Sorge haben, dass die neue Konfiguration dazu führen könnte, dass der Service unerwartet angehalten wird (z. B. einfach die Protokollierungsebene ändern), oder Sie sich in einem Wartungsfenster befinden und sich keine Gedanken über Ausfallzeiten machen, können Sie den BeeGFS-Monitor einfach für den Service neu starten, den Sie neu starten möchten:
+
+[source, console]
+----
+pcs resource restart <SERVICE>-monitor
+----
+Zum Beispiel zum Neustart des BeeGFS-Managementdienstes: `pcs resource restart mgmt-monitor`

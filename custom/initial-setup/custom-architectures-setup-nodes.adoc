@@ -1,0 +1,79 @@
+---
+sidebar: sidebar 
+permalink: custom-architectures-setup-nodes.html 
+keywords: BeeGFS on NetApp, NetApp Custom Architectures, EF600 
+summary: Manuelle Schritte zur Einrichtung von Datei- und Block-Nodes vor der Ausführung von Ansible erforderlich 
+---
+= Datei- und Block-Knoten einrichten
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Manuelle Schritte zur Einrichtung von Datei- und Block-Nodes vor der Ausführung von Ansible erforderlich
+
+
+
+== File-Nodes
+
+
+
+=== Konfigurieren des Baseboard Management Controllers (BMC)
+
+Ein Baseboard Management Controller (BMC), der manchmal als Service-Prozessor bezeichnet wird, ist der generische Name für die Out-of-Band-Management-Funktion, die in verschiedenen Server-Plattformen integriert ist, die Remote-Zugriff bieten können, selbst wenn das Betriebssystem nicht installiert ist oder nicht zugänglich ist. Anbieter vermarkten diese Funktionalität in der Regel mit ihrem eigenen Branding. Auf dem Lenovo SR665 wird beispielsweise der BMC als Lenovo XClarity Controller (XCC) bezeichnet.
+
+Befolgen Sie die Dokumentation des Serveranbieters, um alle erforderlichen Lizenzen für den Zugriff auf diese Funktionalität zu aktivieren und sicherzustellen, dass der BMC mit dem Netzwerk verbunden und für den Remote-Zugriff entsprechend konfiguriert ist.
+
+
+NOTE: Wenn ein BMC-basiertes Fechten mit Redfish gewünscht wird, stellen Sie sicher, dass Redfish aktiviert ist und die BMC-Schnittstelle über das auf dem Dateiknoten installierte Betriebssystem zugänglich ist. Auf dem Netzwerk-Switch kann eine spezielle Konfiguration erforderlich sein, wenn BMC und der Betrieb dieselbe physische Netzwerkschnittstelle nutzen.
+
+
+
+=== Systemeinstellungen Einstellen
+
+Stellen Sie mithilfe der Benutzeroberfläche des System-Setup (BIOS/UEFI) sicher, dass Einstellungen auf maximale Leistung eingestellt sind. Die genauen Einstellungen und optimalen Werte variieren je nach verwendetes Servermodell. Anleitung wird für bereitgestellt link:beegfs-deploy-file-node-tuning.html["Verifizierte Datei-Node-Modelle"^], Andere beziehen Sie sich auf die Dokumentation und Best Practices des Serveranbieters basierend auf Ihrem Modell.
+
+
+
+=== Installieren Sie ein Betriebssystem
+
+Installieren Sie ein unterstütztes Betriebssystem, basierend auf den angegebenen Anforderungen an den Dateiknoten link:beegfs-technology-requirements.html#file-node-requirements["Hier"^]. Beachten Sie die nachfolgenden Schritte, die auf Ihrer Linux-Distribution basieren.
+
+
+
+==== Red hat
+
+Verwenden Sie den RedHat Subscription Manager, um das System zu registrieren und zu abonnieren, damit die erforderlichen Pakete aus den offiziellen Red hat Repositorys installiert werden können und um Updates auf die unterstützte Version von Red hat zu beschränken: `subscription-manager release --set=<MAJOR_VERSION>.<MINOR_VERSION>`. Anweisungen hierzu finden Sie unter https://access.redhat.com/solutions/253273["Registrieren und Abonnieren eines RHEL Systems"^] Und  https://access.redhat.com/solutions/2761031["Einschränken von Aktualisierungen"^].
+
+Red hat Repository mit den für hohe Verfügbarkeit erforderlichen Paketen aktivieren:
+
+....
+subscription-manager repo-override --repo=rhel-8-for-x86_64-highavailability-rpms --add=enabled:1
+....
+
+
+=== Managementnetzwerk Konfigurieren
+
+Konfigurieren Sie alle erforderlichen Netzwerkschnittstellen für die bandinterne Verwaltung des Betriebssystems. Die genauen Schritte hängen von der jeweiligen Linux-Distribution und der verwendeten Version ab.
+
+
+NOTE: Vergewissern Sie sich, dass SSH aktiviert ist und alle Managementoberflächen über den Ansible Kontroll-Node zugänglich sind.
+
+
+
+=== Aktualisieren der HCA- und HBA-Firmware
+
+Stellen Sie sicher, dass auf allen HBAs und HCAs unterstützte Firmware-Versionen ausgeführt werden, die auf der aufgeführt sind link:https://imt.netapp.com/matrix/["NetApp Interoperabilitätsmatrix"^] Und Upgrade-durchführen, falls erforderlich. Weitere Empfehlungen für NVIDIA ConnectX Adapter finden Sie link:beegfs-technology-requirements.html#file-node-requirements["Hier"^].
+
+
+
+== Block-Nodes
+
+Befolgen Sie die Schritte zu link:https://docs.netapp.com/us-en/e-series/getting-started/getup-run-concept.html["Die Inbetriebnahme ist möglich mit E-Series"^] Um den Managementport an jedem Block Node Controller zu konfigurieren und optional den Namen des Storage-Arrays für jedes System festzulegen.
+
+
+NOTE: Es ist keine zusätzliche Konfiguration erforderlich, die darüber hinaus sicherstellt, dass alle Block-Nodes über den Ansible-Kontroll-Node zugänglich sind. Die verbleibende Systemkonfiguration wird mit Ansible angewendet/gewartet.
