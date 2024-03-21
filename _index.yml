@@ -1,9 +1,13 @@
 ---
 indexpage:
-  lead: Die BeeGFS auf NetApp Lösung ist eine NetApp Verified Architecture (NVA),
-    welche das BeeGFS Parallel File-System mit NetApp EF600 Storage-Systemen kombiniert.
-    Diese Lösung ist eine zuverlässige, skalierbare und kostengünstige Infrastruktur,
-    die mit den extremen Workloads Schritt hält.
+  title: BeeGFS auf NetApp mit E-Series Storage
+  summary: Die Lösung unterstützt das parallele BeeGFS Cluster-Filesystem, das auf
+    hochperformantem NetApp E-Series Storage mit niedriger Latenz läuft. Eine kostengünstige,
+    leicht zu managende und hochverfügbare HPC-Lösung mit Unterstützung von NetApp.
+  keywords: beegfs e-series
+  lead: BeeGFS auf NetApp mit E-Series Storage ist eine bewährte, integrierte Lösung
+    mit einer einfachen, zuverlässigen, skalierbaren und kostengünstigen HPC-Infrastruktur,
+    die mit den extremsten Workloads Schritt hält.
   tiles:
   - title: Los geht's
     links:
