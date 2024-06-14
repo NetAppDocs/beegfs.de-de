@@ -20,7 +20,7 @@ Beachten Sie bei der Implementierung der BeeGFS auf NetApp-Lösung die Best Prac
 
 == Standardkonventionen
 
-Folgen Sie beim physischen Zusammenbau und Erstellen der Ansible-Bestandsdatei diesen Standardkonventionen (weitere Informationen finden Sie unter link:beegfs-deploy-beegfs-general-config.html["Erstellen des Ansible-Inventars"]).
+Folgen Sie beim physischen Zusammenbau und Erstellen der Ansible-Bestandsdatei diesen Standardkonventionen (weitere Informationen finden Sie unter link:beegfs-deploy-create-inventory.html["Erstellen des Ansible-Inventars"]).
 
 * Host-Namen der Dateiknoten werden nacheinander nummeriert (h01-HN) mit niedrigeren Zahlen oben im Rack und höheren Zahlen unten.
 +

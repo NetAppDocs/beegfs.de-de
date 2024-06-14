@@ -207,7 +207,6 @@
   <block id="d1da0cd6852302b521f35aeee065f5ea" category="summary">Beachten Sie bei der Implementierung der BeeGFS auf NetApp-Lösung die Best Practice-Richtlinien.</block>
   <block id="38b622e4d5c9d918330c81663f61a4e3" category="doc">Besprechen der Best Practices</block>
   <block id="d780de93793370946b2449b88a29b5ea" category="section-title">Standardkonventionen</block>
-  <block id="2028bcc5ed7fdc8ba437b0150866ff2c" category="paragraph">Folgen Sie beim physischen Zusammenbau und Erstellen der Ansible-Bestandsdatei diesen Standardkonventionen (weitere Informationen finden Sie unter <block ref="ecd3f3fdba3715697adf284eecd1c932" category="inline-link-macro-rx"></block>).</block>
   <block id="b4d19c971bd6ad93985147c0ce9477c8" category="list-text">Host-Namen der Dateiknoten werden nacheinander nummeriert (h01-HN) mit niedrigeren Zahlen oben im Rack und höheren Zahlen unten.</block>
   <block id="0a4e8ee6eb2b3c9ae6b2864c18db1a80" category="paragraph">Beispielsweise die Namenskonvention<block ref="6171c77957e7dd932771522d0f5313aa" prefix=" " category="inline-code"></block> Sieht aus wie:<block ref="8afb08c5a5c2666b19de0aaba8de4d93" prefix=" " category="inline-code"></block>.</block>
   <block id="7bf4bcec78c083e165c31432234ebef8" category="list-text">Jeder Block-Node besteht aus zwei Storage-Controllern, die jeweils über einen eigenen Host-Namen verfügen.</block>
@@ -1862,4 +1861,5 @@
   <block id="8acb58cbd50ef1b468a020ee0bd351d3" category="inline-link-macro"><block ref="8acb58cbd50ef1b468a020ee0bd351d3" category="inline-link-rx"></block></block>
   <block id="2352c4e1f4d0024ade0869e00e6243f4" category="paragraph"><block ref="2352c4e1f4d0024ade0869e00e6243f4" category="inline-link-macro-rx"></block></block>
   <block id="e8afe31a21b6aae9717484d865743dae" category="sidebar">BeeGFS auf NetApp mit E-Series Storage ist eine bewährte, integrierte Lösung mit einer einfachen, zuverlässigen, skalierbaren und kostengünstigen HPC-Infrastruktur, die mit den extremsten Workloads Schritt hält.</block>
+  <block id="3a9aabbbb8c331319a41788bf5d1786a" category="paragraph">Folgen Sie beim physischen Zusammenbau und Erstellen der Ansible-Bestandsdatei diesen Standardkonventionen (weitere Informationen finden Sie unter <block ref="dbbcb9482f49ee969cddb7f10864cbd0" category="inline-link-macro-rx"></block>).</block>
 </blocks>
