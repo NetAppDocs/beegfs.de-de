@@ -58,8 +58,8 @@ Jeder Datei-Node sollte die folgende Konfiguration erfüllen oder übertreffen, 
 
 *Verschiedenes:*
 
-* Zwei 1-TB-SATA-Laufwerke mit 7.200 U/min (oder vergleichbar), konfiguriert in RAID 1 für das Betriebssystem.
-* 10 GbE OCP 3.0 Adapter (oder vergleichbar) für in-Band-BS-Management
+* Zwei SATA-Laufwerke mit 1 TB und 7.200 U/min (oder vergleichbar oder besser), die in RAID 1 für das Betriebssystem konfiguriert sind.
+* 1-GbE-Port (oder besser) für in-Band-OS-Management
 * 1GbE BMC mit Redfish API für Out-of-Band-Server-Management
 * Zwei Hot-Swap-fähige Netzteile und Performance-Lüfter
 * Zum Erreichen von Storage InfiniBand Switches müssen Mellanox optische InfiniBand-Kabel unterstützt werden.
