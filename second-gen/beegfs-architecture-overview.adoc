@@ -55,47 +55,59 @@ Die vier wichtigsten Services werden in einer Vielzahl von unterstützten Linux 
 
 
 
+== HA-Architektur
+
+BeeGFS auf NetApp erweitert die Funktionalität der BeeGFS Enterprise Edition durch Entwicklung einer vollständig integrierten Lösung mit NetApp Hardware, die eine HA-Architektur (Shared Disk High Availability, Shared-Hochverfügbarkeit) ermöglicht.
+
+
+NOTE: Die BeeGFS Community Edition kann zwar kostenlos genutzt werden, jedoch muss bei der Enterprise Edition ein Professional Support-Abonnementvertrag von einem Partner wie NetApp abgeschlossen werden. Die Enterprise-Version ermöglicht die Nutzung mehrerer zusätzlicher Funktionen wie Ausfallsicherheit, Kontingentzuverfolgung und Storage-Pools.
+
+In der folgenden Abbildung werden die HA-Architekturen ohne Shared-Festplatten verglichen.
+
+image:../media/beegfs-design-image1.png[""]
+
+Weitere Informationen finden Sie unter https://www.netapp.com/blog/high-availability-beegfs/["Ankündigung der Hochverfügbarkeit für BeeGFS mit Unterstützung von NetApp"^].
+
+
+
 == Verifizierte Nodes
 
-Die BeeGFS auf NetApp Lösung umfasst die folgenden verifizierten Knoten: Das NetApp EF600 Storage-System (Block-Node) und der Lenovo ThinkSystem SR665 Server (File-Node).
+Die BeeGFS auf NetApp-Lösung hat die unten aufgeführten Knoten verifiziert.
+
+[cols="10%,20%,70%"]
+|===
+| Knoten | Trennt | Details 
 
 
-
-=== Block-Node: EF600 Storage-System
-
-Das NetApp EF600 All-Flash-Array bietet konsistenten Datenzugriff nahezu in Echtzeit und unterstützt gleichzeitig eine beliebige Anzahl von Workloads. Damit Daten schnell und kontinuierlich in KI- und HPC-Applikationen eingespeist werden können, sorgen EF600 Storage-Systeme für bis zu zwei Millionen Lese-IOPS im Cache, Reaktionszeiten von unter 100 Mikrosekunden und eine sequenzielle Lesebandbreite von 42 GB/s in einem Gehäuse.
+| Block-Storage | NetApp EF600 Storage-System | Dieses rein NVMe-basierte 2-HE-Storage-Array mit hoher Performance ist für anspruchsvolle Workloads konzipiert. 
 
 
+.2+| Datei | Lenovo ThinkSystem SR665 V3-Server | 2-Socket-Server mit PCIe 5.0, zwei AMD EPYC 9124 Prozessoren. Weitere Informationen zum Lenovo SR665 V3 finden Sie unter https://lenovopress.lenovo.com/lp1608-thinksystem-sr665-v3-server["Lenovo Website"^]. 
 
-=== Dateiknoten: Lenovo ThinkSystem SR665 Server
 
-Der SR665 ist ein 2-HE-Server mit zwei Sockets und PCIe 4.0. Wenn sie so konfiguriert ist, dass sie die Anforderungen dieser Lösung erfüllt, bietet sie genügend Performance für die Ausführung von BeeGFS-Fileservices in einer Konfiguration, die mit der Verfügbarkeit des Durchsatzes und der IOPS-Werte der direkt angeschlossenen E-Series Nodes ausgeglichen ist.
-
-Weitere Informationen zum Lenovo SR665 finden Sie unter https://lenovopress.com/lp1269-thinksystem-sr665-server["Lenovo Website"^].
-
+| Lenovo ThinkSystem SR665 Server | 2-Socket-Server mit PCIe 4.0, zwei AMD EPYC 7003 Prozessoren. Weitere Informationen zum Lenovo SR665 finden Sie unter https://lenovopress.lenovo.com/lp1269-thinksystem-sr665-server["Lenovo Website"^]. 
+|===
 
 
 == Verifiziertes Hardwaredesign
 
-Die Bausteine der Lösung (in der folgenden Abbildung dargestellt) verwenden zwei PCIe-4.0-fähige Dual-Socket-Server für die BeeGFS-File-Schicht und zwei EF600 Storage-Systeme als Block-Schicht.
+Die Bausteine der Lösung (in der folgenden Abbildung dargestellt) verwenden die verifizierten File-Node-Server für die BeeGFS-Dateiebene und zwei EF600-Storage-Systeme als Block-Ebene.
 
 image:../media/beegfs-design-image2-small.png[""]
 
+Die BeeGFS on NetApp Lösung läuft über alle Bausteine während der Implementierung hinweg. Auf dem ersten implementierten Baustein müssen BeeGFS-Management-, Metadaten- und Storage-Services (als Basisbaustein bezeichnet) ausgeführt werden. Alle nachfolgenden Bausteine können über Software konfiguriert werden, um Metadaten und Storage-Services zu erweitern oder ausschließlich Storage-Services bereitzustellen. Mit diesem modularen Ansatz kann das Filesystem an die Anforderungen eines Workloads skaliert werden, während gleichzeitig dieselben zugrunde liegenden Hardware-Plattformen und dasselbe Bausteindesign verwendet werden.
 
-NOTE: Da jeder Baustein zwei BeeGFS-Datei-Nodes enthält, sind mindestens zwei Bausteine erforderlich, um im Failover-Cluster ein Quorum einzurichten. Zwar können Sie ein Cluster mit zwei Nodes konfigurieren, jedoch verfügt diese Konfiguration über Grenzwerte, die möglicherweise ein erfolgreiches Failover verhindern. Wenn Sie ein 2-Node-Cluster benötigen, können Sie ein drittes Gerät als Tiebreaker einbinden (dieses Design ist jedoch nicht an diesem Standort abgedeckt).
+Bis zu fünf Bausteine können als Standalone Linux HA-Cluster implementiert werden. Dies optimiert die Ressourcenverwaltung mit Pacemaker und sorgt für eine effiziente Synchronisierung mit Corosync. Mindestens ein dieser Standalone BeeGFS HA-Cluster wird kombiniert, um ein BeeGFS-Filesystem zu erstellen, das für Clients als einzelner Storage-Namespace zur Verfügung steht. Auf der Hardware-Seite kann ein einzelnes 42-HE-Rack bis zu fünf Bausteine zusammen mit zwei 1-HE-InfiniBand-Switches für das Storage-/Datennetzwerk aufnehmen. Eine visuelle Darstellung finden Sie in der folgenden Grafik.
 
-Jedes Bausteinsystem bietet Hochverfügbarkeit durch ein zweistufigen Hardware-Design, das Fehlerdomänen für die Datei- und Block-Ebenen trennt. Jede Tier kann unabhängig ausfallen, was die Ausfallsicherheit erhöht und das Risiko von kaskadierenden Ausfällen minimiert. Die Verwendung von HDR InfiniBand in Verbindung mit NVMeOF ermöglicht einen hohen Durchsatz und eine minimale Latenz zwischen Datei- und Block-Nodes, wobei volle Redundanz und eine ausreichende Überzeichnung von Links möglich ist, um zu einem Engpass zu führen, auch wenn das System teilweise beeinträchtigt wird.
 
-Die BeeGFS on NetApp Lösung läuft über alle Bausteine während der Implementierung hinweg. Im ersten bereitgestellten Baustein muss BeeGFS-Management, Metadaten und Storage-Services (als Basisbaustein bezeichnet) ausgeführt werden. Alle nachfolgenden Bausteine werden über Software konfiguriert, um BeeGFS Metadaten und Storage-Services auszuführen, oder nur Storage-Services. Die Verfügbarkeit verschiedener Konfigurationsprofile für jeden Baustein ermöglicht die Skalierung von Filesystem-Metadaten oder Storage-Kapazität und Performance unter Verwendung derselben zugrunde liegenden Hardware-Plattformen und desselben Block-Designs.
-
-Bis zu fünf Bausteine werden zu einem eigenständigen Linux HA-Cluster kombiniert, wodurch eine angemessene Anzahl von Ressourcen pro Cluster Resource Manager (Pacemaker) sichergestellt wird und der Messaging-Overhead reduziert wird, der erforderlich ist, um Cluster-Mitglieder synchron zu halten (Corosync). Pro Cluster wird mindestens zwei Bausteine empfohlen, damit genügend Mitglieder Quorum festlegen können. Ein oder mehrere dieser eigenständigen BeeGFS HA-Cluster werden kombiniert, um ein BeeGFS-Dateisystem zu erstellen (siehe in der folgenden Abbildung), auf das Clients als einzelner Storage-Namespace zugreifen können.
+NOTE: Zum Herstellen von Quorum im Failover Cluster sind mindestens zwei Bausteine erforderlich. Ein Cluster mit zwei Nodes hat Einschränkungen, die ein erfolgreiches Failover verhindern können. Wenn Sie ein Cluster mit zwei Nodes konfigurieren, wird ein drittes Gerät als Tiebreaker integriert, dieses Design wird jedoch nicht in dieser Dokumentation beschrieben.
 
 image:../media/beegfs-design-image3.png[""]
 
-Obwohl die Anzahl der Bausteine pro Rack letztendlich von den Energie- und Kühlungsanforderungen für einen bestimmten Standort abhängt, Die Lösung wurde so entwickelt, dass bis zu fünf Bausteine in einem einzelnen 42-HE-Rack implementiert werden können und gleichzeitig noch Platz für zwei 1-HE-InfiniBand-Switches für das Storage-/Datennetzwerk vorhanden ist. Jeder Baustein benötigt acht IB-Ports (vier pro Switch für Redundanz), sodass fünf Bausteine die Hälfte der Ports an einem 40-Port-HDR-InfiniBand-Switch (wie das NVIDIA QM8700) zur Implementierung einer FAT-Tree- oder ähnlichen Nonblocking-Topologie übrig lassen. So wird sichergestellt, dass sich die Anzahl der Storage- bzw. Compute-/GPU-Racks ohne Netzwerkengpässe aufskalieren lässt. Eine überzeichnete Storage-Fabric kann optional auf Empfehlung des Storage-Fabric-Anbieters verwendet werden.
 
-Das folgende Bild zeigt eine 80-Node-FAT-Tree-Topologie.
 
-image:../media/beegfs-design-image4.png[""]
+== Ansible
 
-Mithilfe von Ansible als Implementierungs-Engine für die Implementierung von BeeGFS auf NetApp können Administratoren die gesamte Umgebung mit moderner Infrastruktur als Code-Practice verwalten. Dies vereinfacht drastisch, was ein komplexes System ansonsten bedeuten würde. Administratoren können so Konfigurationen an einem Ort definieren und anpassen und anschließend unabhängig von der Größe der Umgebung konsistent anwenden. Die BeeGFS Kollektion ist erhältlich ab https://galaxy.ansible.com/netapp_eseries/beegfs["Ansible-Galaxie"^] Und https://github.com/netappeseries/beegfs/["NetApp E-Series GitHub"^].
+BeeGFS auf NetApp wird mittels Ansible-Automatisierung bereitgestellt und implementiert. Das Hosting wird auf GitHub und Ansible Galaxy (die BeeGFS-Sammlung ist über verfügbar https://galaxy.ansible.com/netapp_eseries/beegfs["Ansible-Galaxie"^] Und https://github.com/netappeseries/beegfs/["NetApp E-Series GitHub"^]). Obwohl Ansible vor allem mit der Hardware getestet wird, die zum Zusammenbauen der BeeGFS-Bausteine verwendet wird, können Sie es so konfigurieren, dass es auf nahezu jedem x86-basierten Server unter Verwendung einer unterstützten Linux-Distribution ausgeführt wird.
+
+Weitere Informationen finden Sie unter https://www.netapp.com/blog/deploying-beegfs-eseries/["Implementieren von BeeGFS mit E-Series Storage"^].

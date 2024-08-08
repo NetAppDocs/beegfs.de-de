@@ -86,11 +86,11 @@ Es empfiehlt sich auch, passwortlose SSH vom Steuerungsknoten auf alle BeeGFS Da
 
 === BeeGFS-Dateiknoten
 
-File-Nodes müssen RedHat 8.4 ausführen und auf das HA-Repository mit den erforderlichen Paketen (Pacemaker, Corosync, Fencing-Agents-all, Resource-Agents) zugreifen. So kann beispielsweise der folgende Befehl ausgeführt werden, um das entsprechende Repository auf RedHat 8 zu aktivieren:
+File-Nodes müssen RedHat 9.3 ausführen und auf das HA-Repository mit den erforderlichen Paketen (Pacemaker, Corosync, Fencing-Agents-all, Resource-Agents) zugreifen. So kann beispielsweise der folgende Befehl ausgeführt werden, um das entsprechende Repository auf RedHat 9 zu aktivieren:
 
 [source, bash]
 ----
-subscription-manager repo-override repo=rhel-8-for-x86_64-highavailability-rpms --add=enabled:1
+subscription-manager repo-override repo=rhel-9-for-x86_64-highavailability-rpms --add=enabled:1
 ----
 
 

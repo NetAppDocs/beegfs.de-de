@@ -30,13 +30,13 @@ Laufen `pcs status` Auf jedem Clusterknoten, auf dem die Cluster-Dienste (Pacema
 
 [source, console]
 ----
-[root@ictad22h01 ~]# pcs status
+[root@beegfs_01 ~]# pcs status
 Cluster name: hacluster
 Cluster Summary:
   * Stack: corosync
-  * Current DC: ictad22h01 (version 2.0.5-9.el8_4.3-ba59be7122) - partition with quorum
+  * Current DC: beegfs_01 (version 2.0.5-9.el8_4.3-ba59be7122) - partition with quorum
   * Last updated: Fri Jul  1 13:37:18 2022
-  * Last change:  Fri Jul  1 13:23:34 2022 by root via cibadmin on ictad22h01
+  * Last change:  Fri Jul  1 13:23:34 2022 by root via cibadmin on beegfs_01
   * 6 nodes configured
   * 235 resource instances configured
 ----
@@ -45,9 +45,9 @@ Im folgenden Abschnitt werden Nodes im Cluster aufgeführt:
 [source, console]
 ----
 Node List:
-  * Node ictad22h06: standby
-  * Online: [ ictad22h01 ictad22h02 ictad22h04 ictad22h05 ]
-  * OFFLINE: [ ictad22h03 ]
+  * Node beegfs_06: standby
+  * Online: [ beegfs_01 beegfs_02 beegfs_04 beegfs_05 ]
+  * OFFLINE: [ beegfs_03 ]
 ----
 Dies zeigt insbesondere alle Knoten an, die sich im Standby- oder Offline-Modus befinden. Nodes im Standby-Modus sind weiterhin am Cluster beteiligt, sind jedoch als nicht zur Ausführung von Ressourcen geeignet. Nodes, die offline sind, geben an, dass auf diesem Node keine Cluster-Services ausgeführt werden, entweder da sie manuell angehalten werden, oder weil der Node neu gebootet/heruntergefahren wurde.
 
@@ -61,12 +61,12 @@ Im nächsten Abschnitt werden alle Ressourcen im Cluster und ihre Status angezei
 [source, console]
 ----
 Full List of Resources:
-  * mgmt-monitor	(ocf::eseries:beegfs-monitor):	 Started ictad22h01
+  * mgmt-monitor	(ocf::eseries:beegfs-monitor):	 Started beegfs_01
   * Resource Group: mgmt-group:
-    * mgmt-FS1	(ocf::eseries:beegfs-target):	 Started ictad22h01
-    * mgmt-IP1	(ocf::eseries:beegfs-ipaddr2):	 Started ictad22h01
-    * mgmt-IP2	(ocf::eseries:beegfs-ipaddr2):	 Started ictad22h01
-    * mgmt-service	(systemd:beegfs-mgmtd):	 Started ictad22h01
+    * mgmt-FS1	(ocf::eseries:beegfs-target):	 Started beegfs_01
+    * mgmt-IP1	(ocf::eseries:beegfs-ipaddr2):	 Started beegfs_01
+    * mgmt-IP2	(ocf::eseries:beegfs-ipaddr2):	 Started beegfs_01
+    * mgmt-service	(systemd:beegfs-mgmtd):	 Started beegfs_01
 [...]
 ----
 Ähnlich wie bei Knoten wird neben dem Ressourcenzustand in Klammern zusätzlicher Text angezeigt, wenn Probleme mit der Ressource auftreten. Wenn z. B. Pacemaker einen Ressourcenstopp anfordert und dieser nicht innerhalb der zugewiesenen Zeit abgeschlossen werden kann, versucht Pacemaker, den Knoten einzuzäunen. Wenn das Fechten deaktiviert ist oder der Fechten-Vorgang fehlschlägt, wird der Ressourcenzustand angezeigt `FAILED <HOSTNAME> (blocked)` Pacemaker kann ihn nicht auf einem anderen Knoten starten.

@@ -20,19 +20,19 @@ Sowohl die erste als auch die zweite Generation verfügen über eine Basisarchit
 
 * Verdoppeln Sie die Performance und Kapazität bei gleichzeitiger Ergänzung von nur 2 HE Rack-Stellfläche
 * Hochverfügbarkeit (HA) auf Grundlage eines gemeinsam genutzten zwei-Tier-Hardwaredesigns
-* Externe Qualifizierung für NVIDIA DGX A100 SuperPOD und NVIDIA BasePOD Architekturen
+* Architektur, die für NVIDIA DGX SuperPOD A100, H100, H200 und B200 Systeme entwickelt wurde und zuvor auf einem dedizierten Abnahme-Cluster bei NVIDIA validiert wurde Lesen Sie mehr über NVIDIA DGX SuperPOD mit NetApp in der link:https://docs.netapp.com/us-en/netapp-solutions/ai/ai-dgx-superpod.html["Designleitfaden"].
 
 
 
 
 == Design der zweiten Generation
 
-Die zweite Generation von BeeGFS auf NetApp ist für die Performance-Anforderungen anspruchsvoller Workloads optimiert, darunter High-Performance-Computing (HPC) und HPC-ähnliche Techniken für Machine Learning (ML), Deep Learning (DL) und ähnliche Techniken für künstliche Intelligenz (KI). Durch die Integration einer HA-Architektur (Shared Disk High Availability, Hochverfügbarkeit) erfüllt die BeeGFS auf NetApp Lösung auch die Anforderungen von Unternehmen und anderen Unternehmen, die sich keine Ausfallzeiten oder Datenverluste leisten können, wenn es um Storage geht, der durch Skalierung mit ihren Workloads und Anwendungsfällen Schritt halten kann. Diese Lösung wurde nicht nur von NetApp verifiziert, sondern bestand auch die externe Qualifizierung als Storage-Option für NVIDIA DGX SuperPOD und DGX BasePOD.
+Die zweite Generation von BeeGFS auf NetApp ist für die Performance-Anforderungen anspruchsvoller Workloads optimiert, darunter High-Performance-Computing (HPC), Machine Learning (ML), Deep Learning (DL) und andere Techniken für künstliche Intelligenz (KI). Durch die Integration einer Shared-Disk-Hochverfügbarkeits-Architektur (HA) sorgt dieses Design für die Langlebigkeit und Verfügbarkeit von Daten und eignet sich daher ideal für Unternehmen und andere Unternehmen, die Ausfallzeiten oder Datenverluste nicht leisten können. Das Design der zweiten Generation umfasst Komponenten wie PCIe gen5-Server und Unterstützung für NVIDIA® Quantum™ QM9700 400 GB/s InfiniBand-Switches. Diese Lösung wurde nicht nur von NetApp verifiziert, sondern hat auch die externe Qualifizierung als Storage-Option für das DGX™ A100 SuperPOD NVIDIA bestanden – mit erweiterter Zertifizierung für DGX SuperPOD H100-, H200- und B200-Systeme.
 
 
 
 == Design der ersten Generationen
 
-Die erste Generation von BeeGFS auf NetApp wurde für Machine-Learning- (ML) und AI-Workloads (künstliche Intelligenz) mit NetApp EF600 NVMe-Storage-Systemen, dem BeeGFS Parallel-Filesystem, NVIDIA DGX™ A100-Systemen und NVIDIA® Mellanox® Quantum™ QM8700 IB-Switches mit 200 Gbit/s entwickelt. Dieses Design verfügt außerdem über 200 Gbit/s InfiniBand (IB) für die Storage- und Compute-Cluster Interconnect-Fabric und stellt damit eine vollständig auf IB basierende Architektur für hochperformante Workloads bereit.
+Die erste Generation von BeeGFS auf NetApp wurde für Workloads für Machine Learning (ML) und künstliche Intelligenz (KI) mit NetApp EF600 NVMe-Storage-Systemen, dem parallelen Filesystem BeeGFS, NVIDIA DGX™ A100-Systemen und NVIDIA® Mellanox® Quantum™ QM8700 200 GB/s IB-Switches entwickelt. Dieses Design bietet zudem 200 GB/s InfiniBand (IB) für die Storage- und Computing-Cluster Interconnect Fabric und stellt so eine vollständig IB-basierte Architektur für hochperformante Workloads bereit.
 
 Weitere Informationen zur ersten Generation finden Sie unter link:https://www.netapp.com/pdf.html?item=/media/25445-nva-1156-design.pdf["NetApp EF-Series AI mit NVIDIA DGX A100 Systems und BeeGFS"^].

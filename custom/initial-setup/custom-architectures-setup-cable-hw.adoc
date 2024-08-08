@@ -37,7 +37,7 @@ Bei der Planung der Installation ist es wichtig, dass alle Geräte in jedem Baus
 
 Beispiel für einen einzelnen Baustein:
 
-image:../media/buildingblock.png["Beispiel für einen Baustein"]
+image:../media/buildingblock-sr665v3.png["Beispiel für einen Baustein"]
 
 Beispiel für eine große BeeGFS-Installation, bei der es in jedem HA-Cluster mehrere Bausteine und mehrere HA-Cluster im Filesystem gibt:
 

@@ -97,23 +97,23 @@ pcs resource relocate run
 
 Wenn Sie den bevorzugten Datei-Node für einen einzelnen BeeGFS-Service dauerhaft ändern möchten, passen Sie den Ansible-Bestand an, sodass der bevorzugte Node zuerst aufgelistet wird, und führen Sie das Ansible-Playbook erneut aus.
 
-Beispiel in diesem Beispiel `inventory.yml` Datei, ictad22h01 ist der bevorzugte Datei-Knoten, um den BeeGFS-Managementdienst auszuführen:
+In dieser Beispieldatei ist beegfs_01 beispielsweise `inventory.yml` der bevorzugte Datei-Node zum Ausführen des BeeGFS-Managementservice:
 
 [source, yaml]
 ----
         mgmt:
           hosts:
-            ictad22h01:
-            ictad22h02:
+            beegfs_01:
+            beegfs_02:
 ----
-Durch eine Umkehrung des Auftrags würden die Managementservices am ictad22h02 bevorzugt werden:
+Durch eine Umkehrung des Auftrags würden die Managementservices am beegfs_02 bevorzugt werden:
 
 [source, yaml]
 ----
         mgmt:
           hosts:
-            ictad22h02:
-            ictad22h01:
+            beegfs_02:
+            beegfs_01:
 ----
 
 
@@ -128,7 +128,7 @@ Wenn Sie aus irgendeinem Grund einen einzelnen Service auf einen anderen Dateikn
 pcs resource move <SERVICE>-monitor <HOSTNAME>
 ----
 
-WARNING: Geben Sie keine einzelnen Ressourcen oder die Ressourcengruppe an. Geben Sie immer den Namen des Monitors für den BeeGFS-Dienst an, den Sie verschieben möchten. So verschieben Sie beispielsweise den BeeGFS-Verwaltungsdienst in ictad22h02-Ausführung: `pcs resource move mgmt-monitor ictad22h02`. Dieser Prozess kann wiederholt werden, um einen oder mehrere Services von den bevorzugten Nodes weg zu verschieben. Überprüfen Sie mit `pcs status` Die Dienste wurden auf dem neuen Knoten verschoben/gestartet.
+WARNING: Geben Sie keine einzelnen Ressourcen oder die Ressourcengruppe an. Geben Sie immer den Namen des Monitors für den BeeGFS-Dienst an, den Sie verschieben möchten. Um zum Beispiel den BeeGFS-Managementdienst auf beegfs_02 zu verschieben, führen Sie: Aus `pcs resource move mgmt-monitor beegfs_02`. Dieser Prozess kann wiederholt werden, um einen oder mehrere Services von den bevorzugten Nodes weg zu verschieben. Überprüfen Sie, ob `pcs status` die Services auf dem neuen Node verlegt/gestartet wurden.
 
 Wenn Sie einen BeeGFS-Service wieder auf den bevorzugten Node verschieben möchten, löschen Sie zuerst die temporären Ressourcenbeschränkungen (diesen Schritt wird bei mehreren Services wiederholt):
 

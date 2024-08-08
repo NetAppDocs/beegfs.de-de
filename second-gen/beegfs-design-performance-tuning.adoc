@@ -32,20 +32,20 @@ Die Systemeinstellungen variieren je nach Servermodell, das Sie als Dateiknoten 
 +
 ** BeeGFS Service-Konfigurationsparameter
 +
-Sie können die Standardeinstellungen für die Konfigurationsparameter bei Bedarf überschreiben. Informationen zu den Parametern, die Sie sich für Ihre spezifischen Workloads oder Anwendungsfälle anpassen können, finden Sie im https://github.com/netappeseries/beegfs/blob/135d9a04ae96f4d202300bae870c6404b77b6865/roles/beegfs_ha_7_2/defaults/main.yml#L155["Parameter für BeeGFS-Service-Konfiguration"^].
+Sie können die Standardeinstellungen für die Konfigurationsparameter bei Bedarf überschreiben. Informationen zu den Parametern, die Sie an Ihre spezifischen Workloads oder Anwendungsfälle anpassen können, finden Sie im https://github.com/NetApp/beegfs/blob/master/roles/beegfs_ha_7_4/defaults/main.yml#L237["Parameter für BeeGFS-Service-Konfiguration"^].
 
 ** Für die Volume-Formatierung und die Montage-Parameter gelten die empfohlenen Standardeinstellungen, die nur für erweiterte Anwendungsfälle angepasst werden sollten. Die Standardwerte führen folgende Schritte aus:
 +
 *** Optimieren Sie die ursprüngliche Volume-Formatierung auf Basis des Zieltyps (beispielsweise Management, Metadaten oder Storage), zusammen mit der RAID-Konfiguration und Segmentgröße des zugrunde liegenden Volumes.
 *** Passen Sie an, wie Pacemaker die einzelnen Lautstärkerahmen einstellt, um sicherzustellen, dass Änderungen sofort an Block-Nodes der E-Series gespült werden. So wird Datenverlust verhindert, wenn bei aktiven Schreibvorgängen Datei-Nodes ausfallen.
 +
-Informationen zu den Parametern, die Sie sich für Ihre spezifischen Workloads oder Anwendungsfälle anpassen können, finden Sie im https://github.com/netappeseries/beegfs/blob/135d9a04ae96f4d202300bae870c6404b77b6865/roles/beegfs_ha_7_2/defaults/main.yml#L258["Volume-Formatierung und Montage der Konfigurationsparameter"^].
+Informationen zu den Parametern, die Sie an Ihre spezifischen Workloads oder Anwendungsfälle anpassen können, finden Sie im https://github.com/NetApp/beegfs/blob/master/roles/beegfs_ha_7_4/defaults/main.yml#L279["Volume-Formatierung und Montage der Konfigurationsparameter"^].
 
 
 
 
 
-. *Systemeinstellungen im Linux-Betriebssystem, das auf den Dateiknoten installiert ist.* Sie können die standardmäßigen Linux-Betriebssystemeinstellungen überschreiben, wenn Sie den Ansible-Bestand in Schritt 4 von erstellen link:beegfs-deploy-beegfs-general-config.html["Erstellen des Ansible-Inventars"].
+. *Systemeinstellungen im Linux-Betriebssystem, das auf den Dateiknoten installiert ist.* Sie können die standardmäßigen Linux OS-Systemeinstellungen überschreiben, wenn Sie den Ansible-Bestand in Schritt 4 von erstellen link:beegfs-deploy-create-inventory.html["Erstellen des Ansible-Inventars"].
 +
 Die Standardeinstellungen wurden zur Validierung der BeeGFS auf NetApp Lösung verwendet. Sie können sie jedoch an Ihre spezifischen Workloads oder Anwendungsfälle anpassen. Einige Beispiele für die Linux-Betriebssystemeinstellungen, die Sie ändern können, sind:
 
@@ -71,7 +71,7 @@ Sie können den CPU-Frequenzregler und andere CPU-Konfigurationen für maximale 
 
 ** Anfragegröße lesen
 +
-Sie können die maximale Lese-Anfraegröße für Mellanox HCAs erhöhen.
+Sie können die maximale Größe für Leseanforderungen für NVIDIA-HCAs erhöhen.
 
 
 

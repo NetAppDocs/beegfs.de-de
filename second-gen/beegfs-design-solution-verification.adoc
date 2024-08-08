@@ -23,7 +23,7 @@ Die Konfigurationsprofile umfassen Folgendes:
 * Ein BeeGFS-Speicherbaustein.
 
 
-Die Bausteine wurden mit zwei Mellanox Quantum InfiniBand-Switches (MQM8700) verbunden. Zehn BeeGFS Clients wurden auch an die InfiniBand Switches angeschlossen und zur Ausführung von Synthetic Benchmark Utilities verwendet.
+Die Bausteine wurden mit zwei NVIDIA Quantum InfiniBand (MQM8700) Switches verbunden. Zehn BeeGFS Clients wurden auch an die InfiniBand Switches angeschlossen und zur Ausführung von Synthetic Benchmark Utilities verwendet.
 
 Die folgende Abbildung zeigt die BeeGFS-Konfiguration, die zur Validierung der BeeGFS auf NetApp Lösung verwendet wird.
 
@@ -137,8 +137,8 @@ NOTE: Es ist ein bekanntes Problem aufgetreten (siehe https://github.com/netappe
 
 
 
-== NVIDIA DGX A100 SuperPOD- und BasePOD-Validierung
+== Validierung von NVIDIA DGX SuperPOD und BasePOD
 
-NetApp validierte eine Storage-Lösung für IANVIDDGX A100 SuperPOD unter Verwendung eines ähnlichen BeeGFS Filesystem, das aus drei Bausteinen mit den Metadaten und angewandtem Storage-Konfigurationsprofil besteht. Die Qualifizierung bestand darin, die von dieser NVA beschriebene Lösung mit zwanzig DGX A100 GPU-Servern zu testen, auf denen eine Vielzahl von Storage-, Machine-Learning- und Deep-Learning-Benchmarks ausgeführt wurden. Der gesamte Storage, der für die Verwendung in NVIDIA DGX A100 SuperPOD zertifiziert ist, ist ebenfalls automatisch für die Verwendung in NVIDIA BasePOD-Architekturen zertifiziert.
+NetApp validierte eine Storage-Lösung für IANVIDDGX A100 SuperPOD unter Verwendung eines ähnlichen BeeGFS Filesystem, das aus drei Bausteinen mit den Metadaten und angewandtem Storage-Konfigurationsprofil besteht. Die Qualifizierung bestand darin, die von dieser NVA beschriebene Lösung mit zwanzig DGX A100 GPU-Servern zu testen, auf denen eine Vielzahl von Storage-, Machine-Learning- und Deep-Learning-Benchmarks ausgeführt wurden. Aufbauend auf der Validierung mit DGX A100 SuperPOD von NVIDIA wurde die BeeGFS auf NetApp Lösung für DGX SuperPOD H100-, H200- und B200-Systeme genehmigt. Diese Erweiterung basiert auf der Erfüllung der zuvor mit dem NVIDIA DGX A100 validierten Benchmarks und Systemanforderungen.
 
 Weitere Informationen finden Sie unter https://www.netapp.com/pdf.html?item=/media/72718-nva-1167-DESIGN.pdf["NVIDIA DGX SuperPOD mit NetApp"^] Und https://www.nvidia.com/en-us/data-center/dgx-basepod/["NVIDIA DGX BasePOD"^].

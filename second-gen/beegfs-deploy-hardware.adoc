@@ -17,18 +17,23 @@ summary: 'Jeder Baustein besteht aus zwei validierten x86-Datei-Nodes, die direk
 Jeder Baustein besteht aus zwei validierten x86-Datei-Nodes, die mithilfe von HDR-Kabeln (200 GB) direkt mit zwei Block-Nodes verbunden sind.
 
 
-NOTE: Da jeder Baustein zwei BeeGFS-Datei-Nodes enthält, sind mindestens zwei Bausteine erforderlich, um im Failover-Cluster ein Quorum einzurichten. Obwohl ein Cluster mit zwei Nodes konfiguriert werden kann, bestehen Einschränkungen bei dieser Konfiguration, die verhindern können, dass in einigen Szenarien ein erfolgreicher Failover auftritt. Wenn ein Cluster mit zwei Nodes erforderlich ist, kann ein drittes Gerät als Tiebreaker ebenfalls integriert werden, obwohl dieses Verfahren nicht abgedeckt ist.
+NOTE: Zum Herstellen von Quorum im Failover Cluster sind mindestens zwei Bausteine erforderlich. Ein Cluster mit zwei Nodes hat Einschränkungen, die ein erfolgreiches Failover verhindern können. Wenn Sie ein Cluster mit zwei Nodes konfigurieren, wird ein drittes Gerät als Tiebreaker integriert, dieses Design wird jedoch nicht in dieser Dokumentation beschrieben.
 
-Sofern nicht anders angegeben, bestehen die folgenden Schritte für jeden Baustein im Cluster identisch, unabhängig davon, ob er zum Ausführen von BeeGFS Metadaten und Storage-Services oder Storage-Services nur verwendet wird.
+Die folgenden Schritte sind für jeden Baustein im Cluster identisch, unabhängig davon, ob er sowohl für die Ausführung von BeeGFS-Metadaten- und Storage-Services als auch nur für Storage-Services eingesetzt wird, sofern nicht anders angegeben.
 
 .Schritte
-. Konfigurieren Sie jeden BeeGFS-Dateiknoten mit vier PCIe 4.0 ConnectX-6 Host Channel-Adaptern (HCAs) im InfiniBand-Modus und installieren Sie diese in den PCIe-Steckplätzen 2, 3, 5 und 6.
+. Richten Sie jeden BeeGFS-Dateiknoten mit vier Host-Channel-Adaptern (HCAs) mithilfe der in der angegebenen Modelle link:beegfs-technology-requirements.html["Technische Anforderungen"]ein. Legen Sie die HCAs gemäß den folgenden Spezifikationen in die PCIe-Steckplätze des Dateiknotens ein:
++
+** * Lenovo ThinkSystem SR665 V3 Server:* Verwenden Sie die PCIe-Steckplätze 1, 2, 4 und 5.
+** * Lenovo ThinkSystem SR665 Server:* Verwenden Sie die PCIe-Steckplätze 2, 3, 5 und 6.
+
+
 . Konfigurieren Sie jeden BeeGFS-Block-Node mit einer 200-GB-Host-Schnittstellenkarte (HIC) mit zwei Ports, und installieren Sie die HIC in jedem ihrer beiden Storage Controller.
 +
-Stellen Sie die Bausteine so ein, dass die beiden BeeGFS-Datei-Nodes über den BeeGFS-Block-Nodes liegen. Die folgende Abbildung zeigt die richtige Hardwarekonfiguration für den BeeGFS-Baustein (Rückansicht).
+Stellen Sie die Bausteine so ein, dass die beiden BeeGFS-Datei-Nodes über den BeeGFS-Block-Nodes liegen. Die folgende Abbildung zeigt die richtige Hardwarekonfiguration für den BeeGFS-Baustein, der Lenovo ThinkSystem SR665 V3-Server als Dateiknoten verwendet (Rückansicht).
 
 +
-image:../media/buildingblock.png[""]
+image:../media/buildingblock-sr665v3.png[""]
 
 +
 
@@ -43,17 +48,20 @@ image:../media/driveslots.png[""]
 
 
 
-. Um die Datei- und Block-Nodes zu verkabeln, verwenden Sie 1 m InfiniBand HDR 200 GB Direct Attach Kupferkabel, sodass sie mit der in der Abbildung unten dargestellten Topologie übereinstimmen.
+. Verbinden Sie die Block- und File-Knoten mit dem link:beegfs-technology-requirements.html#block-file-cables["1 m InfiniBand HDR 200 GB Direct-Attach-Kupferkabel"], so dass sie mit der in der folgenden Abbildung gezeigten Topologie übereinstimmen.
 +
-image:../media/directattachcable.png[""]
+image:../media/directattachcable-sr665v3.png[""]
 
 +
 
 NOTE: Die Nodes sind über mehrere Bausteine hinweg nie direkt miteinander verbunden. Jeder Baustein sollte als eigenständige Einheit behandelt werden und alle Kommunikation zwischen Bausteinen erfolgt über Netzwerk-Switches.
 
-. Verwenden Sie 2 m (oder die entsprechende Länge) InfiniBand HDR 200 GB Direct-Attach-Kupferkabel, um die übrigen InfiniBand-Ports auf jedem Dateiknoten mit den InfiniBand-Switches zu verkabeln, die für das Speichernetzwerk verwendet werden sollen.
+. Verbinden Sie die übrigen InfiniBand-Ports auf dem Datei-Node mithilfe des spezifischen InfiniBand-Speicherswitters des Speichernetzwerks mit dem link:beegfs-technology-requirements.html#file-switch-cables["2 m InfiniBand-Kabel"] InfiniBand-Switch.
 +
-Wenn redundante InfiniBand-Switches verwendet werden, verkabeln Sie die in der folgenden Abbildung grün hervorgehobenen Ports mit verschiedenen Switches.
+Wenn Sie Splitterkabel verwenden, um den Speicher-Switch mit Dateiknoten zu verbinden, sollte ein Kabel vom Switch abzweigen und mit den hellgrünen Ports verbunden werden. Ein anderes Splitterkabel sollte sich vom Switch abzweigen und an die dunkelgrünen Ports anschließen.
+
++
+Außerdem sollten bei Speichernetzwerken mit redundanten Switches die hellgrünen Ports mit einem Switch verbunden werden, während dunkelgrüne Ports mit einem anderen Switch verbunden sein sollten.
 
 +
 image:../media/networkcable.png[""]

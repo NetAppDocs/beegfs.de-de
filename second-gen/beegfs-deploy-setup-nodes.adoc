@@ -22,7 +22,7 @@ Während die meisten Software-Konfigurationsaufgaben mithilfe der von NetApp zur
 
 . Konfigurieren Sie das Netzwerk auf dem Baseboard Management Controller (BMC) jedes Servers.
 +
-Informationen zur Konfiguration von Netzwerken für die validierten Lenovo SR665-Dateiknoten finden Sie im https://thinksystem.lenovofiles.com/help/index.jsp?topic=%2F7D2W%2Fset_the_network_connection.html["Lenovo ThinkSystem Dokumentation"^].
+Informationen zum Konfigurieren der Netzwerkkonfiguration für die validierten Lenovo SR665 V3-Dateiknoten finden Sie unter https://pubs.lenovo.com/sr665-v3/["Lenovo ThinkSystem Dokumentation"^].
 
 +
 
@@ -35,7 +35,7 @@ Sie konfigurieren die Systemeinstellungen über das UEFI-Setup (früher BIOS) od
 +
 Informationen zur Konfiguration der Systemeinstellungen für die validierten Lenovo SR665-Dateiknoten finden Sie unter link:beegfs-deploy-file-node-tuning.html["Passen Sie die Systemeinstellungen für die Performance an"].
 
-. Installieren Sie Red hat 8.4 und konfigurieren Sie den Hostnamen und den Netzwerkport, mit dem das Betriebssystem verwaltet wird, einschließlich SSH-Konnektivität über den Ansible-Steuerungs-Node.
+. Installieren Sie Red hat 9.3 und konfigurieren Sie den Hostnamen und den Netzwerkport, mit dem das Betriebssystem verwaltet wird, einschließlich SSH-Konnektivität über den Ansible-Steuerungs-Node.
 +
 Konfigurieren Sie derzeit keine IPs auf einem der InfiniBand-Ports.
 
@@ -43,15 +43,15 @@ Konfigurieren Sie derzeit keine IPs auf einem der InfiniBand-Ports.
 
 NOTE: Die nachfolgenden Abschnitte gehen davon aus, dass die Hostnamen sequenziell nummeriert sind (z. B. h1-HN), und beziehen sich auf Aufgaben, die auf ungeraden oder gar nummerierten Hosts ausgeführt werden sollten.
 
-. Verwenden Sie den RedHat Subscription Manager, um das System zu registrieren und zu abonnieren, damit die erforderlichen Pakete aus den offiziellen Red hat Repositorys installiert werden können und um Updates auf die unterstützte Version von Red hat zu beschränken: `subscription-manager release --set=8.4`. Anweisungen hierzu finden Sie unter https://access.redhat.com/solutions/253273["Registrieren und Abonnieren eines RHEL Systems"^] Und  https://access.redhat.com/solutions/2761031["Einschränken von Aktualisierungen"^].
+. Verwenden Sie RedHat Subscription Manager, um das System zu registrieren und zu abonnieren, um die Installation der erforderlichen Pakete aus den offiziellen Red hat Repositorys zu ermöglichen und Aktualisierungen auf die unterstützte Version von Red hat zu beschränken: `subscription-manager release --set=9.3`. Anweisungen hierzu finden Sie unter https://access.redhat.com/solutions/253273["Registrieren und Abonnieren eines RHEL Systems"^] und  https://access.redhat.com/solutions/2761031["Einschränken von Aktualisierungen"^].
 . Aktivieren Sie das Red hat Repository mit den für hohe Verfügbarkeit erforderlichen Paketen.
 +
 ....
-subscription-manager repo-override --repo=rhel-8-for-x86_64-highavailability-rpms --add=enabled:1
+subscription-manager repo-override --repo=rhel-9-for-x86_64-highavailability-rpms --add=enabled:1
 ....
-. Aktualisieren Sie alle ConnectX-6 HCA-Firmware auf die in empfohlene Version link:beegfs-technology-requirements.html["Technologieanforderungen erfüllt"].
+. Aktualisieren Sie alle HCA-Firmware auf die in empfohlene Version link:beegfs-technology-requirements.html["Technologieanforderungen erfüllt"].
 +
-Dieses Update kann durch Herunterladen und Ausführen einer Version des mlxup-Tools durchgeführt werden, das die empfohlene Firmware bündelt. Sie können dieses Tool von herunterladen https://network.nvidia.com/support/firmware/mlxup-mft/["Mlxup - Dienstprogramm zum Aktualisieren und Abfragen"^] (link:https://docs.nvidia.com/networking/display/MLXUPFWUTILITY/mlxup+-+Firmware+Utility+User+Guide["Benutzerhandbuch"^]).
+Dieses Update kann durch Herunterladen und Ausführen einer Version des mlxup-Tools durchgeführt werden, das die empfohlene Firmware bündelt. Sie können dieses Tool unter ( ) herunterladen https://network.nvidia.com/support/firmware/mlxup-mft/["Mlxup - Dienstprogramm zum Aktualisieren und Abfragen"^]link:https://docs.nvidia.com/networking/display/mlxupfwutility["Benutzerhandbuch"^].
 
 
 

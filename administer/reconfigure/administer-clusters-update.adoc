@@ -48,6 +48,12 @@ Jede Version der BeeGFS-Kollektion wird mit spezifischen Versionen von BeeGFS ge
 
 
 | 7.3.1 | 7.3.2 | Ja. | Upgrade mit beegfs Collection v3.1.0 
+
+
+| 7.3.2 | 7.4.1 | Ja. | Upgrade mit beegfs Collection v3.2.0 
+
+
+| 7.4.1 | 7.4.2 | Ja. | Upgrade mit beegfs Collection v3.2.0 
 |===
 
 
@@ -83,7 +89,7 @@ Nehmen Sie alle erforderlichen oder gewünschten Aktualisierungen der Ansible-Be
 
 === Schritt 3: Ansible Playbook aktualisieren (nur bei Aktualisierung von Haupt- oder Unterversionen)
 
-Wenn Sie zwischen Major- oder Minor-Versionen wechseln, finden Sie im `playbook.yml` Datei, die zum Bereitstellen und Warten des Clusters verwendet wird, aktualisiert den Namen des `beegfs_ha_<VERSION>` Rolle zur Darstellung der gewünschten Version. Wenn Sie zum Beispiel BeeGFS 7.3 bereitstellen möchten, wäre dies `beegfs_ha_7_3`:
+Wenn Sie zwischen Haupt- oder Unterversionen wechseln, aktualisieren Sie in der `playbook.yml` Datei, die zum Bereitstellen und Warten des Clusters verwendet wird, den Namen der `beegfs_ha_<VERSION>` Rolle, damit die gewünschte Version angezeigt wird. Wenn Sie beispielsweise BeeGFS 7.4 bereitstellen möchten, wäre dies `beegfs_ha_7_4`:
 
 [source, yaml]
 ----
@@ -95,7 +101,7 @@ Wenn Sie zwischen Major- oder Minor-Versionen wechseln, finden Sie im `playbook.
   tasks:
     - name: Ensure BeeGFS HA cluster is setup.
       ansible.builtin.import_role:  # import_role is required for tag availability.
-        name: beegfs_ha_7_3
+        name: beegfs_ha_7_4
 ----
 Weitere Informationen zum Inhalt dieser Playbook-Datei finden Sie im link:custom-architectures-deploy-ha-cluster.html["Implementieren Sie das BeeGFS HA-Cluster"^] Abschnitt.
 

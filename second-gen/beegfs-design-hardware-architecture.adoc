@@ -47,7 +47,7 @@ Beachten Sie in der folgenden Abbildung Folgendes:
 image:../media/beegfs-design-image6.png[""]
 
 
-NOTE: Bei Speichernetzwerken mit redundanten Switches sollten die in hellgrün dargestellten Ports mit einem Switch verbunden werden. Die in Dunkelgrün-Ports sollten mit einem anderen Switch verbunden werden.
+NOTE: Wenn Sie Splitterkabel verwenden, um den Speicher-Switch mit den Dateiknoten zu verbinden, sollte ein Kabel abzweigen und mit den hellgrünen Ports verbunden werden. Ein anderes Kabel sollte abzweigen und an die dunkelgrünen Ports anschließen. Außerdem sollten bei Speichernetzwerken mit redundanten Switches die hellgrünen Ports mit einem Switch verbunden werden, während dunkelgrüne Ports mit einem anderen Switch verbunden sein sollten.
 
 Die in der Abbildung dargestellte Verkabelungskonfiguration ermöglicht jedem BeeGFS-Dienst Folgendes:
 
@@ -57,7 +57,7 @@ Die in der Abbildung dargestellte Verkabelungskonfiguration ermöglicht jedem Be
 
 
 .Verkabelung zur Nutzung der Bandbreite
-Um die vollständige bidirektionale PCIe-Bandbreite zu nutzen, stellen Sie sicher, dass ein Port an jedem InfiniBand-Adapter mit der Storage-Fabric verbunden ist, und der andere Port mit einem Block-Node verbunden wird. Die theoretische Maximalgeschwindigkeit eines HDR InfiniBand-Ports beträgt 25 Gbit/s (nicht für Signalisierung und andere Gemeinkosten). Die maximale Bandbreite für eine Richtung in einem PCIe 4.0 x16-Steckplatz beträgt 32 Gbit/s und führt zu einem potenziellen Engpass bei der Implementierung von Datei-Nodes mit InfiniBand-Adaptern mit zwei Ports, die theoretisch 50 Gbit/s Bandbreite verarbeiten können.
+Um die vollständige bidirektionale PCIe-Bandbreite zu nutzen, stellen Sie sicher, dass ein Port an jedem InfiniBand-Adapter mit der Storage-Fabric verbunden ist, und der andere Port mit einem Block-Node verbunden wird.
 
 Die folgende Abbildung zeigt das Verkabelungsdesign, mit dem die vollständige bidirektionale PCIe-Bandbreite genutzt werden kann.
 

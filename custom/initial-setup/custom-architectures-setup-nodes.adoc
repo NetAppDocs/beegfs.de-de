@@ -52,7 +52,7 @@ Verwenden Sie den RedHat Subscription Manager, um das System zu registrieren und
 Red hat Repository mit den für hohe Verfügbarkeit erforderlichen Paketen aktivieren:
 
 ....
-subscription-manager repo-override --repo=rhel-8-for-x86_64-highavailability-rpms --add=enabled:1
+subscription-manager repo-override --repo=rhel-9-for-x86_64-highavailability-rpms --add=enabled:1
 ....
 
 

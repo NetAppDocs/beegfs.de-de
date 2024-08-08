@@ -21,8 +21,6 @@ indexpage:
       url: https://www.netapp.com/blog/beegfs-for-beginners/
     - title: Blog - HA für BeeGFS
       url: https://www.netapp.com/blog/high-availability-beegfs/
-    - title: Video – Beschleunigung von KI-Workloads mit BeeGFS auf NetApp
-      url: https://www.netapp.tv/details/28905?mcid=04158305605030681010298851103052321172
   - title: Weitere Dokumente
     links:
     - title: NetApp Produktdokumentation

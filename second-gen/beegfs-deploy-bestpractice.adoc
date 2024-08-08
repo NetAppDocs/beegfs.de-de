@@ -24,14 +24,14 @@ Folgen Sie beim physischen Zusammenbau und Erstellen der Ansible-Bestandsdatei d
 
 * Host-Namen der Dateiknoten werden nacheinander nummeriert (h01-HN) mit niedrigeren Zahlen oben im Rack und höheren Zahlen unten.
 +
-Beispielsweise die Namenskonvention `[location][row][rack]hN` Sieht aus wie: `ictad22h01`.
+Die Namenskonvention sieht beispielsweise `[location][row][rack]hN` wie folgt aus: `beegfs_01`.
 
 * Jeder Block-Node besteht aus zwei Storage-Controllern, die jeweils über einen eigenen Host-Namen verfügen.
 +
 Mit einem Storage-Array-Namen wird im Rahmen eines Ansible-Inventars das gesamte Block-Storage-System bezeichnet. Die Namen des Speicher-Arrays sollten nacheinander nummeriert sein (a01 - an), und die Hostnamen für einzelne Controller werden aus dieser Namenskonvention abgeleitet.
 
 +
-Beispiel: Ein Block-Node mit dem Namen `ictad22a01` Normalerweise können Host-Namen für jeden Controller wie konfiguriert sein `ictad22a01-a` Und `ictad22a01-b`, Aber als Ansible-Inventar bezeichnet werden `ictad22a01`.
+Beispielsweise kann bei einem Block-Node mit dem Namen `ictad22a01` normalerweise Hostnamen für jeden Controller wie und konfiguriert `ictad22a01-a` `ictad22a01-b`sein, in einem Ansible-Inventar jedoch als bezeichnet werden `netapp_01`.
 
 * File- und Block-Nodes innerhalb desselben Bausteins teilen sich das gleiche Nummerierungsschema und sind im Rack nebeneinander, wobei beide Datei-Nodes oben und beide Block-Nodes direkt darunter liegen.
 +
@@ -87,9 +87,7 @@ NOTE: Dieses Adressprogramm entspricht der folgenden Regel: Das dritte Oktett is
 |===
 
 
-=== BeeGFS-Client-Server-IPoIB-Adressierschema (zwei Subnetze)
-
-Damit BeeGFS-Clients zwei InfiniBand-Ports verwenden können, sind zwei IPoIB-Subnetze erforderlich, wobei die Hälfte der BeeGFS-Serverdienste, die mit einer bevorzugten IP-Adresse in jedem Subnetz konfiguriert sind, um sicherzustellen, dass Clients zwei InfiniBand-Ports verwenden, um die Redundanz und den möglichen Durchsatz zum Dateisystem zu maximieren.
+=== IPoIB-Adressierungsschemata für BeeGFS-Client-Server
 
 Auf jedem Datei-Node werden mehrere BeeGFS-Serverservices ausgeführt (Management, Metadaten oder Storage). Damit jeder Service unabhängig vom anderen Datei-Node ein Failover durchführen kann, verfügt jeder über eindeutige IP-Adressen, die zwischen beiden Nodes schweben können (auch als logische Schnittstelle oder LIF bezeichnet).
 
@@ -104,9 +102,51 @@ NOTE: Zusätzlich zur Schnittstelle, die für die bandinterne Betriebssystemverw
 
 * Der BeeGFS Management Service ist immer im Betrieb `xxx.yyy.101.0` Oder `xxx.yyy.102.0`.
 * BeeGFS Metadatendienste sind immer dabei `xxx.yyy.101.zzz` Oder `xxx.yyy.102.zzz`.
-* BeeGFS Storage Services befinden sich immer im `xxx.yyy.103.zzz` Oder `xxx.yyy.103.zzz`.
+* BeeGFS Storage-Services finden sich immer bei `xxx.yyy.103.zzz` oder `xxx.yyy.104.zzz`.
 * Adressen im Bereich `100.xxx.1.1` Bis `100.xxx.99.255` Sind für Kunden reserviert.
 
+
+
+
+==== IPoIB-Adressierungsschema für ein einzelnes Subnetz
+
+In diesem Bereitstellungshandbuch wird ein einziges Subnetz-Schema verwendet, da die in aufgeführten Vorteile im aufgeführt link:beegfs-design-software-architecture.html#beegfs-network-configuration["Softwarearchitektur"]sind.
+
+.Subnetz: 100.127.0.0/16
+Die folgende Tabelle enthält den Bereich für ein einzelnes Subnetz: 100.127.0.0/16.
+
+|===
+| Zweck | InfiniBand-Port | IP-Adresse oder Bereich 
+
+
+| BeeGFS Cluster-IP | i1b oder i4b | 100.127.100.1 - 100.127.100.255 
+
+
+.2+| BeeGFS Management | i1b | 100.127.101.0 
+
+
+| i2b | 100.127.102.0 
+
+
+.2+| BeeGFS-Metadaten | i1b oder i3b | 100.127.101.1 - 100.127.101.255 
+
+
+| i2b oder i4b | 100.127.102.1 - 100.127.102.255 
+
+
+.2+| BeeGFS-Speicherung | i1b oder i3b | 100.127.103.1 - 100.127.103.255 
+
+
+| i2b oder i4b | 100.127.104.1 - 100.127.104.255 
+
+
+| BeeGFS-Clients | (Je nach Kunde) | 100.127.1.1 - 100.127.99.255 
+|===
+
+
+==== IPoIB zwei Subnetz-Adressierungsschema
+
+Ein zwei-Subnetz-Adressierungsschema wird nicht mehr empfohlen, kann aber trotzdem implementiert werden. In den folgenden Tabellen finden Sie ein empfohlenes zwei-Subnetz-Schema.
 
 .Subnetz A: 100.127.0.0/16
 In der folgenden Tabelle ist der Bereich für Subnetz A angegeben: 100.127.0.0/16.
