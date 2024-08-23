@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-technology-requirements.html 
+permalink: second-gen/beegfs-technology-requirements.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: Für die Implementierung der BeeGFS auf NetApp Lösung stellen Sie sicher, dass Ihre Umgebung die technologischen Anforderungen erfüllt. 
 ---
@@ -10,7 +10,7 @@ summary: Für die Implementierung der BeeGFS auf NetApp Lösung stellen Sie sich
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]
@@ -30,7 +30,7 @@ Stellen Sie zunächst sicher, dass Ihre Hardware die folgenden Spezifikationen f
  a| 
 2
  a| 
-[[beegfs-file-Nodes]]BeeGFS-Dateiknoten
+BeeGFS-Datei-Nodes
  a| 
 Jeder Datei-Node sollte die Spezifikationen der empfohlenen Datei-Nodes erfüllen oder übertreffen, um die erwartete Performance zu erreichen.
 
@@ -70,12 +70,12 @@ Jeder Datei-Node sollte die Spezifikationen der empfohlenen Datei-Nodes erfülle
 
 
 
-| 2 | [[Eseries-Block-Nodes]]E-Series Block-Nodes (EF600 Array)  a| 
-*Speicher:* 256 GB (128 GB pro Controller). *Adapter:* 2-Port 200 GB/HDR (NVMe/IB). *Laufwerke:* entsprechend der gewünschten Kapazität konfiguriert.
+| 2 | E-Series-Block-Nodes (EF600 Array)  a| 
+*Speicher:* 256 GB (128 GB pro Controller). *Adapter:* 2-Port 200 GB/HDR (NVMe/IB). *Laufwerke:* entsprechend den gewünschten Metadaten und Speicherkapazität konfiguriert.
 
 
 
-| 8 | [[infiniband-Adapter]]InfiniBand-Host-Karten-Adapter (für Datei-Nodes).  a| 
+| 8 | InfiniBand-Host-Karten-Adapter (für Datei-Nodes)  a| 
 Host-Karten-Adapter variieren je nach Servermodell, das für den Datei-Knoten verwendet wird. Zu den Empfehlungen für verifizierte Datei-Nodes gehören:
 
 * * Lenovo ThinkSystem SR665 V3 Server:*
@@ -104,7 +104,7 @@ Der Storage-Netzwerk-Switch muss 200 GB/s InfiniBand-Geschwindigkeiten unterstü
 
 === Verkabelungsanforderungen
 
-[Block-file-cables]*direkte Verbindungen von Block Nodes zu File Nodes.*
+*Direkte Verbindungen von Block-Knoten zu File-Knoten.*
 
 [cols="10%,70%,20%"]
 |===
@@ -113,7 +113,7 @@ Der Storage-Netzwerk-Switch muss 200 GB/s InfiniBand-Geschwindigkeiten unterstü
 
 | 8 | MCP1650-H001E30 (passives NVIDIA-Kupferkabel, QSFP56, 200 GB/s) | 1 m 
 |===
-[File-Switch-cables]*Verbindungen von File Nodes zum Storage-Netzwerk-Switch.* Wählen Sie die entsprechende Kabeloption aus der Tabelle unten entsprechend Ihrem InfiniBand-Speicherschalter aus. + die empfohlene Kabellänge beträgt 2 m, dies kann jedoch je nach Umgebung des Kunden variieren.
+*Verbindungen von Dateiknoten zum Speichernetzwerk-Switch.* Wählen Sie je nach InfiniBand-Speicherschalter die entsprechende Kabeloption aus der folgenden Tabelle aus. + die empfohlene Kabellänge beträgt 2 m, dies kann jedoch je nach Umgebung des Kunden variieren.
 
 [cols="20%,10%,15%,55%"]
 |===

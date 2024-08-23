@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-deploy-setting-up-an-ansible-control-node.html 
+permalink: second-gen/beegfs-deploy-setting-up-an-ansible-control-node.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: Um einen Ansible-Steuerungsknoten einzurichten, identifizieren Sie eine virtuelle oder physische Maschine mit Netzwerkzugriff auf die Verwaltungsports aller Datei- und Block-Nodes, die zum Konfigurieren der Lösung verwendet werden können. 
 ---
@@ -10,7 +10,7 @@ summary: Um einen Ansible-Steuerungsknoten einzurichten, identifizieren Sie eine
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]

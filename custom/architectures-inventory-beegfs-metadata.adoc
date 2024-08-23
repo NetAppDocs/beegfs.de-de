@@ -1,0 +1,90 @@
+---
+sidebar: sidebar 
+permalink: custom/architectures-inventory-beegfs-metadata.html 
+keywords: BeeGFS on NetApp, NetApp Custom Architectures, EF600 
+summary: 'BeeGFS-Dienste werden mit Gruppenvariablen (Group_vars) konfiguriert.' 
+---
+= Definieren Sie den BeeGFS-Metadatendienst
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+BeeGFS-Dienste werden mit Gruppenvariablen (Group_vars) konfiguriert.
+
+
+
+== Überblick
+
+In diesem Abschnitt wird die Definition des BeeGFS-Metadatendienstes erläutert. In den HA-Clustern für ein bestimmtes Dateisystem sollte mindestens ein Service dieses Typs vorhanden sein. Die Konfiguration dieses Services umfasst die folgenden Punkte:
+
+* Der Servicetyp (Metadaten).
+* Definieren von Konfigurationen, die nur für diesen BeeGFS-Dienst gelten sollen.
+* Konfiguration einer oder mehrerer fließender IPs (logische Schnittstellen), an denen dieser Service erreicht werden kann.
+* Festlegen, wo/wie ein Volume Daten für diesen Service speichern soll (das BeeGFS-Metadatenziel).
+
+
+
+
+== Schritte
+
+link:architectures-plan-file-system.html["Planen Sie das Dateisystem"^]Erstellen Sie `group_vars/meta_<ID>.yml` für jeden Metadatendienst im Cluster eine Datei unter, und füllen Sie sie wie folgt aus, um auf den  Abschnitt zu verweisen:
+
+. Geben Sie an, dass diese Datei die Konfiguration für einen BeeGFS-Metadatendienst darstellt:
++
+[source, yaml]
+----
+beegfs_service: metadata
+----
+. Definieren Sie alle Konfigurationen, die nur für diesen BeeGFS-Dienst gelten sollen. Mindestens müssen Sie den gewünschten TCP- und UDP-Port angeben, jedoch alle unterstützten Konfigurationsparameter von `beegfs-meta.conf` Kann ebenfalls enthalten sein. Beachten Sie, dass die folgenden Parameter automatisch/an anderer Stelle konfiguriert werden und hier nicht angegeben werden sollten: `sysMgmtdHost`, `storeMetaDirectory`, `connAuthFile`, `connDisableAuthentication`, `connInterfacesFile`, und `connNetFilterFile`.
++
+[source, yaml]
+----
+beegfs_ha_beegfs_meta_conf_resource_group_options:
+  connMetaPortTCP: <TCP PORT>
+  connMetaPortUDP: <UDP PORT>
+  tuneBindToNumaZone: <NUMA ZONE> # Recommended if using file nodes with multiple CPU sockets.
+----
+. Konfigurieren Sie eine oder mehrere unverankerte IPs, die andere Dienste und Clients verwenden, um eine Verbindung zu diesem Dienst herzustellen (dadurch wird das BeeGFS automatisch festgelegt `connInterfacesFile` Option):
++
+[source, yaml]
+----
+floating_ips:
+  - <INTERFACE>:<IP/SUBNET> # Primary interface. Ex. i1b:100.127.101.1/16
+  - <INTERFACE>:<IP/SUBNET> # Secondary interface(s) as needed.
+----
+. Geben Sie optional ein oder mehrere zulässige IP-Subnetze an, die für die ausgehende Kommunikation verwendet werden können (dadurch wird automatisch das BeeGFS eingestellt `connNetFilterFile` Option):
++
+[source, yaml]
+----
+filter_ip_ranges:
+  - <SUBNET>/<MASK> # Ex. 192.168.10.0/24
+----
+. Geben Sie das BeeGFS-Metadatenziel an, bei dem dieser Dienst Daten gemäß den folgenden Richtlinien speichert (dies konfiguriert auch automatisch den `storeMetaDirectory` Option):
++
+.. Für mehrere BeeGFS Services/Ziele kann derselbe Speicherpool oder Volume-Gruppenname verwendet werden. Stellen Sie einfach sicher, dass er dasselbe verwendet `name`, `raid_level`, `criteria_*`, und `common_*` Konfiguration für jede einzelne (die für jeden Service aufgeführten Volumes sollten unterschiedlich sein).
+.. Volume-Größen sollten als Prozentsatz der Storage-Pool/Volume-Gruppe angegeben werden. Die Summe sollte bei allen Services/Volumes, die über einen bestimmten Storage-Pool/Volume-Gruppe verfügen, nicht mehr als 100 übersteigen. Hinweis: Bei der Verwendung von SSDs wird empfohlen, freien Speicherplatz in der Volume-Gruppe zu belassen, um die SSD-Performance und den SSD-Verschleiß link:../second-gen/beegfs-deploy-recommended-volume-percentages.html["Hier"^]zu maximieren (klicken Sie  für weitere Details).
+.. Klicken Sie Auf link:https://github.com/netappeseries/santricity/tree/release-1.3.1/roles/nar_santricity_host#role-variables["Hier"^] Eine vollständige Liste der für das verfügbaren Konfigurationsoptionen finden Sie unter `eseries_storage_pool_configuration`. Notieren Sie einige Optionen wie z. B. `state`, `host`, `host_type`, `workload_name`, und `workload_metadata` Und Volume-Namen werden automatisch generiert und sollten hier nicht angegeben werden.
+
+
+
+
+[source, yaml]
+----
+beegfs_targets:
+  <BLOCK_NODE>: # The name of the block node as found in the Ansible inventory. Ex: netapp_01
+    eseries_storage_pool_configuration:
+      - name: <NAME> # Ex: beegfs_m1_m2_m5_m6
+        raid_level: <LEVEL> # One of: raid1, raid5, raid6, raidDiskPool
+        criteria_drive_count: <DRIVE COUNT> # Ex. 4
+        common_volume_configuration:
+          segment_size_kb: <SEGMENT SIZE> # Ex. 128
+        volumes:
+          - size: <PERCENT> # Percent of the pool or volume group to allocate to this volume. Ex. 1
+            owning_controller: <CONTROLLER> # One of: A, B
+----
+Klicken Sie Auf link:https://github.com/netappeseries/beegfs/blob/master/getting_started/beegfs_on_netapp/gen2/group_vars/meta_01.yml["Hier"^] Beispiel für eine komplette Bestandsdatei, die einen BeeGFS-Metadatendienst darstellt.

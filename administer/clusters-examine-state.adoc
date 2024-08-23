@@ -1,0 +1,74 @@
+---
+sidebar: sidebar 
+permalink: administer/clusters-examine-state.html 
+keywords: BeeGFS on NetApp, HA, Cluster, Administration, pcs 
+summary: Verwenden Sie PCs, um den Status des Clusters anzuzeigen. 
+---
+= Untersuchen Sie den Status des Clusters
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Verwenden Sie PCs, um den Status des Clusters anzuzeigen.
+
+
+
+== Überblick
+
+Wird Ausgeführt `pcs status` Von jedem Cluster-Node aus können Sie den Gesamtstatus des Clusters und den Status jeder Ressource (z. B. BeeGFS-Services und deren Abhängigkeiten) am einfachsten einsehen. In diesem Abschnitt wird erklärt, was Sie in der Ausgabe von finden `pcs status` Befehl.
+
+
+
+== Allgemeines zur Ausgabe von `pcs status`
+
+Laufen `pcs status` Auf jedem Clusterknoten, auf dem die Cluster-Dienste (Pacemaker und Corosync) gestartet werden. Oben in der Ausgabe wird eine Zusammenfassung des Clusters angezeigt:
+
+[source, console]
+----
+[root@beegfs_01 ~]# pcs status
+Cluster name: hacluster
+Cluster Summary:
+  * Stack: corosync
+  * Current DC: beegfs_01 (version 2.0.5-9.el8_4.3-ba59be7122) - partition with quorum
+  * Last updated: Fri Jul  1 13:37:18 2022
+  * Last change:  Fri Jul  1 13:23:34 2022 by root via cibadmin on beegfs_01
+  * 6 nodes configured
+  * 235 resource instances configured
+----
+Im folgenden Abschnitt werden Nodes im Cluster aufgeführt:
+
+[source, console]
+----
+Node List:
+  * Node beegfs_06: standby
+  * Online: [ beegfs_01 beegfs_02 beegfs_04 beegfs_05 ]
+  * OFFLINE: [ beegfs_03 ]
+----
+Dies zeigt insbesondere alle Knoten an, die sich im Standby- oder Offline-Modus befinden. Nodes im Standby-Modus sind weiterhin am Cluster beteiligt, sind jedoch als nicht zur Ausführung von Ressourcen geeignet. Nodes, die offline sind, geben an, dass auf diesem Node keine Cluster-Services ausgeführt werden, entweder da sie manuell angehalten werden, oder weil der Node neu gebootet/heruntergefahren wurde.
+
+
+NOTE: Beim ersten Starten von Nodes werden Cluster-Services angehalten und müssen manuell gestartet werden, um zu vermeiden, dass versehentlich Ressourcen auf einen nicht funktionsuntüchtigen Node zurückfallen.
+
+Wenn sich Knoten aufgrund eines nicht-administrativen Grund im Standby- oder Offline-Modus befinden (zum Beispiel ein Ausfall), wird neben dem Status des Node in Klammern zusätzlicher Text angezeigt. Wenn beispielsweise das Fechten deaktiviert ist und eine Ressource auf einen Fehler stößt, wird angezeigt `Node <HOSTNAME>: standby (on-fail)`. Ein anderer möglicher Zustand ist `Node <HOSTNAME>: UNCLEAN (offline)`, Die kurz als ein Knoten angezeigt wird, wird eingezäunt, aber bleibt bestehen, wenn das Fechten fehlgeschlagen zeigt, dass der Cluster den Status des Knotens nicht bestätigen kann (dies kann verhindern, dass die Ressourcen auf anderen Knoten beginnen).
+
+Im nächsten Abschnitt werden alle Ressourcen im Cluster und ihre Status angezeigt:
+
+[source, console]
+----
+Full List of Resources:
+  * mgmt-monitor	(ocf::eseries:beegfs-monitor):	 Started beegfs_01
+  * Resource Group: mgmt-group:
+    * mgmt-FS1	(ocf::eseries:beegfs-target):	 Started beegfs_01
+    * mgmt-IP1	(ocf::eseries:beegfs-ipaddr2):	 Started beegfs_01
+    * mgmt-IP2	(ocf::eseries:beegfs-ipaddr2):	 Started beegfs_01
+    * mgmt-service	(systemd:beegfs-mgmtd):	 Started beegfs_01
+[...]
+----
+Ähnlich wie bei Knoten wird neben dem Ressourcenzustand in Klammern zusätzlicher Text angezeigt, wenn Probleme mit der Ressource auftreten. Wenn z. B. Pacemaker einen Ressourcenstopp anfordert und dieser nicht innerhalb der zugewiesenen Zeit abgeschlossen werden kann, versucht Pacemaker, den Knoten einzuzäunen. Wenn das Fechten deaktiviert ist oder der Fechten-Vorgang fehlschlägt, wird der Ressourcenzustand angezeigt `FAILED <HOSTNAME> (blocked)` Pacemaker kann ihn nicht auf einem anderen Knoten starten.
+
+Es ist erwähnenswert BeeGFS HA-Cluster nutzen eine Reihe von BeeGFS optimiert benutzerdefinierte OCF-Ressourcen-Agenten. Insbesondere ist der BeeGFS-Monitor für das Auslösen eines Failover verantwortlich, wenn BeeGFS-Ressourcen auf einem bestimmten Knoten nicht verfügbar sind.

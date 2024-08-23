@@ -1,0 +1,101 @@
+---
+sidebar: sidebar 
+permalink: custom/architectures-overview.html 
+keywords: BeeGFS on NetApp, NetApp Custom Architectures, EF600 
+summary: Die BeeGFS on NetApp Lösung kombiniert das parallele BeeGFS Filesystem mit NetApp E-Series Storage-Systemen und bietet so eine zuverlässige, skalierbare und kostengünstige Infrastruktur, die mit anspruchsvollen Workloads Schritt hält. 
+---
+= Überblick und Anforderungen
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Verwenden Sie alle NetApp E/EF-Series Storage-Systeme als BeeGFS-Block-Nodes und x86-Server als BeeGFS-Datei-Nodes, wenn Sie BeeGFS High Availability-Cluster mithilfe von Ansible implementieren.
+
+
+TIP: Definitionen für die in diesem Abschnitt verwendete Terminologie finden Sie auf der link:../get-started/beegfs-terms.html["Begriffe und Konzepte"] Seite.
+
+
+
+== Einführung
+
+link:../second-gen/beegfs-solution-overview.html["NetApp-verifizierte Architekturen"]Einige Kunden und Partner bieten zwar vordefinierte Referenzkonfigurationen und Hinweise zur Größenbestimmung, möchten aber möglicherweise lieber benutzerdefinierte Architekturen entwickeln, die sich besser an die speziellen Anforderungen oder Hardwarepräferenzen anpassen. Einer der Hauptvorteile der Entscheidung für BeeGFS auf NetApp ist die Möglichkeit, BeeGFS HA-Cluster auf Shared-Festplatten mit Ansible zu implementieren. Dadurch wird das Cluster-Management vereinfacht und die Zuverlässigkeit mithilfe von NetApp entwickelten HA-Komponenten gesteigert. Die Implementierung benutzerdefinierter BeeGFS-Architekturen auf NetApp erfolgt noch immer mithilfe von Ansible und den Appliance-ähnlichen Ansatz auf einem flexiblen Spektrum an Hardware.
+
+Dieser Abschnitt beschreibt die allgemeinen Schritte, die zur Implementierung von BeeGFS-Dateisystemen auf NetApp Hardware und zur Verwendung von Ansible zur Konfiguration von BeeGFS-Dateisystemen erforderlich sind. Details zu Best Practices für das Design von BeeGFS-Dateisystemen und optimierten Beispielen finden Sie im link:../second-gen/beegfs-solution-overview.html["NetApp-verifizierte Architekturen"] Abschnitt.
+
+
+
+== Implementierungsübersicht
+
+Die Bereitstellung eines BeeGFS-Dateisystems umfasst im Allgemeinen die folgenden Schritte:
+
+* Ersteinrichtung:
++
+** Hardware installieren/verkabeln.
+** Richten Sie Datei- und Block-Nodes ein.
+** Richten Sie einen Ansible-Steuerungsknoten ein.
+
+
+* Definieren Sie das BeeGFS-Dateisystem als Ansible-Inventar.
+* Ausführen von Ansible für Datei- und Block-Nodes zur Implementierung von BeeGFS
++
+** Optional zum Einrichten von Clients und Mounten BeeGFS.
+
+
+
+
+In den nachfolgenden Abschnitten werden diese Schritte näher beschrieben.
+
+[NOTE]
+====
+Ansible übernimmt alle Softwareprovisionierung- und Konfigurationsaufgaben, z. B.:
+
+* Erstellen/Zuordnen von Volumes auf Block-Nodes
+* Formatieren/Tuning von Volumes auf Datei-Nodes
+* Installation/Konfiguration von Software auf Datei-Nodes
+* Einrichten des HA-Clusters und Konfigurieren von BeeGFS-Ressourcen und File-System-Services
+
+
+====
+
+
+== Anforderungen
+
+Unterstützung für BeeGFS in Ansible ist veröffentlicht am link:https://galaxy.ansible.com/netapp_eseries/beegfs["Ansible-Galaxie"] Als Sammlung von Rollen und Modulen zur Automatisierung der End-to-End-Implementierung und des Managements von BeeGFS HA-Clustern.
+
+BeeGFS selbst ist nach einem <major>.<minor>.<patch> Versioning Schema versioniert und die Sammlung pflegt Rollen für jede unterstützte <major>.<minor> Version von BeeGFS, zum Beispiel BeeGFS 7.2 oder BeeGFS 7.3. Da Updates für die Sammlung veröffentlicht werden, wird die Patch-Version in jeder Rolle aktualisiert, um auf die neueste verfügbare BeeGFS-Version für diesen Release Branch (Beispiel: 7.2.8) zu verweisen. Jede Version der Sammlung wird auch mit spezifischen Linux-Distributionen und -Versionen, derzeit Red hat für File-Nodes, und RedHat und Ubuntu für Clients getestet und unterstützt. Die Ausführung anderer Distributionen wird nicht unterstützt, und die Ausführung anderer Versionen (insbesondere anderer Hauptversionen) wird nicht empfohlen.
+
+
+
+=== Ansible-Steuerungsknoten
+
+Dieser Node enthält Inventar und Playbooks, die zum Managen von BeeGFS verwendet werden. Dazu benötigen Sie:
+
+* Ansible, 6.x (ansible-Core, 2.13)
+* Python 3.6 (oder höher)
+* Python (Pip) Pakete: Ipaddr und netaddr
+
+
+Es empfiehlt sich auch, passwortlose SSH vom Steuerungsknoten auf alle BeeGFS Datei-Knoten und -Clients einzurichten.
+
+
+
+=== BeeGFS-Dateiknoten
+
+File-Nodes müssen RedHat 9.3 ausführen und auf das HA-Repository mit den erforderlichen Paketen (Pacemaker, Corosync, Fencing-Agents-all, Resource-Agents) zugreifen. So kann beispielsweise der folgende Befehl ausgeführt werden, um das entsprechende Repository auf RedHat 9 zu aktivieren:
+
+[source, bash]
+----
+subscription-manager repo-override repo=rhel-9-for-x86_64-highavailability-rpms --add=enabled:1
+----
+
+
+=== BeeGFS Client-Knoten
+
+Eine BeeGFS-Client-Ansible-Rolle steht zur Verfügung, um das BeeGFS-Client-Paket zu installieren und BeeGFS-Mount(s) zu verwalten. Diese Rolle wurde mit RedHat 8.4 und Ubuntu 22.04 getestet.
+
+Wenn Sie nicht Ansible verwenden, um den BeeGFS-Client einzurichten und BeeGFS zu mounten, any link:https://doc.beegfs.io/latest/release_notes.html#supported-linux-distributions-and-kernels["BeeGFS unterstützte Linux-Distribution und Kernel"] Kann verwendet werden.

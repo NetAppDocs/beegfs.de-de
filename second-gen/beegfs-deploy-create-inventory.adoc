@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-deploy-create-inventory.html 
+permalink: second-gen/beegfs-deploy-create-inventory.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: Um die Konfiguration für Datei- und Block-Nodes zu definieren, erstellen Sie einen Ansible-Bestand für das BeeGFS-Dateisystem, das bereitgestellt werden soll. 
 ---
@@ -10,7 +10,7 @@ summary: Um die Konfiguration für Datei- und Block-Nodes zu definieren, erstell
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]

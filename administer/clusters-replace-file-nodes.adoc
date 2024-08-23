@@ -1,0 +1,78 @@
+---
+sidebar: sidebar 
+permalink: administer/clusters-replace-file-nodes.html 
+keywords: BeeGFS on NetApp, HA, Cluster, Administration, replace 
+summary: Ersetzen eines Dateiknotens, wenn der ursprüngliche Server fehlerhaft ist. 
+---
+= Datei-Nodes ersetzen
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Ersetzen eines Dateiknotens, wenn der ursprüngliche Server fehlerhaft ist.
+
+
+
+== Überblick
+
+Dies bietet einen Überblick über die Schritte, die zum Austausch eines Datei-Nodes im Cluster erforderlich sind. Diese Schritte setzen voraus, dass der Datei-Node aufgrund eines Hardwareproblems ausgefallen ist und dass er durch einen neuen identischen File-Node ersetzt wurde.
+
+
+
+== Schritte
+
+. Ersetzen Sie den Datei-Node physisch und stellen Sie alle Kabel auf den Block-Node und das Storage-Netzwerk wieder her.
+. Installieren Sie das Betriebssystem auf dem Dateiknoten neu, einschließlich Hinzufügen von Red hat Subskriptionen.
+. Konfiguration von Management und BMC Networking auf dem Datei-Node
+. Aktualisieren Sie die Ansible-Bestandsaufnahme, wenn sich der Hostname, die IP, die Zuordnung der PCIe-zu-logischen Schnittstelle oder eine weitere Änderung bezüglich des neuen Datei-Nodes ergeben. Im Allgemeinen ist dies nicht erforderlich, wenn der Node durch identische Serverhardware ersetzt wurde und Sie die ursprüngliche Netzwerkkonfiguration verwenden.
++
+.. Wenn sich beispielsweise der Hostname geändert hat, erstellen Sie die Bestandsdatei des Node (oder benennen Sie sie um) (`host_vars/<NEW_NODE>.yml``) Und dann in der Ansible-Bestandsdatei (`inventory.yml`), ersetzen Sie den Namen des alten Knotens durch den neuen Knotennamen:
++
+[source, console]
+----
+all:
+    ...
+    children:
+    ha_cluster:
+        children:
+        mgmt:
+            hosts:
+            node_h1_new:   # Replaced "node_h1" with "node_h1_new"
+            node_h2:
+----
+
+
+. Entfernen Sie den alten Node von einem der anderen Nodes im Cluster: `pcs cluster node remove <HOSTNAME>`.
++
+
+IMPORTANT: FAHREN SIE VOR AUSFÜHRUNG DIESES SCHRITTS NICHT FORT.
+
+. Auf dem Ansible-Steuerungsknoten:
++
+.. Entfernen Sie den alten SSH-Schlüssel mit:
++
+[source, console]
+----
+`ssh-keygen -R <HOSTNAME_OR_IP>`
+----
+.. Konfigurieren Sie passwortloses SSH auf den Knoten Ersetzen mit:
++
+[source, console]
+----
+ssh-copy-id <USER>@<HOSTNAME_OR_IP>
+----
+
+
+. Führen Sie das Ansible-Playbook erneut aus, um den Node zu konfigurieren und dem Cluster hinzuzufügen:
++
+[source, console]
+----
+ansible-playbook -i <inventory>.yml <playbook>.yml
+----
+. An dieser Stelle, Lauf `pcs status` Und überprüfen Sie, ob der ersetzte Node jetzt aufgeführt ist und Services ausführt.
+

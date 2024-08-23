@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-design-software-architecture.html 
+permalink: second-gen/beegfs-design-software-architecture.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: Die Software-Konfiguration für BeeGFS auf NetApp umfasst BeeGFS-Netzwerkkomponenten, EF600 Block-Nodes, BeeGFS-Datei-Nodes, Ressourcengruppen und BeeGFS-Services. 
 ---
@@ -10,7 +10,7 @@ summary: Die Software-Konfiguration für BeeGFS auf NetApp umfasst BeeGFS-Netzwe
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]
@@ -43,13 +43,14 @@ Diese Dokumentation enthält Anweisungen für einzelne IPoIB-Subnetzkonfiguratio
 +
 Die folgende Abbildung zeigt die Verteilung des Datenverkehrs auf mehrere BeeGFS-Client-Schnittstellen.
 
-+
-image:../media/beegfs-design-image8.png[""]
 
-+
+
+image:beegfs-design-image8.png["Schnittstellendatenverkehr"]
+
 Da jede Datei in BeeGFS normalerweise über mehrere Storage-Services verteilt wird, kann der Client dank der Multi-Rail-Konfiguration einen höheren Durchsatz erzielen als mit einem einzelnen InfiniBand-Port möglich. Die folgende Codeprobe zeigt beispielsweise eine allgemeine File-Striping-Konfiguration, die es dem Client ermöglicht, den Datenverkehr über beide Schnittstellen auszugleichen:
 
 +
+
 ....
 root@beegfs01:/mnt/beegfs# beegfs-ctl --getentryinfo myfile
 Entry type: file
@@ -67,8 +68,6 @@ Stripe pattern details:
 ....
 
 
-
-
 == Konfiguration der EF600 Block-Node
 
 Block-Nodes bestehen aus zwei aktiv/aktiv-RAID-Controllern mit gemeinsamem Zugriff auf denselben Satz an Laufwerken. In der Regel besitzt jeder Controller die Hälfte der im System konfigurierten Volumes, jedoch kann für den anderen Controller nach Bedarf die Aufgaben übernehmen.
@@ -77,11 +76,11 @@ Multipathing-Software auf den Datei-Knoten bestimmt den aktiven und optimierten 
 
 Das folgende Diagramm zeigt das Controller-Layout in EF600 Block-Nodes.
 
-image:../media/beegfs-design-image9.png[""]
+image:beegfs-design-image9.png["EF600 Array"]
 
 Um eine Shared-Disk-HA-Lösung zu erleichtern, werden Volumes beiden Datei-Nodes zugeordnet, sodass sie sich bei Bedarf gegenseitig übernehmen können. Das folgende Diagramm zeigt ein Beispiel, wie BeeGFS-Service und die bevorzugte Volumeneigentümer für maximale Performance konfiguriert sind. Die Schnittstelle links von jedem BeeGFS-Dienst gibt die bevorzugte Schnittstelle an, mit der die Clients und andere Dienste Kontakt aufnehmen.
 
-image:../media/beegfs-design-image10.png[""]
+image:beegfs-design-image10.png["BeeGFS-Service-Volume-Eigentümer"]
 
 Im vorherigen Beispiel kommunizieren Clients und Server Services lieber mit Storage Service 1 über Schnittstelle i1b. Storage Service 1 verwendet Schnittstelle i1a als bevorzugten Pfad zur Kommunikation mit seinen Volumes (Storage_tgt_101, 102) auf Controller A des ersten Block-Node. Diese Konfiguration nutzt die volle bidirektionale PCIe-Bandbreite, die dem InfiniBand-Adapter zur Verfügung steht, und erreicht mit einem Dual-Port-HDR-InfiniBand-Adapter eine bessere Leistung als bei PCIe 4.0.
 
@@ -124,7 +123,7 @@ Für jede BeeGFS-Ressourcengruppe führt Pacemaker eine benutzerdefinierte BeeGF
 
 Die folgende Abbildung zeigt die Pacemaker-gesteuerten BeeGFS-Dienste und -Abhängigkeiten.
 
-image:../media/beegfs-design-image11.png[""]
+image:beegfs-design-image11.png["Services für Schrittmacher-Controller"]
 
 
 NOTE: Damit mehrere BeeGFS-Dienste desselben Typs auf demselben Knoten gestartet werden, wird Pacemaker so konfiguriert, dass BeeGFS-Dienste mit der Multi-Mode-Konfigurationsmethode gestartet werden. Weitere Informationen finden Sie im https://doc.beegfs.io/latest/advanced_topics/multimode.html["BeeGFS-Dokumentation im Multi-Modus"^].

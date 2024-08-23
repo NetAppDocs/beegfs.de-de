@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-deploy-overview.html 
+permalink: second-gen/beegfs-deploy-overview.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: Mit BeeGFS können Sie auf NetApp bereitstellen und Datei- und Block-Nodes mithilfe der zweiten Generation des NetApp BeeGFS-Bausteindesigns validieren. 
 ---
@@ -10,7 +10,7 @@ summary: Mit BeeGFS können Sie auf NetApp bereitstellen und Datei- und Block-No
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]

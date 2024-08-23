@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-design-solution-sizing-guidelines.html 
+permalink: second-gen/beegfs-design-solution-sizing-guidelines.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: Die BeeGFS Lösung enthält Empfehlungen für das Performance- und Kapazitäts-Sizing, die auf Verifizierungstests basieren. 
 ---
@@ -10,7 +10,7 @@ summary: Die BeeGFS Lösung enthält Empfehlungen für das Performance- und Kapa
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]

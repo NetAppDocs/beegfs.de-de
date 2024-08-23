@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-deploy-playbook.html 
+permalink: second-gen/beegfs-deploy-playbook.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: Zur Implementierung und zum Management der Konfiguration werden ein oder mehrere Playbooks ausgeführt, die die Aufgaben enthalten, die Ansible ausführen muss, und das gesamte System in den gewünschten Zustand bringen. 
 ---
@@ -10,7 +10,7 @@ summary: Zur Implementierung und zum Management der Konfiguration werden ein ode
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]
@@ -103,7 +103,7 @@ ansible-playbook -i inventory.yml playbook.yml --forks 20
 ....
 +
 
-NOTE: Vor allem bei größeren Bereitstellungen überschreiben Sie die Standardanzahl der Gabeln (5) mit dem `forks` Der Parameter wird empfohlen, um die Anzahl der Hosts zu erhöhen, die Ansible parallel konfiguriert. (Weitere Informationen finden Sie unter  https://www.ansible.com/blog/ansible-performance-tuning["Ansible-Performance-Tuning"^] Und https://docs.ansible.com/ansible/latest/user_guide/playbooks_strategies.html["Kontrolle der Playbook-Ausführung"^].) Die Einstellung für den maximalen Wert hängt von der verfügbaren Verarbeitungsleistung des Ansible-Steuerungsknotens ab. Das oben genannte Beispiel von 20 wurde auf einem virtuellen Ansible-Steuerungsknoten mit 4 CPUs (Intel(R) Xeon(R) Gold 6146 CPU @ 3,20 GHz) ausgeführt.
+NOTE: Insbesondere bei größeren Bereitstellungen `forks` wird empfohlen, die Standardanzahl von Gabeln (5) mit dem Parameter zu überschreiben, um die Anzahl der Hosts zu erhöhen, die Ansible parallel konfiguriert. (Weitere Informationen finden Sie unter https://docs.ansible.com/ansible/latest/user_guide/playbooks_strategies.html["Kontrolle der Playbook-Ausführung"^].) Die Einstellung für den maximalen Wert hängt von der Verarbeitungsleistung ab, die auf dem Ansible-Steuerungsknoten verfügbar ist. Das oben genannte Beispiel von 20 wurde auf einem virtuellen Ansible-Steuerungsknoten mit 4 CPUs (Intel(R) Xeon(R) Gold 6146 CPU @ 3,20 GHz) ausgeführt.
 
 +
 Je nach Größe der Implementierung und Netzwerk-Performance zwischen dem Ansible Control Node und BeeGFS File- und Block-Nodes kann die Implementierungszeit variieren.

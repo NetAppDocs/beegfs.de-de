@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-deploy-high-capacity-building-block.html 
+permalink: second-gen/beegfs-deploy-high-capacity-building-block.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600, EF300, HDD, Expansion 
 summary: Die Implementierung gibt Varianten für einen Baustein mit hoher Kapazität an. 
 ---
@@ -10,13 +10,13 @@ summary: Die Implementierung gibt Varianten für einen Baustein mit hoher Kapazi
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]
 Im Standard BeeGFS Solution Deployment Guide werden Verfahren und Empfehlungen für High-Performance-Workload-Anforderungen beschrieben. Kunden, die hohe Kapazitätsanforderungen erfüllen möchten, sollten die hier aufgeführten Variationen bei Implementierung und Empfehlungen beobachten.
 
-image:high-capacity-rack-diagram.png[""]
+image:high-capacity-rack-diagram.png["Rackdiagramm mit hoher Kapazität"]
 
 
 
@@ -32,7 +32,7 @@ Die Konfiguration des Datei-Node zu Block-Nodes bleibt unverändert.
 
 In jedem Block-Node sind mindestens 4 NVMe-SSDs für BeeGFS-Metadaten-Storage erforderlich. Diese Laufwerke sollten in den äußeren Steckplätzen des Gehäuses platziert werden.
 
-image:high-capacity-drive-slots-diagram.png[""]
+image:high-capacity-drive-slots-diagram.png["Diagramm mit Laufwerksteckplätzen mit hoher Kapazität"]
 
 
 

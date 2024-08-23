@@ -1,0 +1,56 @@
+---
+sidebar: sidebar 
+permalink: administer/clusters-stop-start-cluster.html 
+keywords: BeeGFS on NetApp, HA, Cluster, Administration, stop, start 
+summary: Graziös wird das HA-Cluster angehalten und gestartet. 
+---
+= Beenden Sie den Cluster und starten Sie den Cluster
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Graziös wird das HA-Cluster angehalten und gestartet.
+
+
+
+== Überblick
+
+In diesem Abschnitt wird beschrieben, wie das BeeGFS-Cluster ordnungsgemäß heruntergefahren und neu gestartet wird. Beispielszenarien, bei denen dies möglicherweise erforderlich ist, sind beispielsweise die elektrische Wartung oder die Migration zwischen Rechenzentren oder Racks.
+
+
+
+== Schritte
+
+Wenn Sie aus irgendeinem Grund das gesamte BeeGFS-Cluster beenden und alle Dienste herunterfahren müssen, laufen:
+
+[source, console]
+----
+pcs cluster stop --all
+----
+Es ist auch möglich, das Cluster auf einzelnen Nodes anzuhalten (wodurch automatisch ein Failover von Services auf einen anderen Node erfolgt). Es wird jedoch empfohlen, den Node zunächst in den Standby-Modus zu versetzen (siehe link:clusters-failover-failback.html["Failover"^]Abschnitt):
+
+[source, console]
+----
+pcs cluster stop <HOSTNAME>
+----
+So starten Sie Cluster Services und Ressourcen auf allen Nodes:
+
+[source, console]
+----
+pcs cluster start --all
+----
+Oder starten Sie Services auf einem bestimmten Knoten mit:
+
+[source, console]
+----
+pcs cluster start <HOSTNAME>
+----
+An dieser Stelle Lauf `pcs status` Überprüfen Sie, ob die Cluster- und BeeGFS-Services auf allen Nodes gestartet werden und die Services auf den erwarteten Nodes ausgeführt werden.
+
+
+TIP: Abhängig von der Größe des Clusters kann es irgendwann (Sekunden oder Minuten) dauern, bis der gesamte Cluster angehalten ist, oder es wird gestartet in angezeigt `pcs status`. Wenn `pcs cluster <COMMAND>` Hängt länger als fünf Minuten, bevor Sie „Strg+C“ ausführen, um den Befehl abzubrechen, melden Sie sich bei jedem Node des Clusters an und verwenden Sie `pcs status` Um zu sehen, ob Cluster-Services (Corosync/Pacemaker) auf diesem Knoten noch ausgeführt werden. Von jedem Node, der das Cluster noch aktiv ist, können Sie überprüfen, welche Ressourcen das Cluster blockieren. Lösen Sie das Problem manuell, und der Befehl sollte entweder abgeschlossen werden oder kann erneut ausgeführt werden, um alle verbleibenden Services zu beenden.

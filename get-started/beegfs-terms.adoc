@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-terms.html 
+permalink: get-started/beegfs-terms.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: Allgemeine Geschäftsbedingungen und Konzepte für BeeGFS auf NetApp Solution. 
 ---
@@ -10,14 +10,14 @@ summary: Allgemeine Geschäftsbedingungen und Konzepte für BeeGFS auf NetApp So
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]
 Die folgenden Begriffe und Konzepte gelten für die BeeGFS auf NetApp Lösung.
 
 
-TIP: Siehe link:administer-clusters-overview.html["BeeGFS-Cluster verwalten"] Weitere Informationen zu Begriffen und Konzepten für die Interaktion mit BeeGFS-Clustern (High Availability, HA-Cluster) finden Sie in diesem Abschnitt.
+TIP: Im link:../administer/clusters-overview.html["BeeGFS-Cluster verwalten"] Abschnitt finden Sie weitere Details zu Begriffen und Konzepten für die Interaktion mit BeeGFS-Clustern mit hoher Verfügbarkeit (HA).
 
 [cols="25h,~"]
 |===

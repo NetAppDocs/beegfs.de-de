@@ -1,0 +1,52 @@
+---
+sidebar: sidebar 
+permalink: custom/architectures-inventory-overview.html 
+keywords: BeeGFS on NetApp, NetApp Custom Architectures, EF600 
+summary: Der Ansible-Bestand ist ein Satz von Konfigurationsdateien, die das gewünschte BeeGFS HA-Cluster definieren. 
+---
+= Ansible-Bestandsübersicht
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Der Ansible-Bestand ist ein Satz von Konfigurationsdateien, die das gewünschte BeeGFS HA-Cluster definieren.
+
+
+
+== Überblick
+
+Es wird empfohlen, die standardmäßigen Ansible-Methoden für die Organisation des zu befolgen link:https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html["Inventar"], Einschließlich der Verwendung von link:https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html#organizing-host-and-group-variables["Unterverzeichnisse/Dateien"] Anstatt den gesamten Bestand in einer Datei zu speichern.
+
+Der Ansible-Bestand für ein einzelnes BeeGFS HA-Cluster ist wie folgt organisiert:
+
+image:ansible-inventory-overview.png["Ansible-Bestandsübersicht"]
+
+
+NOTE: Da ein einzelnes BeeGFS-Dateisystem mehrere HA-Cluster umfassen kann, können große Installationen mehrere Ansible-Inventare durchführen. Im Allgemeinen wird es nicht empfohlen, mehrere HA-Cluster als einen einzelnen Ansible-Bestand zu definieren, um Probleme zu vermeiden.
+
+
+
+== Schritte
+
+. Erstellen Sie auf Ihrem Ansible-Kontroll-Node ein leeres Verzeichnis, das den Ansible-Bestand für das BeeGFS-Cluster enthält, das bereitgestellt werden soll.
++
+.. Wenn Ihr Filesystem schließlich mehrere HA-Cluster enthalten soll/kann, wird empfohlen, zuerst ein Verzeichnis für das Dateisystem zu erstellen und dann Unterverzeichnisse für den Bestand, der die einzelnen HA-Cluster darstellt, einzutragen. Beispiel:
++
+[listing]
+----
+beegfs_file_system_1/
+    beegfs_cluster_1/
+    beegfs_cluster_2/
+    beegfs_cluster_N/
+----
+
+
+. Erstellen Sie im Verzeichnis, das den Bestand für den HA-Cluster enthält, den Sie bereitstellen möchten, zwei Verzeichnisse `group_vars` Und `host_vars` Und zwei Dateien `inventory.yml` Und `playbook.yml`.
+
+
+Die folgenden Abschnitte gehen durch die Definition des Inhalts jeder dieser Dateien.

@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-design-hardware-architecture.html 
+permalink: second-gen/beegfs-design-hardware-architecture.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: Die Hardware-Konfiguration für BeeGFS auf NetApp umfasst Datei-Nodes und Netzwerkverkabelung. 
 ---
@@ -10,7 +10,7 @@ summary: Die Hardware-Konfiguration für BeeGFS auf NetApp umfasst Datei-Nodes u
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]
@@ -26,7 +26,7 @@ InfiniBand-Adapter müssen in die entsprechenden PCI-Risers oder Steckplätze ge
 
 Die folgende Abbildung zeigt die NUMA-Konfiguration des Dateiknotens.
 
-image:../media/beegfs-design-image5-small.png[""]
+image:beegfs-design-image5-small.png["NUMA-Konfiguration"]
 
 Die BeeGFS-Prozesse sind an eine bestimmte NUMA-Zone gebunden, um sicherzustellen, dass sich die verwendeten Schnittstellen in der gleichen Zone befinden. Diese Konfiguration vermeidet den Remote-Zugriff über die Verbindung zwischen den Sockets. Die Verbindung zwischen den Sockeln wird manchmal als QPI oder GMI2 Link bezeichnet; selbst in modernen Prozessorarchitekturen können sie einen Engpass darstellen, wenn High-Speed-Netzwerke wie HDR InfiniBand eingesetzt werden.
 
@@ -44,7 +44,7 @@ Beachten Sie in der folgenden Abbildung Folgendes:
 * Die Ports im NUMA-Knoten 1 verbinden sich mit dem zweiten Block-Knoten.
 
 
-image:../media/beegfs-design-image6.png[""]
+image:beegfs-design-image6.png["Netzwerkverkabelung"]
 
 
 NOTE: Wenn Sie Splitterkabel verwenden, um den Speicher-Switch mit den Dateiknoten zu verbinden, sollte ein Kabel abzweigen und mit den hellgrünen Ports verbunden werden. Ein anderes Kabel sollte abzweigen und an die dunkelgrünen Ports anschließen. Außerdem sollten bei Speichernetzwerken mit redundanten Switches die hellgrünen Ports mit einem Switch verbunden werden, während dunkelgrüne Ports mit einem anderen Switch verbunden sein sollten.
@@ -61,6 +61,6 @@ Um die vollständige bidirektionale PCIe-Bandbreite zu nutzen, stellen Sie siche
 
 Die folgende Abbildung zeigt das Verkabelungsdesign, mit dem die vollständige bidirektionale PCIe-Bandbreite genutzt werden kann.
 
-image:../media/beegfs-design-image7.png[""]
+image:beegfs-design-image7.png["Bidirektionale HCA-Bandbreite"]
 
 Verwenden Sie für jeden BeeGFS-Service denselben Adapter, um den bevorzugten Port für Client-Datenverkehr mit dem Pfad zu dem Block-Nodes-Controller zu verbinden, der der primäre Eigentümer dieser Service-Volumes ist. Weitere Informationen finden Sie unter link:beegfs-design-software-architecture.html["Softwarekonfiguration"].

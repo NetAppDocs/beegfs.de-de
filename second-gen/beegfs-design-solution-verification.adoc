@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-design-solution-verification.html 
+permalink: second-gen/beegfs-design-solution-verification.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: Das Design der zweiten Generation für die BeeGFS auf NetApp Lösung wurde mithilfe von drei Bausteinkonfigurationsprofilen verifiziert. 
 ---
@@ -10,7 +10,7 @@ summary: Das Design der zweiten Generation für die BeeGFS auf NetApp Lösung wu
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]
@@ -27,7 +27,7 @@ Die Bausteine wurden mit zwei NVIDIA Quantum InfiniBand (MQM8700) Switches verbu
 
 Die folgende Abbildung zeigt die BeeGFS-Konfiguration, die zur Validierung der BeeGFS auf NetApp Lösung verwendet wird.
 
-image:beegfs-design-image12.png[""]
+image:beegfs-design-image12.png["Konfiguration der BeeGFS-Validierung"]
 
 
 
@@ -57,22 +57,22 @@ mpirun --allow-run-as-root --mca btl tcp -np 48 -map-by node -hostfile 10xnodes 
 .Baustein für eine BeeGFS-Basis (Management, Metadaten und Storage
 Die folgende Abbildung zeigt die IOR-Testergebnisse mit einem einzelnen BeeGFS-Basisspeicher (Management, Metadaten und Storage).
 
-image:beegfs-design-image13.png[""]
+image:beegfs-design-image13.png["IOR-Ergebnisse einzelner BeeGFS-Basisbausteinblöcke"]
 
 .BeeGFS Metadaten + Storage-Baustein
 Die folgende Abbildung zeigt die IOR-Testergebnisse mit einem einzelnen BeeGFS-Metadaten + einem Storage-Baustein.
 
-image:beegfs-design-image14.png[""]
+image:beegfs-design-image14.png["IOR-Ergebnisse mit einzelnen BeeGFS-Metadaten und Storage-Bausteinen"]
 
 .BeeGFS-Speicherbaustein
 Die folgende Abbildung zeigt die IOR-Testergebnisse mit einem einzelnen BeeGFS-Storage-only-Baustein.
 
-image:beegfs-design-image15.png[""]
+image:beegfs-design-image15.png["Einzelne BeeGFS-Storage-IOR-Ergebnisse"]
 
 .Drei BeeGFS-Bausteine
 Die folgende Abbildung zeigt die IOR-Testergebnisse mit drei BeeGFS-Bausteinen.
 
-image:beegfs-design-image16.png[""]
+image:beegfs-design-image16.png["Drei BeeGFS-Bausteine für IOR-Ergebnisse"]
 
 Wie erwartet, ist der Performance-Unterschied zwischen dem Basis-Baustein und den nachfolgenden Metadaten + dem Storage-Baustein vernachlässigbar. Ein Vergleich zwischen Metadaten und Storage-Bausteinen und einem ausschließlich Storage-Baustein zeigt einen leichten Anstieg der Lese-Performance aufgrund der zusätzlichen Laufwerke, die als Storage-Ziele verwendet werden. Allerdings gibt es keinen wesentlichen Unterschied in der Schreib-Performance. Um eine höhere Performance zu erzielen, können Sie mehrere Bausteine gleichzeitig hinzufügen, um die Performance linear zu skalieren.
 
@@ -88,7 +88,7 @@ Der native Caching-Modus verwendet den Linux-Kernel-Page-Cache auf dem Client, s
 
 Das folgende Diagramm zeigt die IOR-Testergebnisse mit drei BeeGFS-Bausteinen und einem einzelnen Client.
 
-image:beegfs-design-image17.png[""]
+image:beegfs-design-image17.png["Drei BeeGFS-Bausteine mit IOR-Ergebnissen für einen einzelnen Client"]
 
 
 NOTE: BeeGFS Striping für diese Tests wurde auf 1 MB Chunksize mit acht Zielen pro Datei eingestellt.
@@ -111,12 +111,12 @@ Die Metadaten-Performance wurde zuerst mit ein bis zwei Metadaten + Storage-Baus
 .1 BeeGFS Metadaten + Storage-Baustein
 Das folgende Diagramm zeigt die MDTest-Ergebnisse mit einer BeeGFS-Metadaten + Speicherbausteinen.
 
-image:beegfs-design-image18.png[""]
+image:beegfs-design-image18.png["MDTest-Ergebnisse mit einzelnen BeeGFS-Metadaten und Storage-Bausteinen"]
 
 .Zwei BeeGFS Metadaten + Storage-Bausteine
 Das folgende Diagramm zeigt die MDTest-Ergebnisse mit zwei BeeGFS-Metadaten + Speicherbausteinen.
 
-image:beegfs-design-image19.png[""]
+image:beegfs-design-image19.png["MDTest-Ergebnisse werden durch zwei BeeGFS-Metadaten und Storage-Bausteine erzielt"]
 
 
 

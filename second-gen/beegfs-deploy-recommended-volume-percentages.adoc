@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-deploy-recommended-volume-percentages.html 
+permalink: second-gen/beegfs-deploy-recommended-volume-percentages.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: Beachten Sie die empfohlenen Prozentsätze, wenn Sie die standardmäßige Konfiguration von vier Volumes pro Speicherpool für Bausteine der zweiten Generation beachten. 
 ---
@@ -10,7 +10,7 @@ summary: Beachten Sie die empfohlenen Prozentsätze, wenn Sie die standardmäßi
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]

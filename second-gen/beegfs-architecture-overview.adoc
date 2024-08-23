@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-architecture-overview.html 
+permalink: second-gen/beegfs-architecture-overview.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: Die BeeGFS on NetApp Lösung beinhaltet Design-Aspekte, die bei der Architekturentwicklung berücksichtigt werden, um die spezifischen Geräte, Kabel und Konfigurationen zu ermitteln, die für validierte Workloads erforderlich sind. 
 ---
@@ -10,7 +10,7 @@ summary: Die BeeGFS on NetApp Lösung beinhaltet Design-Aspekte, die bei der Arc
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]
@@ -47,7 +47,7 @@ Das BeeGFS-Dateisystem umfasst die folgenden Hauptdienste:
 
 Die folgende Abbildung zeigt die Komponenten und Beziehungen der BeeGFS-Lösung für NetApp E-Series Systeme.
 
-image:../media/beegfs-components.png[""]
+image:beegfs-components.png["BeeGFS Komponenten"]
 
 Als paralleles Dateisystem verteilt BeeGFS seine Dateien auf mehrere Server-Nodes, um die Lese-/Schreib-Performance und Skalierbarkeit zu maximieren. Die Server-Knoten arbeiten zusammen, um ein einziges Dateisystem bereitzustellen, das gleichzeitig von anderen Server-Knoten, allgemein bekannt als _Clients_, gemountet werden kann. Diese Clients können das verteilte Dateisystem auf ähnliche Weise wie ein lokales Dateisystem wie NTFS, XFS oder ext4 sehen und nutzen.
 
@@ -64,7 +64,7 @@ NOTE: Die BeeGFS Community Edition kann zwar kostenlos genutzt werden, jedoch mu
 
 In der folgenden Abbildung werden die HA-Architekturen ohne Shared-Festplatten verglichen.
 
-image:../media/beegfs-design-image1.png[""]
+image:beegfs-design-image1.png["HA-Architekturen im Vergleich"]
 
 Weitere Informationen finden Sie unter https://www.netapp.com/blog/high-availability-beegfs/["Ankündigung der Hochverfügbarkeit für BeeGFS mit Unterstützung von NetApp"^].
 
@@ -93,7 +93,7 @@ Die BeeGFS auf NetApp-Lösung hat die unten aufgeführten Knoten verifiziert.
 
 Die Bausteine der Lösung (in der folgenden Abbildung dargestellt) verwenden die verifizierten File-Node-Server für die BeeGFS-Dateiebene und zwei EF600-Storage-Systeme als Block-Ebene.
 
-image:../media/beegfs-design-image2-small.png[""]
+image:beegfs-design-image2-small.png["Baustein"]
 
 Die BeeGFS on NetApp Lösung läuft über alle Bausteine während der Implementierung hinweg. Auf dem ersten implementierten Baustein müssen BeeGFS-Management-, Metadaten- und Storage-Services (als Basisbaustein bezeichnet) ausgeführt werden. Alle nachfolgenden Bausteine können über Software konfiguriert werden, um Metadaten und Storage-Services zu erweitern oder ausschließlich Storage-Services bereitzustellen. Mit diesem modularen Ansatz kann das Filesystem an die Anforderungen eines Workloads skaliert werden, während gleichzeitig dieselben zugrunde liegenden Hardware-Plattformen und dasselbe Bausteindesign verwendet werden.
 
@@ -102,7 +102,7 @@ Bis zu fünf Bausteine können als Standalone Linux HA-Cluster implementiert wer
 
 NOTE: Zum Herstellen von Quorum im Failover Cluster sind mindestens zwei Bausteine erforderlich. Ein Cluster mit zwei Nodes hat Einschränkungen, die ein erfolgreiches Failover verhindern können. Wenn Sie ein Cluster mit zwei Nodes konfigurieren, wird ein drittes Gerät als Tiebreaker integriert, dieses Design wird jedoch nicht in dieser Dokumentation beschrieben.
 
-image:../media/beegfs-design-image3.png[""]
+image:beegfs-design-image3.png["BeeGFS HA-Cluster-Skalierung"]
 
 
 
