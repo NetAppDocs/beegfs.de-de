@@ -54,7 +54,7 @@ Sobald der Node online ist, bringen Sie ihn aus dem Standby-Modus mit:
 
 [source, console]
 ----
-pcs cluster node unstandby <HOSTNAME>
+pcs node unstandby <HOSTNAME>
 ----
 Schließlich verlagern alle BeeGFS-Dienste wieder auf ihre bevorzugten Knoten mit:
 
