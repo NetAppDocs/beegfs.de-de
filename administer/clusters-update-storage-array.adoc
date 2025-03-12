@@ -14,13 +14,13 @@ summary: Schritte zum Upgrade der E-Series Storage-Arrays des HA-Clusters
 
 
 [role="lead"]
-Führen Sie die folgenden Schritte aus, um die E-Series Storage-Arrays (Block-Nodes) des HA-Clusters zu aktualisieren.
+Führen Sie die folgenden Schritte aus, um die Komponenten des HA-Clusters des E-Series Storage-Arrays zu aktualisieren.
 
 
 
 == Überblick
 
-Die NetApp E-Series Storage Arrays Ihres HA Clusters mit der neuesten Firmware auf dem neuesten Stand zu halten, gewährleistet optimale Performance und verbesserte Sicherheit. Firmware-Updates für das Storage Array werden mithilfe von SANtricity OS-, NVSRAM- und Festplatten-Firmware-Dateien angewendet.
+Die NetApp E-Series Storage Arrays Ihres HA Clusters mit der neuesten Firmware auf dem neuesten Stand zu halten, gewährleistet optimale Performance und verbesserte Sicherheit. Firmware-Updates für das Storage Array werden über SANtricity OS-, NVSRAM- und Festplatten-Firmware-Dateien angewendet.
 
 
 IMPORTANT: Obwohl ein Upgrade der Storage Arrays während des Online-Betriebs des HA-Clusters möglich ist, sollte das Cluster bei allen Upgrades in den Wartungsmodus versetzt werden.
@@ -65,7 +65,7 @@ Siehe link:https://docs.ansible.com/ansible/latest/collections_guide/collections
 
 
 . Bei Bedarf aktualisieren Sie die Ansible-Bestandsdateien Ihres Clusters, damit alle Storage-Arrays (Block-Nodes), die aktualisiert werden müssen, einbezogen werden. Weitere Informationen finden Sie im link:../custom/architectures-inventory-overview.html["Ansible-Bestandsübersicht"^] Abschnitt.
-. Stellen Sie sicher, dass sich das Cluster in einem optimalen Zustand befindet, wobei sich jeder BeeGFS-Service auf seinem bevorzugten Node befindet. Weitere Informationen finden Sie unter link:clusters-examine-state.html["Untersuchen Sie den Status des Clusters"^] .
+. Stellen Sie sicher, dass sich das Cluster mit jedem BeeGFS-Service auf seinem bevorzugten Node in einem optimalen Zustand befindet. Weitere Informationen finden Sie unter link:clusters-examine-state.html["Untersuchen Sie den Status des Clusters"^] .
 . Versetzen Sie das Cluster gemäß den Anweisungen in in link:clusters-maintenance-mode.html["Versetzen Sie das Cluster in den Wartungsmodus"^]den Wartungsmodus.
 . Erstellen Sie ein neues Ansible-Playbook mit dem Namen `update_block_node_playbook.yml`. Füllen Sie das Playbook mit den folgenden Inhalten aus und ersetzen Sie die Versionen des SANtricity Betriebssystems, des NVSRAM und der Festplatten-Firmware auf Ihren gewünschten Upgrade-Pfad:
 +

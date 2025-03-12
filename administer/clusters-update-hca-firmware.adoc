@@ -1,0 +1,233 @@
+---
+sidebar: sidebar 
+permalink: administer/clusters-update-hca-firmware.html 
+keywords: BeeGFS on NetApp, HA, Cluster, Administration, Update, Upgrade, HCA, ConnectX, Firmware, Card, Adapter 
+summary: Schritte zum Aktualisieren der ConnectX-7-Adapter-Firmware des Datei-Knotens. 
+---
+= Aktualisiert die Datei-Node-Adapter-Firmware
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Führen Sie die folgenden Schritte aus, um die ConnectX-7-Adapter des Datei-Knotens auf die neueste Firmware zu aktualisieren.
+
+
+
+== Überblick
+
+Um einen neuen MLNX_OFED-Treiber zu unterstützen, neue Funktionen zu aktivieren oder Fehler zu beheben, ist möglicherweise eine Aktualisierung der ConnectX-7-Adapter-Firmware erforderlich. In diesem Handbuch wird das Dienstprogramm von NVIDIA für Adapteraktualisierungen aufgrund seiner Benutzerfreundlichkeit und Effizienz verwendet `mlxfwmanager`.
+
+
+
+== Upgrade-Überlegungen
+
+In diesem Handbuch werden zwei Ansätze zur Aktualisierung der ConnectX-7-Adapter-Firmware beschrieben: Ein laufendes Update und ein zwei-Knoten-Cluster-Update. Wählen Sie den passenden Aktualisierungsansatz gemäß der Clustergröße aus. Bevor Sie Firmware-Aktualisierungen durchführen, stellen Sie sicher, dass:
+
+* Ein unterstützter MLNX_OFED-Treiber ist installiert, siehe link:../second-gen/beegfs-technology-requirements.html["Technologieanforderungen erfüllt"^].
+* Für das BeeGFS-Dateisystem und die Pacemaker-Cluster-Konfiguration sind gültige Backups vorhanden.
+* Das Cluster befindet sich in einem ordnungsgemäßen Zustand.
+
+
+
+
+== Vorbereitung des Firmware-Updates
+
+Es wird empfohlen, das NVIDIA-Dienstprogramm zu verwenden `mlxfwmanager`, um die Adapter-Firmware eines Knotens zu aktualisieren, die mit dem NVIDIA-Treiber MLNX_OFED gebündelt ist. Laden Sie vor dem Starten der Updates das Firmware-Image des Adapters von herunterlink:https://network.nvidia.com/support/firmware/firmware-downloads/["Die Support-Website von NVIDIA"^], und speichern Sie es auf jedem Datei-Node.
+
+
+NOTE: Für Lenovo ConnectX-7 Adapter, verwenden Sie das `mlxfwmanager_LES` Tool, das auf der NVIDIA-Seite zur Verfügung stehtlink:https://network.nvidia.com/support/firmware/lenovo-intelligent-cluster/["OEM-Firmware"^].
+
+
+
+== Rollierender Aktualisierungsansatz
+
+Dieser Ansatz wird für alle HA-Cluster mit mehr als zwei Nodes empfohlen. Dieser Ansatz beinhaltet die Aktualisierung der Adapter-Firmware auf einem Datei-Node, sodass das HA-Cluster Anforderungen weiterhin erfüllen kann. Allerdings wird empfohlen, um I/O-Anfragen während dieser Zeit zu vermeiden.
+
+. Vergewissern Sie sich, dass sich das Cluster in einem optimalen Zustand befindet, wobei jeder BeeGFS-Service auf seinem bevorzugten Node ausgeführt wird. Weitere Informationen finden Sie unter link:clusters-examine-state.html["Untersuchen Sie den Status des Clusters"^] .
+. Wählen Sie einen Datei-Node aus, um ihn zu aktualisieren und in den Standby-Modus zu versetzen, der alle BeeGFS-Services von diesem Node entfernt (oder verschiebt):
++
+[source, console]
+----
+pcs node standby <HOSTNAME>
+----
+. Überprüfen Sie, ob die Dienste des Node abgelaufen sind, indem Sie Folgendes ausführen:
++
+[source, console]
+----
+pcs status
+----
++
+Vergewissern Sie sich, dass keine Services als auf dem Node im Standby-Modus melden `Started`.
+
++
+
+NOTE: Je nach Cluster-Größe kann es Sekunden oder Minuten dauern, bis die BeeGFS-Dienste zum Schwesterknoten verschoben werden. Wenn ein BeeGFS-Dienst auf dem Schwesterknoten nicht gestartet werden kann, lesen Sie die link:clusters-troubleshoot.html["Leitfäden Zur Fehlerbehebung"^].
+
+. Aktualisieren Sie die Adapter-Firmware mit `mlxfwmanager`.
++
+[source, console]
+----
+ mlxfwmanager -i <path/to/firmware.bin> -u
+----
++
+Beachten Sie `PCI Device Name` für jeden Adapter, der Firmware-Updates empfängt.
+
+. Setzen Sie jeden Adapter mithilfe des Dienstprogramms zurück `mlxfwreset`, um die neue Firmware anzuwenden.
++
+
+NOTE: Einige Firmware-Aktualisierungen erfordern möglicherweise einen Neustart, um das Update anzuwenden. Weitere Informationen finden Sie unterlink:https://docs.nvidia.com/networking/display/mftv4310/mlxfwreset+%E2%80%93+loading+firmware+on+5th+generation+devices+tool#src-3566627427_safe-id-bWx4ZndyZXNldOKAk0xvYWRpbmdGaXJtd2FyZW9uNXRoR2VuZXJhdGlvbkRldmljZXNUb29sLW1seGZ3cmVzZXRMaW1pdGF0aW9ucw["Die Einschränkungen von NVIDIA mlxfwreset"^]. Wenn ein Neustart erforderlich ist, führen Sie einen Neustart durch, anstatt die Adapter zurückzusetzen.
+
++
+.. Beenden Sie den opensm-Dienst:
++
+[source, console]
+----
+systemctl stop opensm
+----
+.. Führen Sie den folgenden Befehl für jeden `PCI Device Name` zuvor genannten aus.
++
+[source, console]
+----
+mlxfwreset -d <pci_device_name> reset -y
+----
+.. Starten Sie den opensm-Dienst:
++
+[source, console]
+----
+systemctl start opensm
+----
+
+
+. Führen Sie aus `ibstat`, und überprüfen Sie, ob alle Adapter mit der gewünschten Firmware-Version ausgeführt werden:
++
+[source, console]
+----
+ibstat
+----
+. Starten Sie die Pacemaker-Clusterdienste auf dem Knoten:
++
+[source, console]
+----
+pcs cluster start <HOSTNAME>
+----
+. Beenden Sie den Standby-Modus des Node:
++
+[source, console]
+----
+pcs node unstandby <HOSTNAME>
+----
+. Verschieben Sie alle BeeGFS-Services zurück auf ihren bevorzugten Node:
++
+[source, console]
+----
+pcs resource relocate run
+----
+
+
+Wiederholen Sie diese Schritte für jeden Datei-Node im Cluster, bis alle Adapter aktualisiert wurden.
+
+
+
+== Update für Cluster mit zwei Nodes
+
+Dieser Ansatz wird für HA-Cluster mit nur zwei Nodes empfohlen. Dieser Ansatz ähnelt einem rollierenden Update, enthält jedoch zusätzliche Schritte zur Vermeidung von Service-Ausfallzeiten, wenn die Cluster-Services eines Node angehalten werden.
+
+. Vergewissern Sie sich, dass sich das Cluster in einem optimalen Zustand befindet, wobei jeder BeeGFS-Service auf seinem bevorzugten Node ausgeführt wird. Weitere Informationen finden Sie unter link:clusters-examine-state.html["Untersuchen Sie den Status des Clusters"^] .
+. Wählen Sie einen Datei-Node aus, um den Node zu aktualisieren und in den Standby-Modus zu versetzen, der alle BeeGFS-Services von diesem Node entfernt (oder verschiebt):
++
+[source, console]
+----
+pcs node standby <HOSTNAME>
+----
+. Überprüfen Sie, ob die Ressourcen des Node abgelaufen sind, indem Sie Folgendes ausführen:
++
+[source, console]
+----
+pcs status
+----
++
+Vergewissern Sie sich, dass keine Services als auf dem Node im Standby-Modus melden `Started`.
+
++
+
+TIP: Je nach Cluster-Größe kann es Sekunden oder Minuten dauern, bis BeeGFS-Dienste als auf dem Schwesternknoten melden `Started`. Wenn ein BeeGFS-Dienst nicht gestartet werden kann, lesen Sie die link:clusters-troubleshoot.html["Leitfäden Zur Fehlerbehebung"^].
+
+. Versetzen Sie das Cluster in den Wartungsmodus.
++
+[source, console]
+----
+pcs property set maintenance-mode=true
+----
+. Aktualisieren Sie die Adapter-Firmware mit `mlxfwmanager`.
++
+[source, console]
+----
+ mlxfwmanager -i <path/to/firmware.bin> -u
+----
++
+Beachten Sie `PCI Device Name` für jeden Adapter, der Firmware-Updates empfängt.
+
+. Setzen Sie jeden Adapter mithilfe des Dienstprogramms zurück `mlxfwreset`, um die neue Firmware anzuwenden.
++
+
+NOTE: Einige Firmware-Aktualisierungen erfordern möglicherweise einen Neustart, um das Update anzuwenden. Weitere Informationen finden Sie unterlink:https://docs.nvidia.com/networking/display/mftv4310/mlxfwreset+%E2%80%93+loading+firmware+on+5th+generation+devices+tool#src-3566627427_safe-id-bWx4ZndyZXNldOKAk0xvYWRpbmdGaXJtd2FyZW9uNXRoR2VuZXJhdGlvbkRldmljZXNUb29sLW1seGZ3cmVzZXRMaW1pdGF0aW9ucw["Die Einschränkungen von NVIDIA mlxfwreset"^]. Wenn ein Neustart erforderlich ist, führen Sie einen Neustart durch, anstatt die Adapter zurückzusetzen.
+
++
+.. Beenden Sie den opensm-Dienst:
++
+[source, console]
+----
+systemctl stop opensm
+----
+.. Führen Sie den folgenden Befehl für jeden `PCI Device Name` zuvor genannten aus.
++
+[source, console]
+----
+mlxfwreset -d <pci_device_name> reset -y
+----
+.. Starten Sie den opensm-Dienst:
++
+[source, console]
+----
+systemctl start opensm
+----
+
+
+. Führen Sie aus `ibstat`, und überprüfen Sie, ob alle Adapter mit der gewünschten Firmware-Version ausgeführt werden:
++
+[source, console]
+----
+ibstat
+----
+. Starten Sie die Pacemaker-Clusterdienste auf dem Knoten:
++
+[source, console]
+----
+pcs cluster start <HOSTNAME>
+----
+. Beenden Sie den Standby-Modus des Node:
++
+[source, console]
+----
+pcs node unstandby <HOSTNAME>
+----
+. Beenden Sie das Cluster aus dem Wartungsmodus.
++
+[source, console]
+----
+pcs property set maintenance-mode=false
+----
+. Verschieben Sie alle BeeGFS-Services zurück auf ihren bevorzugten Node:
++
+[source, console]
+----
+pcs resource relocate run
+----
+
+
+Wiederholen Sie diese Schritte für jeden Datei-Node im Cluster, bis alle Adapter aktualisiert wurden.

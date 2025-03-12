@@ -51,21 +51,6 @@ Jeder Datei-Node sollte die Spezifikationen der empfohlenen Datei-Nodes erfülle
 
 
 
-* * Lenovo ThinkSystem SR665*
-+
-** *Prozessoren:* 2x AMD EPYC 7343 16C 3.2 GHz (konfiguriert als zwei NUMA Zonen).
-** *Speicher:* 256 GB (16 x 16 GB TruDDR4 3200 MHz RDIMM-A)
-** *PCIe-Erweiterung:* vier PCIe Gen4 x16-Steckplätze (zwei pro NUMA-Zone)
-** *Verschiedenes:*
-+
-*** Zwei Laufwerke in RAID 1 für OS (1 TB 7.200 SATA oder höher)
-*** 1-GbE-Port für in-Band-OS-Management
-*** 1GbE BMC mit Redfish API für Out-of-Band-Server-Management
-*** Zwei Hot-Swap-Netzteile und Lüfter mit hoher Leistung
-
-
-
-
 
 
 
@@ -81,11 +66,6 @@ Host-Karten-Adapter variieren je nach Servermodell, das für den Datei-Knoten ve
 * * Lenovo ThinkSystem SR665 V3 Server:*
 +
 ** MCX755106AS-HEAT ConnectX-7, NDR200, QSFP112, 2 Ports, PCIe Gen5 x16, InfiniBand-Adapter
-
-
-* * Lenovo ThinkSystem SR665 Server:*
-+
-** MCX653106A-HDAT ConnectX-6, HDR, QSFP-56, 2 Ports, PCIe Gen4 x16, InfiniBand-Adapter
 
 
 
@@ -115,21 +95,27 @@ Der Storage-Netzwerk-Switch muss 200 GB/s InfiniBand-Geschwindigkeiten unterstü
 |===
 *Verbindungen von Dateiknoten zum Speichernetzwerk-Switch.* Wählen Sie je nach InfiniBand-Speicherschalter die entsprechende Kabeloption aus der folgenden Tabelle aus. + die empfohlene Kabellänge beträgt 2 m, dies kann jedoch je nach Umgebung des Kunden variieren.
 
-[cols="20%,10%,15%,55%"]
+[cols="20%,15%,10%,55%"]
 |===
-| Switch-Modell | Menge | Kabeltyp | Teilenummer 
+| Switch-Modell | Kabeltyp | Menge | Teilenummer 
 
 
-| NVIDIA QM9700 | 4 | Aktive Glasfaser | MFA7U10-H002 (NVIDIA aktives Glasfaserkabel, InfiniBand 400 GB/s auf 2 x 200 GB/s, OSFP auf 2 x QSFP56) 
+.4+| NVIDIA QM9700 .3+| Aktive Glasfaser (einschließlich Transceiver) | 2 | MMA4Z00-NS (Multimode, IB/ETH, 800 GB/s 2x400 GB/s Twin-Port OSFP) 
 
 
-| NVIDIA QM9700 | 4 | Passives Kupfer | MCP7Y60-H002 (passives NVIDIA-Kupferkabel, InfiniBand 400 GB/s auf 2 x 200 GB/s, OSFP auf 2 x QSFP56) 
+| 4 | MFP7E20-Nxxx (Multimode, 4-Kanal-zu-zwei 2-Kanal-Splitter-Glasfaserkabel) 
 
 
-| NVIDIA MQM8700 | 8 | Aktive Glasfaser | MFS1S00-H003E (aktives NVIDIA-Glasfaserkabel, InfiniBand 200 GB/s, QSFP56) 
+| 8 | MMA1Z00-NS400 (Multimode, IB/ETH, 400 GB/s Single-Port QSFP-112) 
 
 
-| NVIDIA MQM8700 | 8 | Passives Kupfer | MCP1650-H002E26 (passives NVIDIA-Kupferkabel, InfiniBand 200 GB/s, QSFP56) 
+| Passives Kupfer | 2 | MCP7Y40-N002 (passives NVIDIA-Kupferverteilerkabel, InfiniBand 800 GB/s bis 4 x 200 GB/s, OSFP auf 4 x QSFP112) 
+
+
+.2+| NVIDIA MQM8700 | Aktive Glasfaser | 8 | MFS1S00-H003E (aktives NVIDIA-Glasfaserkabel, InfiniBand 200 GB/s, QSFP56) 
+
+
+| Passives Kupfer | 8 | MCP1650-H002E26 (passives NVIDIA-Kupferkabel, InfiniBand 200 GB/s, QSFP56) 
 |===
 
 
@@ -159,15 +145,12 @@ IMPORTANT: File-Nodes erfordern ein gültiges RedHat Enterprise Linux Server-Abo
 | Linux-Kernel | 5.14.0-362.24.1.el9_3.x86_64 
 
 
-| InfiniBand-/RDMA-Treiber | MLNX_OFED_LINUX-23.10-3.2.2.0-LTS 
-
-
  a| 
 HCA-Firmware
  a| 
-*ConnectX-7 HCA Firmware* FW: 28.39.1002 + PXE: 3.7.0201 + UEFI: 14.32.0012
+*ConnectX-7 HCA Firmware* FW: 28.42.1000 + PXE: 3.7.0500 + UEFI: 14.35.0015
 
-*ConnectX-6 HCA Firmware* FW: 20.31.1014 + PXE: 3.6.0403 + UEFI: 14.24.0013
+*ConnectX-6 HCA Firmware* FW: 20.43.1014 + PXE: 3.7.0500 + UEFI: 14.36.0016
 
 |===
 
@@ -179,10 +162,10 @@ HCA-Firmware
 | Software | Version 
 
 
-| SANtricity OS | 11.80.0 
+| SANtricity OS | 11.90R1 
 
 
-| NVSRAM | N6000-880834-D08.dlp 
+| NVSRAM | N6000-890834-D02.dlp 
 
 
 | Festplatten-Firmware | Neueste verfügbar für die verwendeten Antriebsmodelle. 
@@ -201,15 +184,16 @@ In der folgenden Tabelle sind die automatisch bereitgestellten Softwareanforderu
 | BeeGFS | 7.4.4 
 
 
-| Corosync | 3.1.5-4 
+| Corosync | 3.1.7-1 
 
 
-| Schrittmacher | 2.1.4-5 
+| Schrittmacher | 2.1.6-10 
 
 
-| OpenSM  a| 
-opensm-5.17.2 (von MLNX_OFED_LINUX-23.10-3.2.2.0-LTS)
+| Zaunmittel (Rotbarsch/apc) | 4.10.0-55 
 
+
+| InfiniBand-/RDMA-Treiber | MLNX_OFED_LINUX-23.10-3.2.2.0-LTS 
 |===
 
 

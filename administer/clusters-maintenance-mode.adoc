@@ -37,9 +37,9 @@ So überprüfen Sie, ob das Cluster sich im Wartungsmodus befindet:
 
 [source, console]
 ----
-pcs property show maintenance-mode
+pcs property config
 ----
-Dies gibt FALSE zurück, wenn das Cluster ordnungsgemäß ausgeführt wird. Um den Wartungsmodus zu aktivieren, führen Sie folgende Schritte aus:
+Die `maintenance-mode` Eigenschaft wird nicht angezeigt, wenn das Cluster ordnungsgemäß ausgeführt wird. Wenn sich der Cluster derzeit im Wartungsmodus befindet, wird die Eigenschaft als gemeldet `true`. Um den Wartungsmodus zu aktivieren, führen Sie folgende Schritte aus:
 
 [source, console]
 ----
