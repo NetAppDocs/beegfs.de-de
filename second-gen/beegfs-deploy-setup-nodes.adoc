@@ -49,10 +49,7 @@ NOTE: Die nachfolgenden Abschnitte gehen davon aus, dass die Hostnamen sequenzie
 ....
 subscription-manager repo-override --repo=rhel-9-for-x86_64-highavailability-rpms --add=enabled:1
 ....
-. Aktualisieren Sie alle HCA-Firmware auf die in empfohlene Version link:beegfs-technology-requirements.html["Technologieanforderungen erfüllt"].
-+
-Dieses Update kann durch Herunterladen und Ausführen einer Version des mlxup-Tools durchgeführt werden, das die empfohlene Firmware bündelt. Sie können dieses Tool unter ( ) herunterladen https://network.nvidia.com/support/firmware/mlxup-mft/["Mlxup - Dienstprogramm zum Aktualisieren und Abfragen"^]link:https://docs.nvidia.com/networking/display/mlxupfwutility["Benutzerhandbuch"^].
-
+. Aktualisieren Sie alle HCA-Firmware auf die in  Verwendung des link:..administer/clusters-update-hca-firmware.html["Aktualisiert die Datei-Node-Adapter-Firmware"^]Handbuchs empfohlene Versionlink:beegfs-technology-requirements.html["Technologieanforderungen erfüllt"].
 
 
 
@@ -63,11 +60,11 @@ Richten Sie die EF600 Block-Nodes ein, indem Sie den Managementport pro Controll
 
 . Konfigurieren Sie den Managementport an jedem EF600 Controller.
 +
-Anweisungen zum Konfigurieren von Ports finden Sie im https://docs.netapp.com/us-en/e-series/maintenance-ef600/hpp-overview-supertask-concept.html["E-Series Documentation Center"^].
+Anweisungen zum Konfigurieren von Ports finden Sie im https://docs.netapp.com/us-en/e-series/install-hw-ef600/complete-setup-task.html#step-2-connect-and-configure-the-management-connection["E-Series Documentation Center"^].
 
 . Legen Sie optional den Speicher-Array-Namen für jedes System fest.
 +
-Durch das Festlegen eines Namens kann es einfacher sein, in den nachfolgenden Abschnitten auf jedes System zu verweisen. Anweisungen zum Festlegen des Array-Namens finden Sie im https://docs.netapp.com/us-en/e-series/maintenance-ef600/hpp-overview-supertask-concept.html["E-Series Documentation Center"^].
+Durch das Festlegen eines Namens kann es einfacher sein, in den nachfolgenden Abschnitten auf jedes System zu verweisen. Anweisungen zum Festlegen des Arraynamens finden Sie im https://docs.netapp.com/us-en/e-series-santricity/sm-interface/setup-wizard-overview.html#first-time-setup["E-Series Documentation Center"^].
 
 
 

@@ -14,15 +14,15 @@ summary: Bevor Sie mit der Implementierung beginnen, sollten Sie wissen, wie Sie
 
 
 [role="lead"]
-Bevor Sie mit der Implementierung beginnen, sollten Sie wissen, wie Sie Ansible verwenden können, um die BeeGFS auf NetApp Lösung mit dem BeeGFS-Bausteindesign der zweiten Generation zu konfigurieren und zu implementieren.
+Machen Sie sich vor der Implementierung mit der Konfiguration von Ansible vertraut und werden Sie zur Implementierung der BeeGFS auf NetApp Lösung verwendet.
 
-Ansible-Bestandsaufnahme definiert die Konfiguration für Datei- und Block-Nodes und stellt das BeeGFS-Dateisystem dar, das bereitgestellt werden soll. Der Bestand umfasst Hosts, Gruppen und Variablen, die das gewünschte BeeGFS-Dateisystem beschreiben. Probenbestände können von heruntergeladen werden https://github.com/netappeseries/beegfs/tree/master/getting_started/["NetApp E-Series BeeGFS GitHub"^].
+Der Ansible-Bestand ist eine Verzeichnisstruktur mit den Datei- und Block-Nodes für das zu implementierende BeeGFS-Filesystem. Es enthält Hosts, Gruppen und Variablen, die das gewünschte BeeGFS-Dateisystem beschreiben. Die Ansible-Bestandsaufnahme muss auf dem Ansible-Steuerungsknoten gespeichert werden, bei dem es sich um jeden Computer mit Zugriff auf die Datei- und Block-Nodes handelt, mit denen das Ansible-Playbook ausgeführt wird. Probenbestände können von der heruntergeladen werden https://github.com/netappeseries/beegfs/tree/master/getting_started/["NetApp E-Series BeeGFS GitHub"^].
 
 
 
 == Ansible-Module und -Rollen
 
-Um die vom Ansible-Inventar beschriebene Konfiguration anzuwenden, verwenden Sie die verschiedenen Ansible-Module und -Rollen der NetApp E-Series-Ansible-Sammlung, insbesondere die BeeGFS HA 7.4-Rolle (verfügbar über die https://github.com/netappeseries/beegfs/tree/master/roles/beegfs_ha_7_4["NetApp E-Series BeeGFS GitHub"^]), die die End-to-End-Lösung bereitstellt.
+Um die im Ansible Inventar beschriebene Konfiguration anzuwenden, verwenden Sie die verschiedenen Ansible Module und Rollen aus der NetApp E-Series Ansible Sammlung (verfügbar über https://github.com/netappeseries/beegfs/tree/master/roles/beegfs_ha_7_4["NetApp E-Series BeeGFS GitHub"^] ), die die End-to-End-Lösung implementieren.
 
 Jede Rolle der NetApp E-Series Ansible Sammlung ist eine vollständige End-to-End-Implementierung der BeeGFS auf NetApp Lösung. Die Rollen verwenden die Sammlungen NetApp E-Series SANtricity, Host und BeeGFS, mit denen Sie das BeeGFS Filesystem mit HA (High Availability, Hochverfügbarkeit) konfigurieren können. Anschließend können Sie Storage bereitstellen und zuordnen und den Cluster-Storage betriebsbereit machen.
 
@@ -35,11 +35,11 @@ NOTE: Obwohl die Implementierungsschritte versucht, genügend Details bereitzust
 
 == Bestandslayout für BeeGFS HA-Cluster
 
-Verwenden Sie die Ansible-Bestandsstruktur, um ein BeeGFS HA-Cluster zu definieren.
+Definieren Sie ein BeeGFS HA-Cluster mit der Ansible-Bestandsstruktur.
 
-Jeder, der über frühere Ansible-Erfahrungen verfügt, sollte beachten, dass die BeeGFS HA-Rolle eine benutzerdefinierte Methode zur Ermittlung der Variablen (oder Fakten) für jeden Host implementiert. Dies ist erforderlich, um den Aufbau eines Ansible-Bestands zu vereinfachen, in dem Ressourcen beschrieben werden, die auf mehreren Servern ausgeführt werden können.
+Jeder mit früheren Ansible-Erfahrungen sollte sich bewusst sein, dass die BeeGFS-HA-Rolle eine benutzerdefinierte Methode implementiert, um zu ermitteln, welche Variablen (oder Fakten) für jeden Host gelten. Dieses Design vereinfacht die Strukturierung des Ansible-Bestands, um Ressourcen zu beschreiben, die auf mehreren Servern ausgeführt werden können.
 
-Ein Ansible-Inventar besteht in der Regel aus den Dateien in `host_vars` Und `group_vars`, Und an `inventory.yml` Datei, die Hosts bestimmten Gruppen (und möglicherweise Gruppen zu anderen Gruppen) zuweist.
+Ein Ansible-Inventar besteht in der Regel aus den Dateien in `host_vars` und `group_vars` sowie einer `inventory.yml` Datei, die Hosts spezifischen Gruppen (und potenziell Gruppen anderen Gruppen) zuweist.
 
 
 NOTE: Erstellen Sie keine Dateien mit dem Inhalt in diesem Unterabschnitt, der nur als Beispiel gedacht ist.
@@ -93,7 +93,7 @@ beegfs_targets:
           - size: 21.25
             owning_controller: A
 ....
-Mit diesem Layout können BeeGFS-Service-, Netzwerk- und Storage-Konfigurationen für jede Ressource an einem Ort definiert werden. Hinter den Kulissen aggregiert die Rolle BeeGFS basierend auf dieser Bestandsstruktur die erforderliche Konfiguration für jede Datei und jeden Block-Node. Weitere Informationen finden Sie in diesem Blog-Beitrag: https://www.netapp.com/blog/accelerate-deployment-of-ha-for-beegfs-with-ansible/["NetApp beschleunigt die Implementierung von HA für BeeGFS mit Ansible"^].
+Mit diesem Layout können BeeGFS-Service-, Netzwerk- und Storage-Konfigurationen für jede Ressource an einem Ort definiert werden. Hinter den Kulissen aggregiert die Rolle BeeGFS basierend auf dieser Bestandsstruktur die erforderliche Konfiguration für jede Datei und jeden Block-Node.
 
 
 NOTE: Die numerische BeeGFS- und String-Node-ID für jeden Dienst wird automatisch auf Basis des Gruppennamens konfiguriert. Zusätzlich zur allgemeinen Ansible-Anforderung, dass Gruppennamen eindeutig sein sollen, müssen Gruppen, die einen BeeGFS-Service darstellen, in einer Zahl enden, die für den BeeGFS-Service eindeutig ist, für den diese Gruppe repräsentiert. Zum Beispiel sind meta_01 und stor_01 zulässig, aber Metadaten_01 und meta_01 sind nicht.

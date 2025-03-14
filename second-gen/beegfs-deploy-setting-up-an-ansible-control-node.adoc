@@ -14,66 +14,64 @@ summary: Um einen Ansible-Steuerungsknoten einzurichten, identifizieren Sie eine
 
 
 [role="lead"]
-Zum Einrichten eines Ansible-Kontrollknotens müssen Sie eine virtuelle oder physische Maschine mit Netzwerkzugriff auf die Verwaltungsports aller Datei- und Block-Nodes identifizieren, die zum Konfigurieren der Lösung verwendet werden kann.
+Zum Einrichten eines Ansible-Steuerknotens müssen Sie eine virtuelle oder physische Maschine mit Netzwerkzugriff auf alle Datei- und Block-Nodes zuweisen, die für die BeeGFS auf NetApp Lösung implementiert werden.
 
-Die folgenden Schritte wurden auf Ubuntu 22.04 getestet. Für spezifische Schritte zu Ihrer bevorzugten Linux-Distribution, siehe https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html["Ansible-Dokumentation"^].
+Eine Liste der empfohlenen Paketversionen finden Sie imlink:beegfs-technology-requirements.html#ansible-control-node-requirements["Technische Anforderungen"]. Die folgenden Schritte wurden auf Ubuntu 22.04 getestet. Für spezifische Schritte zu Ihrer bevorzugten Linux-Distribution, siehe https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html["Ansible-Dokumentation"^].
 
-. Installieren Sie Python 3.10, und stellen Sie sicher, dass die richtige Version von `pip` installiert ist.
+. Installieren Sie über Ihren Ansible Control Node die folgenden Pakete für Python und Python Virtual Environment.
 +
-....
-sudo apt install python3.10 -y
-sudo apt install python3-pip
-sudo apt install sshpass
-....
-. Erstellen Sie symbolische Links, um sicherzustellen, dass die Python 3.10-Binärdatei verwendet wird, wann immer `python3` oder `python` aufgerufen wird.
+[source, console]
+----
+sudo apt-get install python3 python3-pip python3-setuptools python3.10-venv
+----
+. Erstellen einer virtuellen Python-Umgebung
 +
-....
-sudo ln -sf /usr/bin/python3.10 /usr/bin/python3
-sudo ln -sf /usr/bin/python3 /usr/bin/python
-....
-. Installieren Sie die Python-Pakete, die von den NetApp BeeGFS Collections benötigt werden.
+[source, console]
+----
+python3 -m venv ~/pyenv
+----
+. Aktivieren Sie die virtuelle Umgebung.
 +
-....
-python3 -m pip install ansible cryptography netaddr
-....
+[source, console]
+----
+source ~/pyenv/bin/activate
+----
+. Installieren Sie die erforderlichen Python-Pakete in der aktivierten virtuellen Umgebung.
 +
-
-NOTE: Um sicherzustellen, dass Sie eine unterstützte Version von Ansible und alle erforderlichen Python-Pakete installieren, lesen Sie die Readme-Datei der BeeGFS-Sammlung. Auch unterstützte Versionen sind in angegeben link:beegfs-technology-requirements.html["Technische Anforderungen"].
-
-. Vergewissern Sie sich, dass die korrekten Versionen von Ansible und Python installiert sind.
+[source, console]
+----
+pip install ansible netaddr cryptography passlib
+----
+. Installieren Sie die BeeGFS-Sammlung mit Ansible Galaxy.
 +
-....
+[source, console]
+----
+ansible-galaxy collection install netapp_eseries.beegfs
+----
+. Überprüfen Sie, ob die installierten Versionen von Ansible, Python und BeeGFS-Sammlung mit der übereinstimmenlink:beegfs-technology-requirements.html#ansible-control-node-requirements["Technische Anforderungen"].
++
+[source, console]
+----
 ansible --version
-ansible [core 2.17.2]
-  config file = None
-  configured module search path = ['/root/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
-  ansible python module location = /usr/local/lib/python3.10/dist-packages/ansible
-  ansible collection location = /root/.ansible/collections:/usr/share/ansible/collections
-  executable location = /usr/local/bin/ansible
-  python version = 3.10.12 (main, Jul 29 2024, 16:56:48) [GCC 11.4.0] (/usr/bin/python3)
-  jinja version = 3.1.4
-  libyaml = True
-....
-. Speichern der Ansible-Bestände, die zur Beschreibung der BeeGFS-Implementierung in Quellkontrollsystemen wie Git oder BitBucket verwendet werden, und installieren Sie Git, um mit diesen Systemen zu interagieren.
+ansible-galaxy collection list netapp_eseries.beegfs
+----
+. Richten Sie passwortloses SSH ein, damit Ansible vom Ansible-Steuerungsknoten aus auf die Remote-BeeGFS-Datei-Nodes zugreifen kann.
 +
-....
-sudo apt install git -y
-....
-. Einrichten passwortloser SSH. Auf diese Weise kann Ansible am einfachsten über den Ansible-Steuerungsknoten auf die Remote BeeGFS-Datei-Nodes zugreifen.
+.. Generieren Sie auf dem Ansible-Steuerungsknoten, falls erforderlich, ein Paar öffentlicher Schlüssel.
 +
-.. Generieren Sie auf dem Ansible-Kontroll-Node, falls erforderlich, mithilfe ein Paar öffentliche Schlüssel `ssh-keygen`
-.. Richten Sie mit jedem Dateiknoten passwortlose SSH ein `ssh-copy-id <ip_or_hostname>`
+[source, console]
+----
+ssh-keygen
+----
+.. Richten Sie passwortloses SSH für jeden der Dateiknoten ein.
 +
-Richten Sie bei den Blockknoten eine passwortlose SSH ein. Dies wird weder unterstützt noch erforderlich.
+[source, console]
+----
+ssh-copy-id <ip_or_hostname>
+----
 
 
 
-. Verwenden Sie Ansible Galaxy, um die in aufgeführte BeeGFS-Version zu installieren link:beegfs-technology-requirements.html["Technische Anforderungen"].
-+
-Diese Installation umfasst zusätzliche Ansible-Abhängigkeiten, z. B. die NetApp SANtricity Software und Host-Sammlungen.
 
-+
-....
-ansible-galaxy collection install netapp_eseries.beegfs:==3.2.0
-....
 
+IMPORTANT: Richten Sie bei den Blockknoten eine passwortlose SSH ein. Dies wird weder unterstützt noch erforderlich.

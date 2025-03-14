@@ -32,6 +32,13 @@ Künstliche Intelligenz.
 
 
  a| 
+Ansible-Steuerungsknoten
+ a| 
+Eine physische oder virtuelle Maschine, die zum Ausführen der Ansible CLI verwendet wird.
+
+
+
+ a| 
 Ansible-Bestandsaufnahme
  a| 
 Verzeichnisstruktur mit YAML-Dateien, die zur Beschreibung des gewünschten BeeGFS HA-Clusters verwendet werden.
@@ -48,7 +55,7 @@ Baseboard Management Controller Und wird manchmal als Service-Prozessor bezeichn
  a| 
 Block-Nodes
  a| 
-Storage-Systeme.
+E-Series Storage-Systemen
 
 
 

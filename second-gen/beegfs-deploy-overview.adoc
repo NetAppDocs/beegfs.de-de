@@ -14,15 +14,15 @@ summary: Mit BeeGFS können Sie auf NetApp bereitstellen und Datei- und Block-No
 
 
 [role="lead"]
-Mit BeeGFS können Sie auf NetApp bereitstellen und Datei- und Block-Nodes mithilfe der zweiten Generation des NetApp BeeGFS-Bausteindesigns validieren.
+BeeGFS auf NetApp kann auf validierte Datei- und Block-Nodes mithilfe von Ansible mit dem BeeGFS-Baustein-Design von NetApp implementiert werden.
 
 
 
 == Ansible-Sammlungen und -Funktionen
 
-Ansible implementiert die BeeGFS auf NetApp Lösung, eine beliebte IT-Automatisierungs-Engine, mit der Applikationsimplementierungen automatisiert werden. Ansible verwendet eine Reihe von Dateien, die gemeinsam als Inventar bezeichnet werden und mit denen das BeeGFS-Dateisystem, das bereitgestellt werden soll, modelliert wird.
+Die BeeGFS auf NetApp-Lösung wird mithilfe von Ansible implementiert, einer beliebten IT-Automatisierungs-Engine, die Applikationsimplementierungen automatisiert. Ansible verwendet eine Reihe von Dateien, die gemeinsam als Inventar bezeichnet werden. Hierbei wird das BeeGFS-Filesystem modelliert, das Sie implementieren möchten.
 
-Ansible ermöglicht Unternehmen wie NetApp, mithilfe von Sammlungen auf Ansible Galaxy die integrierte Funktionalität zu erweitern (siehe https://galaxy.ansible.com/netapp_eseries/santricity["NetApp E-Series BeeGFS Sammlung"^]). Die Sammlungen umfassen Module, die bestimmte Funktionen oder Aufgaben ausführen (wie z. B. ein E-Series Volume erstellen) und enthalten Rollen, die mehrere Module und andere Rollen aufrufen können. Dieser automatisierte Ansatz reduziert die Zeit für die Implementierung des BeeGFS-Filesystems und des zugrunde liegenden HA-Clusters. Zudem vereinfacht es das Hinzufügen von Bausteinen, mit denen die bestehenden Filesysteme erweitert werden können.
+Ansible ermöglicht Unternehmen wie NetApp die Erweiterung auf integrierte Funktionen mithilfe von Sammlungen, die auf Ansible Galaxy verfügbar sind (siehe https://galaxy.ansible.com/netapp_eseries/santricity["NetApp E-Series BeeGFS Sammlung"^]). Sammlungen umfassen Module, die bestimmte Funktionen oder Aufgaben (wie das Erstellen eines E-Series Volumes) ausführen, sowie Rollen, die mehrere Module und andere Rollen aufrufen können. Dieser automatisierte Ansatz reduziert die Zeit für die Implementierung des BeeGFS-Filesystems und des zugrunde liegenden HA-Clusters. Darüber hinaus vereinfacht es die Wartung und Erweiterung des Clusters und des BeeGFS-Dateisystems.
 
 Weitere Informationen finden Sie unter link:beegfs-deploy-learn-ansible.html["Weitere Informationen zum Ansible Inventar"].
 
@@ -40,7 +40,7 @@ Die Implementierungsverfahren umfassen die folgenden Konfigurationsprofile:
 * Ein dritter Baustein, der nur Storage-Services umfasst.
 
 
-Diese Profile veranschaulichen die gesamte Palette der empfohlenen Konfigurationsprofile für die NetApp BeeGFS-Bausteine. Für jede Implementierung kann die Anzahl der Metadaten und Storage-Bausteine oder Storage-Services-only Bausteine in den Prozeduren je nach Kapazitäts- und Performance-Anforderungen variieren.
+Diese Profile veranschaulichen die gesamte Palette der empfohlenen Konfigurationsprofile für die NetApp BeeGFS-Bausteine. Bei jeder Implementierung kann die Anzahl der Metadaten und Storage-Bausteine oder nur-Storage-Services-Bausteine je nach Kapazitäts- und Performance-Anforderungen variieren.
 
 
 

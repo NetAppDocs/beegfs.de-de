@@ -119,9 +119,9 @@ Der Storage-Netzwerk-Switch muss 200 GB/s InfiniBand-Geschwindigkeiten unterstü
 |===
 
 
-== Softwareanforderungen
+== Software- und Firmware-Anforderungen zu erfüllen
 
-Um eine vorhersehbare Performance und Zuverlässigkeit zu gewährleisten, werden Releases der BeeGFS auf NetApp Lösung mit spezifischen Versionen der Softwarekomponenten getestet, die für die Implementierung der Lösung erforderlich sind.
+Um eine vorhersehbare Performance und Zuverlässigkeit zu gewährleisten, werden Versionen der BeeGFS auf NetApp Lösung mit bestimmten Versionen der Software- und Firmware-Komponenten getestet. Diese Versionen sind für die Implementierung der Lösung erforderlich.
 
 
 
@@ -132,14 +132,7 @@ Um eine vorhersehbare Performance und Zuverlässigkeit zu gewährleisten, werden
 | Software | Version 
 
 
- a| 
-Red hat Enterprise Linux
- a| 
-Redhat 9.3 Server, physisch mit Hochverfügbarkeit (2 Sockets).
-
-
-IMPORTANT: File-Nodes erfordern ein gültiges RedHat Enterprise Linux Server-Abonnement und das Red hat Enterprise Linux High Availability Add-On.
-
+| Red hat Enterprise Linux | Redhat 9.3 Server, physisch mit Hochverfügbarkeit (2 Sockets). WICHTIG: Für File-Nodes ist eine gültige RedHat Enterprise Linux Server-Subskription und das Red hat Enterprise Linux High Availability Add-On erforderlich. 
 
 
 | Linux-Kernel | 5.14.0-362.24.1.el9_3.x86_64 
@@ -208,10 +201,13 @@ Die in den folgenden Tabellen aufgeführten Software-Anforderungen beziehen sich
 | Software | Version 
 
 
-| Ansible | 6.x bei Installation über Pip: ansible-6.0.0 und ansible-Core >= 2.13.0 
+| Ansible | 10.x 
 
 
-| Python | 3.9 (oder höher) 
+| Ansible-Core | >= 2.13.0 
+
+
+| Python | 3,10 
 
 
 | Zusätzliche Python-Pakete | Kryptographie-43.0.0, netaddr-1.3.0, ipaddr-2.2.0 
