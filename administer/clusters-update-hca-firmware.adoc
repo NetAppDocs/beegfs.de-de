@@ -40,7 +40,7 @@ In diesem Handbuch werden zwei Ansätze zur Aktualisierung der ConnectX-7-Adapte
 Es wird empfohlen, das NVIDIA-Dienstprogramm zu verwenden `mlxfwmanager`, um die Adapter-Firmware eines Knotens zu aktualisieren, die mit dem NVIDIA-Treiber MLNX_OFED gebündelt ist. Laden Sie vor dem Starten der Updates das Firmware-Image des Adapters von herunterlink:https://network.nvidia.com/support/firmware/firmware-downloads/["Die Support-Website von NVIDIA"^], und speichern Sie es auf jedem Datei-Node.
 
 
-NOTE: Für Lenovo ConnectX-7 Adapter, verwenden Sie das `mlxfwmanager_LES` Tool, das auf der NVIDIA-Seite zur Verfügung stehtlink:https://network.nvidia.com/support/firmware/lenovo-intelligent-cluster/["OEM-Firmware"^].
+TIP: Für Lenovo ConnectX-7 Adapter, verwenden Sie das `mlxfwmanager_LES` Tool, das auf der NVIDIA-Seite zur Verfügung stehtlink:https://network.nvidia.com/support/firmware/lenovo-intelligent-cluster/["OEM-Firmware"^].
 
 
 
@@ -101,8 +101,21 @@ mlxfwreset -d <pci_device_name> reset -y
 ----
 systemctl start opensm
 ----
+.. Starten Sie den  `eseries_nvme_ib.service` .
++
+[source, console]
+----
+systemctl restart eseries_nvme_ib.service
+----
+.. Überprüfen Sie, ob die Volumes des E-Series-Speicherarrays vorhanden sind.
 
 
+
+
+[listing]
+----
+multipath -ll
+----
 . Führen Sie aus `ibstat`, und überprüfen Sie, ob alle Adapter mit der gewünschten Firmware-Version ausgeführt werden:
 +
 [source, console]

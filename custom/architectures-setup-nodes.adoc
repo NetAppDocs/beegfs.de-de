@@ -45,9 +45,9 @@ Installieren Sie ein unterstütztes Betriebssystem basierend auf den aufgeführt
 
 
 
-==== Red hat
+==== Red Hat
 
-Verwenden Sie den RedHat Subscription Manager, um das System zu registrieren und zu abonnieren, damit die erforderlichen Pakete aus den offiziellen Red hat Repositorys installiert werden können und um Updates auf die unterstützte Version von Red hat zu beschränken: `subscription-manager release --set=<MAJOR_VERSION>.<MINOR_VERSION>`. Anweisungen hierzu finden Sie unter https://access.redhat.com/solutions/253273["Registrieren und Abonnieren eines RHEL Systems"^] Und  https://access.redhat.com/solutions/2761031["Einschränken von Aktualisierungen"^].
+Verwenden Sie den Red Hat Subscription Manager, um das System zu registrieren und zu abonnieren, damit die erforderlichen Pakete aus den offiziellen Red Hat-Repositorys installiert werden können und um Updates auf die unterstützte Version von Red Hat zu beschränken:  `subscription-manager release --set=<MAJOR_VERSION>.<MINOR_VERSION>` . Anweisungen finden Sie unter  https://access.redhat.com/solutions/253273["Registrieren und Abonnieren eines RHEL Systems"^] Und  https://access.redhat.com/solutions/2761031["Einschränken von Aktualisierungen"^] .
 
 Red hat Repository mit den für hohe Verfügbarkeit erforderlichen Paketen aktivieren:
 

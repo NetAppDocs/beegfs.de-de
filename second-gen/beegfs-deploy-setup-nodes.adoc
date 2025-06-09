@@ -33,9 +33,9 @@ NOTE: Ein Baseboard Management Controller (BMC), der manchmal als Service-Prozes
 Sie konfigurieren die Systemeinstellungen über das UEFI-Setup (früher BIOS) oder über die Redfish APIs, die von vielen BMCs bereitgestellt werden. Die Systemeinstellungen variieren je nach Servermodell, das als Dateiknoten verwendet wird.
 
 +
-Informationen zur Konfiguration der Systemeinstellungen für die validierten Lenovo SR665-Dateiknoten finden Sie unter link:beegfs-deploy-file-node-tuning.html["Passen Sie die Systemeinstellungen für die Performance an"].
+Informationen zum Konfigurieren der Systemeinstellungen für die validierten Lenovo SR665 V3-Dateiknoten finden Sie unter link:beegfs-deploy-file-node-tuning.html["Passen Sie die Systemeinstellungen für die Performance an"] .
 
-. Installieren Sie Red hat 9.3 und konfigurieren Sie den Hostnamen und den Netzwerkport, mit dem das Betriebssystem verwaltet wird, einschließlich SSH-Konnektivität über den Ansible-Steuerungs-Node.
+. Installieren Sie Red Hat Enterprise Linux (RHEL) 9.4 und konfigurieren Sie den Hostnamen und den Netzwerkport, die zur Verwaltung des Betriebssystems verwendet werden, einschließlich der SSH-Konnektivität vom Ansible-Steuerknoten.
 +
 Konfigurieren Sie derzeit keine IPs auf einem der InfiniBand-Ports.
 
@@ -43,7 +43,7 @@ Konfigurieren Sie derzeit keine IPs auf einem der InfiniBand-Ports.
 
 NOTE: Die nachfolgenden Abschnitte gehen davon aus, dass die Hostnamen sequenziell nummeriert sind (z. B. h1-HN), und beziehen sich auf Aufgaben, die auf ungeraden oder gar nummerierten Hosts ausgeführt werden sollten.
 
-. Verwenden Sie RedHat Subscription Manager, um das System zu registrieren und zu abonnieren, um die Installation der erforderlichen Pakete aus den offiziellen Red hat Repositorys zu ermöglichen und Aktualisierungen auf die unterstützte Version von Red hat zu beschränken: `subscription-manager release --set=9.3`. Anweisungen hierzu finden Sie unter https://access.redhat.com/solutions/253273["Registrieren und Abonnieren eines RHEL Systems"^] und  https://access.redhat.com/solutions/2761031["Einschränken von Aktualisierungen"^].
+. Verwenden Sie den Red Hat Subscription Manager, um das System zu registrieren und zu abonnieren, damit die erforderlichen Pakete aus den offiziellen Red Hat-Repositorys installiert werden können und um Updates auf die unterstützte Version von Red Hat zu beschränken:  `subscription-manager release --set=9.4` . Anweisungen hierzu finden Sie unter https://access.redhat.com/solutions/253273["Registrieren und Abonnieren eines RHEL Systems"^] und  https://access.redhat.com/solutions/2761031["Einschränken von Aktualisierungen"^].
 . Aktivieren Sie das Red hat Repository mit den für hohe Verfügbarkeit erforderlichen Paketen.
 +
 ....

@@ -62,4 +62,5 @@ Schritte
 . So aktivieren Sie den Fechtlauf: `pcs property set stonith-enabled=true`
 
 
-Hinweis: Diese Einstellung wird beim nächsten Ausführen des Ansible-Playbooks außer Kraft gesetzt.
+
+CAUTION: Diese Einstellung wird beim nächsten Ausführen des Ansible-Playbooks überschrieben.

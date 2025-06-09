@@ -22,7 +22,7 @@ Die Systemeinstellungen variieren je nach Servermodell, das Sie als Dateiknoten 
 
 == Über die UEFI-Schnittstelle können Sie die Systemeinstellungen anpassen
 
-Die System-Firmware des Lenovo SR665-Servers enthält zahlreiche Tuning-Parameter, die über die UEFI-Schnittstelle eingestellt werden können. Diese Optimierungsparameter können sich auf alle Aspekte der Serverfunktionen und die Leistung des Servers auswirken.
+Die System-Firmware des Lenovo SR665 V3-Servers enthält zahlreiche Tuning-Parameter, die über die UEFI-Schnittstelle eingestellt werden können. Diese Optimierungsparameter können sich auf alle Aspekte der Serverfunktionen und die Leistung des Servers auswirken.
 
 Passen Sie unter *UEFI Setup > Systemeinstellungen* die folgenden Systemeinstellungen an:
 

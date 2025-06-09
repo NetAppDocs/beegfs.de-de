@@ -24,7 +24,7 @@ Eine Liste der empfohlenen Paketversionen finden Sie imlink:beegfs-technology-re
 ----
 sudo apt-get install python3 python3-pip python3-setuptools python3.10-venv
 ----
-. Erstellen einer virtuellen Python-Umgebung
+. Erstellen Sie eine virtuelle Python-Umgebung.
 +
 [source, console]
 ----
@@ -74,4 +74,4 @@ ssh-copy-id <ip_or_hostname>
 
 
 
-IMPORTANT: Richten Sie bei den Blockknoten eine passwortlose SSH ein. Dies wird weder unterstützt noch erforderlich.
+CAUTION: Richten Sie bei den Blockknoten eine passwortlose SSH ein. Dies wird weder unterstützt noch erforderlich.

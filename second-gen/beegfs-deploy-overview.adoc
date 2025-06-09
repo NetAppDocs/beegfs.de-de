@@ -69,12 +69,17 @@ Die Bereitstellung umfasst folgende allgemeine Aufgaben:
 . link:beegfs-deploy-configure-clients.html["Konfigurieren Sie BeeGFS-Clients"].
 
 
+[NOTE]
+====
+Die Bereitstellungsverfahren umfassen mehrere Beispiele, in denen Text in eine Datei kopiert werden muss. Achten Sie besonders auf Inline-Kommentare, die durch die Zeichen „#“ oder „//“ gekennzeichnet sind und auf alles hinweisen, was für eine bestimmte Bereitstellung geändert werden sollte oder kann. Beispiel:
 
-NOTE: Die Bereitstellungsverfahren umfassen mehrere Beispiele, in denen Text in eine Datei kopiert werden muss. Achten Sie bei allen Inline-Kommentaren, die mit „#“- oder „/“-Zeichen gekennzeichnet sind, auf alles, was für eine bestimmte Bereitstellung geändert werden sollte oder werden kann. Beispiel:
+[source, yaml]
+----
 `beegfs_ha_ntp_server_pools:  # THIS IS AN EXAMPLE OF A COMMENT!
   - "pool 0.pool.ntp.org iburst maxsources 3"
   - "pool 1.pool.ntp.org iburst maxsources 3"`
-
+----
+====
 Derivative Architekturen mit Variationen bei Implementierungsempfehlungen:
 
 * link:beegfs-design-high-capacity-building-block.html["Baustein Mit Hoher Kapazität"]

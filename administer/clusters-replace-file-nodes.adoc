@@ -50,7 +50,7 @@ all:
 . Entfernen Sie den alten Node von einem der anderen Nodes im Cluster: `pcs cluster node remove <HOSTNAME>`.
 +
 
-IMPORTANT: FAHREN SIE VOR AUSFÜHRUNG DIESES SCHRITTS NICHT FORT.
+CAUTION: FAHREN SIE VOR AUSFÜHRUNG DIESES SCHRITTS NICHT FORT.
 
 . Auf dem Ansible-Steuerungsknoten:
 +

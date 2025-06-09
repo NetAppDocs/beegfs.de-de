@@ -61,7 +61,7 @@ Jeder Datei-Node sollte die Spezifikationen der empfohlenen Datei-Nodes erfülle
 
 
 | 8 | InfiniBand-Host-Karten-Adapter (für Datei-Nodes)  a| 
-Host-Karten-Adapter variieren je nach Servermodell, das für den Datei-Knoten verwendet wird. Zu den Empfehlungen für verifizierte Datei-Nodes gehören:
+Hostkartenadapter können je nach Servermodell des Dateiknotens variieren. Zu den Empfehlungen für verifizierte Datei-Nodes gehören:
 
 * * Lenovo ThinkSystem SR665 V3 Server:*
 +
@@ -132,18 +132,18 @@ Um eine vorhersehbare Performance und Zuverlässigkeit zu gewährleisten, werden
 | Software | Version 
 
 
-| Red hat Enterprise Linux | Redhat 9.3 Server, physisch mit Hochverfügbarkeit (2 Sockets). WICHTIG: Für File-Nodes ist eine gültige RedHat Enterprise Linux Server-Subskription und das Red hat Enterprise Linux High Availability Add-On erforderlich. 
+| Red hat Enterprise Linux (RHEL) | RHEL 9.4 Server physisch mit hoher Verfügbarkeit (2 Sockel). *Hinweis:* Für Dateiknoten sind ein gültiges Red Hat Enterprise Linux Server-Abonnement und das Red Hat Enterprise Linux High Availability Add-On erforderlich. 
 
 
-| Linux-Kernel | 5.14.0-362.24.1.el9_3.x86_64 
+| Linux-Kernel | 5.14.0-427.42.1.el9_4.x86_64 
 
 
  a| 
 HCA-Firmware
  a| 
-*ConnectX-7 HCA Firmware* FW: 28.42.1000 + PXE: 3.7.0500 + UEFI: 14.35.0015
+*ConnectX-7 HCA-Firmware* FW: 28.43.1014 + PXE: 3.7.0500 + UEFI: 14.36.0016
 
-*ConnectX-6 HCA Firmware* FW: 20.43.1014 + PXE: 3.7.0500 + UEFI: 14.36.0016
+*ConnectX-6 HCA-Firmware* FW: 20.43.2566 + PXE: 3.7.0500 + UEFI: 14.37.0013
 
 |===
 
@@ -161,7 +161,7 @@ HCA-Firmware
 | NVSRAM | N6000-890834-D02.dlp 
 
 
-| Festplatten-Firmware | Neueste verfügbar für die verwendeten Antriebsmodelle. 
+| Festplatten-Firmware | Neueste verfügbar für die verwendeten Antriebsmodelle. Siehe link:https://mysupport.netapp.com/site/downloads/firmware/e-series-disk-firmware["E-Series Festplatten-Firmware-Website"^]. 
 |===
 
 
@@ -174,19 +174,22 @@ In der folgenden Tabelle sind die automatisch bereitgestellten Softwareanforderu
 | Software | Version 
 
 
-| BeeGFS | 7.4.4 
+| BeeGFS | 7.4.6 
 
 
-| Corosync | 3.1.7-1 
+| Corosync | 3.1.8-1 
 
 
-| Schrittmacher | 2.1.6-10 
+| Schrittmacher | 2.1.7-5,2 
 
 
-| Zaunmittel (Rotbarsch/apc) | 4.10.0-55 
+| PCS | 0.11.7-2 
 
 
-| InfiniBand-/RDMA-Treiber | MLNX_OFED_LINUX-23.10-3.2.2.0-LTS 
+| Zaunmittel (Rotbarsch/apc) | 4.10.0-62 
+
+
+| InfiniBand-/RDMA-Treiber | MLNX_OFED_LINUX-23.10-3.2.2.1-LTS 
 |===
 
 

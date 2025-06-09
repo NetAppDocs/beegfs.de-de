@@ -89,7 +89,7 @@ all:
 ----
 +
 
-IMPORTANT: Speichern Sie Passwörter nicht im Klartext. Verwenden Sie stattdessen den Ansible-Vault (siehe link:https://docs.ansible.com/ansible/latest/user_guide/vault.html["Ansible-Dokumentation"^] Für Inhalte mit Ansible Vault) oder verwenden Sie den `--ask-become-pass` Option beim Ausführen des Playbooks.
+NOTE: Speichern Sie Passwörter nicht im Klartext. Verwenden Sie stattdessen den Ansible-Vault (siehe link:https://docs.ansible.com/ansible/latest/user_guide/vault.html["Ansible-Dokumentation"^] Für Inhalte mit Ansible Vault) oder verwenden Sie den `--ask-become-pass` Option beim Ausführen des Playbooks.
 
 . Im `client_inventory.yml` Datei, Listen Sie alle Hosts auf, die als BeeGFS-Clients unter dem konfiguriert werden sollen `beegfs_clients` Gruppe, und dann beachten Sie die Inline-Kommentare und Uncomment zusätzliche Konfiguration erforderlich, um das BeeGFS-Client-Kernel-Modul auf Ihrem System zu erstellen:
 +
