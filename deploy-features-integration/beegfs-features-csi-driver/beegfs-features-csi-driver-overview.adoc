@@ -1,0 +1,33 @@
+---
+sidebar: sidebar 
+permalink: deploy-features-integration/beegfs-csi-driver/csi-driver-overview.html 
+keywords: BeeGFS Features, CSI, Driver 
+summary: Übersicht und Konfiguration des BeeGFS CSI-Treibers. 
+---
+= Konfiguration des BeeGFS CSI-Treibers
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Der BeeGFS CSI-Treiber ermöglicht es Kubernetes-Clustern, BeeGFS-Volumes dynamisch bereitzustellen und zu verwalten und so leistungsstarken BeeGFS-Speicher in containerisierte Workloads zu integrieren.
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-1.png["Eins"]Stellen Sie sicher, dass alle Voraussetzungen erfüllt sind.
+[role="quick-margin-para"]
+Prüfen Sie die Voraussetzungen, um sicherzustellen, dass Sie über einen laufenden Kubernetes-Cluster, eine Verbindung zum BeeGFS-Cluster und die erforderlichen Berechtigungen zur Installation clusterweiter Ressourcen verfügen.
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-2.png["Zwei"]Den BeeGFS CSI-Treiber bereitstellen
+[role="quick-margin-para"]
+Klonen Sie das BeeGFS CSI-Treiber-Repository und stellen Sie den Treiber mithilfe der bereitgestellten Kubernetes-Manifeste oder -Overlays bereit.
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-3.png["Drei"]Bereitstellung überprüfen
+[role="quick-margin-para"]
+Überprüfen Sie anhand der entsprechenden Kubernetes-Pods, ob alle BeeGFS CSI-Treiberkomponenten installiert und betriebsbereit sind.  Beheben Sie alle auftretenden Probleme, wie z. B. Konflikte bei der Knotenplanung oder die Aktivierung des Swap-Speichers auf den Knoten.
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-4.png["Vier"]Beispielanwendungen bereitstellen und validieren
+[role="quick-margin-para"]
+Wenden Sie die Beispiel-Kubernetes-Manifeste an und bestätigen Sie, dass die Workloads wie erwartet auf den BeeGFS-gestützten Speicher zugreifen können.
