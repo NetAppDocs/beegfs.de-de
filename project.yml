@@ -137,6 +137,8 @@ sidebar:
         url: "/deploy-features-integration/beegfs-csi-driver/csi-driver-verify.html"
       - title: Fehlerbehebung
         url: "/deploy-features-integration/beegfs-csi-driver/csi-driver-tshoot.html"
+    - title: TLS-Verschlüsselung für BeeGFS 8 konfigurieren
+      url: "/deploy-features-integration/beegfs-tls/beegfs-tls-deploy.html"
   - title: BeeGFS-Cluster verwalten
     entries:
     - title: Übersicht, Schlüsselkonzepte und Terminologie
@@ -149,8 +151,10 @@ sidebar:
       url: "/administer/clusters-reconfigure.html"
     - title: Aktualisieren Sie die HA-Cluster-Komponenten
       entries:
-      - title: BeeGFS-Version aktualisieren
-        url: "/administer/clusters-update-beegfs.html"
+      - title: Upgrade der BeeGFS Services
+        url: "/administer/clusters-upgrade-beegfs.html"
+      - title: Upgrade auf BeeGFS v8
+        url: "/administer/clusters-upgrade-beegfs-v8.html"
       - title: Aktualisieren Sie Pacemaker- und Corosync-Pakete
         url: "/administer/clusters-update-ha-services.html"
       - title: Aktualisiert die Datei-Node-Adapter-Firmware
