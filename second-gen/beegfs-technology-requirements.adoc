@@ -79,23 +79,6 @@ Jeder Baustein benötigt zwei E-Series-Arrays desselben Modells. Mischen Sie kei
 | Menge | Modell | Spezifikationen 
 
 
-| 2 | EF80  a| 
-*Hardware:*
-
-* *Speicher:* 128GB (64GB pro Controller)
-* *Adapter:* 2x 2-Port 200Gb/NDR (NVMe/IB)
-* *Laufwerke:* Konfiguriert, um die gewünschten Metadaten und die Speicherkapazität zu erfüllen
-
-
-*Firmware:*
-
-* *SANtricity OS:* 12.00
-* *NVSRAM:* NEF80-200834-D00
-* *Laufwerksfirmware:* Neueste verfügbare für Ihre Laufwerksmodelle (siehe link:https://mysupport.netapp.com/site/downloads/firmware/e-series-disk-firmware["E-Series Festplatten-Firmware-Website"^])
-
-
-
-
 | 2 | EF600  a| 
 *Hardware:*
 
@@ -107,7 +90,7 @@ Jeder Baustein benötigt zwei E-Series-Arrays desselben Modells. Mischen Sie kei
 *Firmware:*
 
 * *SANtricity OS:* 11.90R5
-* *NVSRAM:* N6000-890834-D02
+* *NVSRAM:* N6000-890834-D03
 * *Laufwerksfirmware:* Neueste verfügbare für Ihre Laufwerksmodelle (siehe link:https://mysupport.netapp.com/site/downloads/firmware/e-series-disk-firmware["E-Series Festplatten-Firmware-Website"^])
 
 
