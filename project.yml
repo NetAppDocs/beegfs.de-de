@@ -153,7 +153,7 @@ sidebar:
       entries:
       - title: Upgrade der BeeGFS Services
         url: "/administer/clusters-upgrade-beegfs.html"
-      - title: Upgrade auf BeeGFS v8
+      - title: Upgrade auf BeeGFS 8
         url: "/administer/clusters-upgrade-beegfs-v8.html"
       - title: Aktualisieren Sie Pacemaker- und Corosync-Pakete
         url: "/administer/clusters-update-ha-services.html"
