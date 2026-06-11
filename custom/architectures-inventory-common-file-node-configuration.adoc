@@ -202,7 +202,7 @@ CAUTION: Um Konflikte zu vermeiden, wenn Schnittstellen umbenannt werden (um zu 
 
 +
 
-NOTE: Wenn Sie ein verifiziertes Datei-Node-Modell verwenden, klicken Sie auf link:https://docs.netapp.com/us-en/beegfs/beegfs-deploy-create-inventory.html#step-4-define-configuration-that-should-apply-to-all-file-nodes["Hier"^] Beispiel für Zuordnungen von PCIe-Adressen zu logischen Ports
+NOTE: Wenn Sie ein verifiziertes Dateiknotenmodell verwenden, klicken Sie link:https://docs.netapp.com/us-en/beegfs/second-gen/beegfs-deploy-create-inventory.html#step-4-define-configuration-that-should-apply-to-all-file-nodes["Hier"^] für beispielsweise PCIe-Adress-zu-logischen Port-Zuordnungen.
 
 
 
@@ -255,7 +255,7 @@ beegfs_ha_conn_auth_enabled: false
 
 
 
-Klicken Sie Auf link:https://github.com/netappeseries/beegfs/blob/master/getting_started/beegfs_on_netapp/gen2/group_vars/ha_cluster.yml["Hier"^] Beispiel für eine komplette Bestandsdatei, die die allgemeine Konfiguration des Dateiknoten darstellt.
+Klicken Sie link:https://github.com/NetApp/beegfs/blob/master/getting_started/beegfs_on_netapp/gen2/H2_DAC_IB_A2_EF600/beegfs_cluster_building_blocks/beegfs_ha_building_block_cluster_1/group_vars/ha_cluster.yml["Hier"^] für ein Beispiel einer vollständigen Inventardatei, die eine gängige Dateiknotenkonfiguration darstellt.
 
 
 

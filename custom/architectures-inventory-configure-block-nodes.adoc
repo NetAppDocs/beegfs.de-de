@@ -132,7 +132,7 @@ eseries_controller_nvme_roce_port_speed: auto            # General interface spe
 
 Weitere Optionen zum Konfigurieren von HIC-Ports und Hostprotokollen, einschließlich der Möglichkeit zum Konfigurieren von iSCSI-CHAP finden Sie im link:https://github.com/netappeseries/santricity/tree/release-1.3.1/roles/nar_santricity_host#role-variables["Dokumentation"^] In der SANtricity Kollektion enthalten. Hinweis: Bei der Bereitstellung von BeeGFS werden der Speicherpool, die Volume-Konfiguration und andere Aspekte des Bereitstellungsspeicher an anderer Stelle konfiguriert und in dieser Datei nicht definiert.
 
-Klicken Sie Auf link:https://github.com/netappeseries/beegfs/blob/master/getting_started/beegfs_on_netapp/gen2/host_vars/ictad22a01.yml["Hier"^] Beispiel für eine komplette Bestandsdatei, die einen einzelnen Block-Knoten darstellt.
+Klicken Sie link:https://github.com/NetApp/beegfs/blob/master/getting_started/beegfs_on_netapp/gen2/H2_DAC_IB_A2_EF600/beegfs_cluster_building_blocks/beegfs_ha_building_block_cluster_1/host_vars/netapp_01.yml["Hier"^] für ein Beispiel einer vollständigen Inventardatei, die einen einzelnen Blockknoten repräsentiert.
 
 
 

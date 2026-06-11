@@ -49,7 +49,7 @@ NOTE: Die nachfolgenden Abschnitte gehen davon aus, dass die Hostnamen sequenzie
 ....
 subscription-manager repo-override --repo=rhel-9-for-x86_64-highavailability-rpms --add=enabled:1
 ....
-. Aktualisieren Sie alle HCA-Firmware auf die in  Verwendung des link:..administer/clusters-update-hca-firmware.html["Aktualisiert die Datei-Node-Adapter-Firmware"^]Handbuchs empfohlene Versionlink:beegfs-technology-requirements.html["Technologieanforderungen erfüllt"].
+. Aktualisieren Sie die gesamte HCA-Firmware auf die in link:beegfs-technology-requirements.html["Technologieanforderungen erfüllt"] empfohlene Version, indem Sie die link:../administer/clusters-update-hca-firmware.html["Aktualisiert die Datei-Node-Adapter-Firmware"^] Anleitung verwenden.
 
 
 
