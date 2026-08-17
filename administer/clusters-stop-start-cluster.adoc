@@ -18,12 +18,14 @@ Graziös wird das HA-Cluster angehalten und gestartet.
 
 
 
+[[overview]]
 == Überblick
 
 In diesem Abschnitt wird beschrieben, wie das BeeGFS-Cluster ordnungsgemäß heruntergefahren und neu gestartet wird. Beispielszenarien, bei denen dies möglicherweise erforderlich ist, sind beispielsweise die elektrische Wartung oder die Migration zwischen Rechenzentren oder Racks.
 
 
 
+[[steps]]
 == Schritte
 
 Wenn Sie aus irgendeinem Grund das gesamte BeeGFS-Cluster beenden und alle Dienste herunterfahren müssen, laufen:

@@ -18,16 +18,19 @@ Optional kann Ansible verwendet werden, um BeeGFS-Clients zu konfigurieren und d
 
 
 
+[[overview]]
 == Überblick
 
 Für den Zugriff auf BeeGFS-Dateisysteme muss der BeeGFS-Client auf jedem Node installiert und konfiguriert werden, der das Dateisystem bereitstellen muss. In diesem Abschnitt wird beschrieben, wie Sie diese Aufgaben mit dem verfügbaren ausführen link:https://github.com/netappeseries/beegfs/tree/master/roles/beegfs_client["Ansible-Rolle"^].
 
 
 
+[[steps]]
 == Schritte
 
 
 
+[[create-the-client-inventory-file]]
 === Erstellen Sie die Client-Bestandsdatei
 
 . Richten Sie bei Bedarf über den Ansible-Steuerungsknoten passwortlose SSH für jeden Host ein, den Sie als BeeGFS-Clients konfigurieren möchten:
@@ -169,6 +172,7 @@ Eine vollständige Liste der unterstützten Parameter und weitere Details finden
 
 
 
+[[create-the-beegfs-client-playbook-file]]
 === Erstellen Sie die BeeGFS Client Playbook-Datei
 
 . Erstellen Sie eine neue Datei `client_playbook.yml`
@@ -227,6 +231,7 @@ Für ein vollständiges Beispiel eines Kunden-Playbooks klicken Sie link:https:/
 
 
 
+[[run-the-beegfs-client-playbook]]
 === Führen Sie das BeeGFS Client Playbook aus
 
 Führen Sie den folgenden Befehl aus, um den Client zu installieren/zu erstellen und BeeGFS zu mounten:

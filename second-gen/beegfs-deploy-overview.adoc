@@ -18,6 +18,7 @@ BeeGFS auf NetApp kann auf validierte Datei- und Block-Nodes mithilfe von Ansibl
 
 
 
+[[ansible-collections-and-roles]]
 == Ansible-Sammlungen und -Funktionen
 
 Die BeeGFS auf NetApp-Lösung wird mithilfe von Ansible implementiert, einer beliebten IT-Automatisierungs-Engine, die Applikationsimplementierungen automatisiert. Ansible verwendet eine Reihe von Dateien, die gemeinsam als Inventar bezeichnet werden. Hierbei wird das BeeGFS-Filesystem modelliert, das Sie implementieren möchten.
@@ -31,6 +32,7 @@ NOTE: Da zahlreiche Schritte an der Implementierung der BeeGFS auf NetApp-Lösun
 
 
 
+[[configuration-profiles-for-beegfs-building-blocks]]
 == Konfigurationsprofile für BeeGFS-Bausteine
 
 Die Implementierungsverfahren umfassen die folgenden Konfigurationsprofile:
@@ -44,6 +46,7 @@ Diese Profile veranschaulichen die gesamte Palette der empfohlenen Konfiguration
 
 
 
+[[overview-of-deployment-steps]]
 == Übersicht über die einzelnen Implementierungsschritte
 
 Die Bereitstellung umfasst folgende allgemeine Aufgaben:

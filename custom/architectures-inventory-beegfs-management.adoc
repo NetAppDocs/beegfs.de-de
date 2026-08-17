@@ -18,6 +18,7 @@ BeeGFS-Dienste werden mit Gruppenvariablen (Group_vars) konfiguriert.
 
 
 
+[[overview]]
 == Überblick
 
 In diesem Abschnitt wird die Definition des BeeGFS-Managementservice erläutert. In den HA-Clustern für ein bestimmtes Dateisystem sollte nur ein Service dieses Typs vorhanden sein. Die Konfiguration dieses Services umfasst die folgenden Punkte:
@@ -30,6 +31,7 @@ In diesem Abschnitt wird die Definition des BeeGFS-Managementservice erläutert.
 
 
 
+[[steps]]
 == Schritte
 
 Erstellen Sie eine neue Datei `group_vars/mgmt.yml`, und verweisen Sie auf den link:architectures-plan-file-system.html["Planen Sie das Dateisystem"^] Abschnitt. Füllen Sie diese wie folgt aus:

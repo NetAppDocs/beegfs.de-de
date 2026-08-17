@@ -22,6 +22,7 @@ Beachten Sie, dass es sich bei diesen Schätzungen um die beste Performance hand
 
 
 
+[[performance-sizing]]
 == Performance-Dimensionierung
 
 Die folgende Tabelle enthält ein empfohlene Performance-Sizing.
@@ -41,6 +42,7 @@ Die Verwendung von Funktionen wie Zugriffssteuerungslisten und die Anzahl der Ve
 
 
 
+[[capacity-sizing-for-metadata-storage-building-blocks]]
 == Kapazitätsdimensionierung für Metadaten + Storage-Bausteine
 
 Die folgende Tabelle enthält eine empfohlene Kapazitätsdimensionierung für Metadaten und Storage-Bausteine.
@@ -65,6 +67,7 @@ NOTE: Bei der Größenbestimmung von Metadaten und Storage-Bausteinen können di
 
 
 
+[[capacity-sizing-for-storage-only-building-blocks]]
 == Kapazitätsdimensionierung für reine Storage-Bausteine
 
 Die folgende Tabelle zeigt die Größenanpassung der Kapazität für reine Storage-Bausteine.

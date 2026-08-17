@@ -18,12 +18,14 @@ summary: Überprüfen Sie die Bereitstellung des Dateisystems, bevor Sie das Sys
 
 
 
+[[overview]]
 == Überblick
 
 Bevor Sie das BeeGFS-Dateisystem in Produktion setzen, führen Sie einige Überprüfungsprüfungen durch.
 
 
 
+[[steps]]
 === Schritte
 
 . Melden Sie sich bei einem Client an und führen Sie Folgendes aus, um sicherzustellen, dass alle erwarteten Knoten vorhanden/erreichbar sind, und es werden keine Inkonsistenzen oder andere Probleme gemeldet:

@@ -18,6 +18,7 @@ Folgen Sie diesen Schritten, um Ihren BeeGFS HA-Cluster von BeeGFS 7.4 auf BeeGF
 
 
 
+[[overview]]
 == Überblick
 
 BeeGFS 8 führt einige wichtige Änderungen ein, die vor dem Upgrade von BeeGFS 7 zusätzliche Konfigurationen erfordern. Dieses Dokument führt Sie durch die Vorbereitung Ihres Clusters auf die neuen Anforderungen von BeeGFS 8 und anschließend durch das Upgrade auf BeeGFS 8.
@@ -27,6 +28,7 @@ IMPORTANT: Vor dem Upgrade auf BeeGFS 8 stellen Sie sicher, dass auf Ihrem Syste
 
 
 
+[[key-changes-in-beegfs-8]]
 == Wichtige Änderungen in BeeGFS 8
 
 BeeGFS 8 führt die folgenden wesentlichen Änderungen ein:
@@ -45,6 +47,7 @@ Für das Upgrade auf BeeGFS 8 ist eine Cluster-Ausfallzeit erforderlich, und Bee
 ====
 
 
+[[prepare-your-beegfs-cluster-for-the-upgrade]]
 == Bereiten Sie Ihren BeeGFS Cluster auf das Upgrade vor
 
 Bereiten Sie Ihre Umgebung sorgfältig vor, bevor Sie mit dem Upgrade beginnen, um einen reibungslosen Übergang zu gewährleisten und Ausfallzeiten zu minimieren.
@@ -100,6 +103,7 @@ pcs cluster stop --all
 
 
 
+[[upgrade-the-beegfs-management-package]]
 == Aktualisieren Sie das BeeGFS management package
 
 Fügen Sie auf allen Dateiknoten im Cluster das BeeGFS 8-Paket-Repository für Ihre Linux-Distribution hinzu. Anweisungen zum Hinzufügen des offiziellen BeeGFS-Repositorys für Ihre Linux-Distribution finden Sie unter link:https://www.beegfs.io/c/download/["BeeGFS Download-Seite"^]. Andernfalls konfigurieren Sie Ihr lokales BeeGFS-Mirror-Repository entsprechend.
@@ -118,6 +122,8 @@ dnf update beegfs-mgmtd
 
 
 
+[[upgrade-the-management-database]]
+[[upgrade-management-database]]
 == Aktualisieren Sie die Management-Datenbank
 
 Führen Sie auf einem der Dateiknoten, auf dem der BeeGFS-Verwaltungsdienst läuft, diese Schritte aus, um die Verwaltungsdatenbank von BeeGFS 7 zu BeeGFS 8 zu migrieren.
@@ -185,6 +191,7 @@ Sie bereiten die `beegfs-mgmtd.toml` Konfigurationsdatei vor, nachdem Sie die Li
 
 
 
+[[upgrade-remaining-beegfs-packages]]
 == Verbleibende BeeGFS-Pakete aktualisieren
 
 Nach Abschluss der Management-Datenbankmigration aktualisieren Sie die verbleibenden BeeGFS-Pakete auf allen Dateiknoten im Cluster. Führen Sie unter RHEL nach der Konfiguration Ihres BeeGFS-Repositorys die folgenden Befehle aus:
@@ -196,6 +203,7 @@ dnf update beegfs-storage beegfs-meta libbeegfs-ib
 ----
 
 
+[[configure-licensing]]
 == Lizenzierung konfigurieren
 
 . Installieren Sie die BeeGFS-Lizenzpakete auf allen Knoten, auf denen der BeeGFS-Verwaltungsdienst ausgeführt wird. Dies sind typischerweise die ersten beiden Dateiknoten Ihres Clusters:
@@ -214,6 +222,7 @@ dnf install libbeegfs-license
 
 
 
+[[configure-tls-encryption]]
 == TLS-Verschlüsselung konfigurieren
 
 BeeGFS 8 erfordert TLS-Verschlüsselung für die sichere Kommunikation zwischen Verwaltungsdiensten und dem BeeGFS CLI Tool (`beegfs`). Wählen Sie eine der drei Konfigurationsmethoden: Verwenden Sie Zertifikate, die von einer vertrauenswürdigen Zertifizierungsstelle signiert sind, erstellen Sie Ihre eigene lokale CA zum Signieren von Zertifikaten für Ihren BeeGFS-Cluster, oder deaktivieren Sie TLS vollständig zur Fehlerbehebung (nicht für den Produktivbetrieb empfohlen).
@@ -227,6 +236,7 @@ Die Client-TLS-Konfiguration wird nach dem Upgrade der BeeGFS-Clients abgeschlos
 ====
 
 
+[[update-management-service-configuration]]
 == Konfiguration des Update-Management-Dienstes
 
 Bereiten Sie die BeeGFS 8 Management-Service-Konfigurationsdatei vor, indem Sie die Einstellungen manuell aus Ihrer BeeGFS 7 Konfigurationsdatei in die  `/mnt/mgmt_tgt_mgmt01/mgmt_config/beegfs-mgmtd.toml` Datei übertragen.
@@ -288,6 +298,7 @@ sudo firewall-cmd --reload
 
 
 
+[[update-the-beegfs-monitor-script]]
 == Aktualisieren Sie das BeeGFS-Monitor-Skript
 
 Das Pacemaker `beegfs-monitor` Open Cluster Framework (OCF)-Skript muss aktualisiert werden, um das neue TOML-Konfigurationsformat und die systemd-Dienstverwaltung zu unterstützen. Aktualisieren Sie das Skript auf einem Knoten im Cluster und kopieren Sie das aktualisierte Skript dann auf alle anderen Knoten.
@@ -398,6 +409,7 @@ scp /usr/lib/ocf/resource.d/eseries/beegfs-monitor user@node:/usr/lib/ocf/resour
 
 
 
+[[bring-the-cluster-back-online]]
 == Den Cluster wieder online bringen
 
 . Nachdem Sie alle vorherigen Upgrade-Schritte abgeschlossen haben, bringen Sie den Cluster wieder online, indem Sie die BeeGFS-Dienste auf allen Knoten starten.
@@ -444,6 +456,7 @@ pcs property set stonith-enabled=true
 
 
 
+[[upgrade-beegfs-clients]]
 == BeeGFS-Clients aktualisieren
 
 Nach dem Upgrade Ihres Clusters auf BeeGFS 8 müssen Sie auch alle BeeGFS Clients aktualisieren.
@@ -499,6 +512,7 @@ apt-get install beegfs-tools
 
 
 
+[[verify-the-upgrade]]
 == Überprüfen Sie das Upgrade
 
 Nach Abschluss des Upgrades auf BeeGFS 8 führen Sie die folgenden Befehle aus, um zu überprüfen, ob das Upgrade erfolgreich war.

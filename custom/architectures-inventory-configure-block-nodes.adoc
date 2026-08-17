@@ -18,6 +18,7 @@ Legen Sie die Konfiguration für einzelne Block-Nodes mithilfe von Host-Variable
 
 
 
+[[overview]]
 == Überblick
 
 In diesem Abschnitt wird das Ausfüllen von erläutert `host_vars/<BLOCK_NODE_HOSTNAME>.yml` Datei für jeden Block-Node im Cluster. Diese Dateien sollten nur die Konfiguration enthalten, die für einen bestimmten Block-Node eindeutig ist. Hierzu zählen folgende allgemein:
@@ -30,6 +31,7 @@ In diesem Abschnitt wird das Ausfüllen von erläutert `host_vars/<BLOCK_NODE_HO
 
 
 
+[[steps]]
 == Schritte
 
 Wenn Sie auf das im link:architectures-plan-file-system.html["Planen Sie das Dateisystem"^] Abschnitt definierte IP-Adressierungsschema verweisen, erstellen Sie für jeden Block-Node im Cluster eine Datei `host_vars/<BLOCK_NODE_HOSTNAME>/yml` und füllen Sie sie wie folgt aus:
@@ -136,6 +138,7 @@ Klicken Sie link:https://github.com/NetApp/beegfs/blob/master/getting_started/be
 
 
 
+[[using-hdr-200gb-infiniband-or-200gb-roce-with-netapp-ef600-block-nodes]]
 === Mit HDR (200 GB) InfiniBand oder 200 GB RoCE mit NetApp EF600 Block-Nodes:
 
 Um HDR (200 GB) InfiniBand mit der EF600 zu verwenden, muss für jeden physischen Port eine zweite „virtuelle“ IP konfiguriert werden. Nachfolgend sehen Sie ein Beispiel für die korrekte Konfiguration eines EF600 mit Dual-Port InfiniBand HDR HIC:

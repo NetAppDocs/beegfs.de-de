@@ -18,6 +18,7 @@ Geben Sie unter Verwendung von Gruppenvariablen (Group_vars) die Konfiguration a
 
 
 
+[[overview]]
 == Überblick
 
 Konfiguration, die auf alle Datei-Nodes Apfel soll, wird bei definiert `group_vars/ha_cluster.yml`. Dazu gehören in der Regel:
@@ -36,6 +37,7 @@ NOTE: Die in dieser Datei festgelegten Optionen können auch auf einzelnen Datei
 
 
 
+[[steps]]
 == Schritte
 
 Erstellen Sie die Datei `group_vars/ha_cluster.yml` Und füllen Sie es wie folgt aus:
@@ -259,6 +261,7 @@ Klicken Sie link:https://github.com/NetApp/beegfs/blob/master/getting_started/be
 
 
 
+[[using-hdr-200gb-infiniband-with-netapp-ef600-block-nodes]]
 === Verwendung von HDR (200 GB) InfiniBand mit NetApp EF600 Block-Nodes:
 
 Um HDR (200 GB) InfiniBand mit der EF600 zu verwenden, muss der Subnetzmanager die Virtualisierung unterstützen. Wenn Datei- und Block-Knoten über einen Switch verbunden sind, muss dies im Subnetz Manager für die Gesamtstruktur aktiviert sein.

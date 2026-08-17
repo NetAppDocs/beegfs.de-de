@@ -18,16 +18,19 @@ BeeGFS-Services zwischen Cluster-Nodes verschieben
 
 
 
+[[overview]]
 == Überblick
 
 BeeGFS-Services können ein Failover zwischen den Nodes im Cluster durchführen, um sicherzustellen, dass die Clients weiterhin auf das Filesystem zugreifen können, wenn ein Node einen Fehler aufweist, oder Sie müssen eine geplante Wartung durchführen. In diesem Abschnitt werden verschiedene Möglichkeiten beschrieben, wie Administratoren das Cluster nach der Wiederherstellung nach einem Ausfall reparieren oder Services manuell zwischen Nodes verschieben können.
 
 
 
+[[steps]]
 == Schritte
 
 
 
+[[failover-and-failback]]
 === Failover und Failback
 
 
@@ -89,6 +92,7 @@ pcs resource relocate run
 ----
 
 
+[[moving-individual-beegfs-services-to-alternate-file-nodes]]
 === Einzelne BeeGFS-Services werden auf alternative Datei-Nodes verschoben
 
 

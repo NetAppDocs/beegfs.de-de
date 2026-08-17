@@ -20,6 +20,7 @@ Die Systemeinstellungen variieren je nach Servermodell, das Sie als Dateiknoten 
 
 
 
+[[use-the-uefi-interface-to-tune-system-settings]]
 == Über die UEFI-Schnittstelle können Sie die Systemeinstellungen anpassen
 
 Die System-Firmware des Lenovo SR665 V3-Servers enthält zahlreiche Tuning-Parameter, die über die UEFI-Schnittstelle eingestellt werden können. Diese Optimierungsparameter können sich auf alle Aspekte der Serverfunktionen und die Leistung des Servers auswirken.
@@ -28,6 +29,7 @@ Passen Sie unter *UEFI Setup > Systemeinstellungen* die folgenden Systemeinstell
 
 
 
+[[operating-mode-menu]]
 === Menü „Betriebsmodus“
 
 [cols=","]
@@ -113,6 +115,7 @@ NPS1
 |===
 
 
+[[devices-and-io-ports-menu]]
 === Menü „Geräte“ und „E/A-Anschlüsse“
 
 [cols=","]
@@ -128,6 +131,7 @@ Deaktivieren
 |===
 
 
+[[power-menu]]
 === Ein-/aus-Menü
 
 [cols=","]
@@ -143,6 +147,7 @@ Deaktivieren
 |===
 
 
+[[processors-menu]]
 === Menü „Prozessoren“
 
 [cols=","]
@@ -179,6 +184,7 @@ Deaktivieren
 |===
 
 
+[[use-redfish-api-to-tune-system-settings]]
 == Verwenden Sie die Redfish-API, um die Systemeinstellungen anzupassen
 
 Zusätzlich zur Verwendung von UEFI Setup können Sie die Redfish API verwenden, um Systemeinstellungen zu ändern.

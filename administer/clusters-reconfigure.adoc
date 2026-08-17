@@ -18,6 +18,7 @@ Verwenden Sie Ansible, um das Cluster neu zu konfigurieren.
 
 
 
+[[overview]]
 == Überblick
 
 Generell sollten Sie jeden Aspekt des BeeGFS HA-Clusters neu konfigurieren, indem Sie Ihren Ansible-Bestand aktualisieren und den `ansible-playbook` Befehl erneut ausführen. Dazu gehören das Aktualisieren von Warnungen, das Ändern der Konfiguration für permanente Fechten oder das Anpassen der BeeGFS-Servicekonfiguration. Diese werden über die `group_vars/ha_cluster.yml` Datei angepasst und eine vollständige Liste der Optionen finden Sie im link:../custom/architectures-inventory-common-file-node-configuration.html["Festlegen Der Konfiguration Des Gemeinsamen Dateiknotens"^] Abschnitt.
@@ -26,12 +27,14 @@ Weitere Informationen zu ausgewählten Konfigurationsoptionen finden Sie unten, 
 
 
 
+[[how-to-disable-and-enable-fencing]]
 == So deaktivieren und aktivieren Sie Fechten
 
 Beim Einrichten des Clusters ist Fechten standardmäßig aktiviert/erforderlich. In einigen Fällen ist es wünschenswert, Fechten vorübergehend zu deaktivieren, um sicherzustellen, dass Knoten nicht versehentlich heruntergefahren werden, wenn bestimmte Wartungsvorgänge ausgeführt werden (z. B. ein Upgrade des Betriebssystems). Auch wenn dies manuell deaktiviert werden kann, sollte es auf die Kompromisse-Administratoren achten.
 
 
 
+[[option-1-disable-fencing-using-ansible-recommended]]
 === OPTION 1: Deaktivieren Sie Fechten mit Ansible (empfohlen).
 
 Wenn das Fechten mit Ansible deaktiviert wird, wird die on-Fail-Aktion des BeeGFS-Monitors von „Zaun“ in „Standby“ geändert. Wenn der BeeGFS-Monitor einen Fehler erkennt, versucht er, den Knoten in den Standby-Modus zu stellen und alle BeeGFS-Dienste zu ausfallsicher. Außerhalb aktiver Fehlerbehebung/Tests ist dies in der Regel wünschenswerter als Option 2. Der Nachteil ergibt sich daraus, dass eine Ressource auf dem ursprünglichen Knoten nicht stoppt, dass sie an einem anderen Ort gestartet werden kann (weshalb normalerweise ein Fechten für Produktionscluster erforderlich ist).
@@ -48,6 +51,7 @@ beegfs_ha_cluster_crm_config_options:
 
 
 
+[[option-2-disable-fencing-manually]]
 === OPTION 2: Manuelle Abwahl deaktivieren.
 
 In einigen Fällen möchten Sie die Fechten unter Umständen vorübergehend deaktivieren, ohne Ansible neu zu verwenden, um die Fehlerbehebung oder das Testen des Clusters zu erleichtern.

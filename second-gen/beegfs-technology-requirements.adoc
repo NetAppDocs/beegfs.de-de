@@ -18,6 +18,7 @@ Stellen Sie zur Implementierung der Lösung BeeGFS auf NetApp sicher, dass Ihre 
 
 
 
+[[requirements-overview]]
 == Anforderungen im Überblick
 
 Diese Seite beschreibt detailliert die Hardware-, Software- und Firmware-Anforderungen für die Implementierung von BeeGFS auf NetApp Bausteinen. Die Anforderungen sind in folgende Abschnitte unterteilt:
@@ -29,12 +30,14 @@ Diese Seite beschreibt detailliert die Hardware-, Software- und Firmware-Anforde
 
 
 
+[[hardware-requirements]]
 == Hardwareanforderungen
 
 Bevor Sie beginnen, stellen Sie sicher, dass Ihre Hardware die folgenden Spezifikationen für ein einzelnes Baustein-Design der BeeGFS on NetApp Lösung erfüllt. Die genauen Komponenten für eine bestimmte Implementierung können je nach Kundenanforderungen variieren. Jeder Dateiknoten sollte diese Spezifikationen erfüllen oder übertreffen, um die erwartete Leistung zu erzielen.
 
 
 
+[[file-node-requirements]]
 === Anforderungen an Datei-Nodes
 
 [cols="10%,90%"]
@@ -70,6 +73,7 @@ IMPORTANT: Dateiknoten erfordern ein gültiges Red Hat Enterprise Linux Server-A
 
 
 
+[[block-node-requirements]]
 === Anforderungen an Blockknoten
 
 Jeder Baustein benötigt zwei E-Series-Arrays desselben Modells. Mischen Sie keine Array-Modelle innerhalb desselben Bausteins.
@@ -97,6 +101,7 @@ Jeder Baustein benötigt zwei E-Series-Arrays desselben Modells. Mischen Sie kei
 |===
 
 
+[[storage-network-switch-requirements]]
 === Anforderungen an Netzwerk-Switches für Speichernetzwerke
 
 [cols="10%,90%"]
@@ -115,12 +120,14 @@ NOTE: Alternative Switches wie der NVIDIA MQM8700 Quantum können verwendet werd
 
 
 
+[[cabling-requirements]]
 === Verkabelungsanforderungen
 
 
 
 ==== Blockknoten-zu-Dateiknoten-Kabel
 
+[[block-file-cables]]
 Direkte Verbindungen von Blockknoten zu Dateiknoten erfordern die folgenden Kabel:
 
 [cols="15%,60%,25%"]
@@ -134,6 +141,7 @@ Direkte Verbindungen von Blockknoten zu Dateiknoten erfordern die folgenden Kabe
 
 ==== Kabel vom Dateiknoten zum Storage-Switch
 
+[[file-switch-cables]]
 Für den NVIDIA QM9700 Quantum 2 Switch werden folgende Kabeltypen empfohlen. Wählen Sie entweder aktive Glasfaser oder passives Kupfer, je nach Ihren Anforderungen. Die Mengenangaben beziehen sich auf jeden Baustein.
 
 [cols="20%,15%,10%,55%"]
@@ -154,6 +162,7 @@ Für den NVIDIA QM9700 Quantum 2 Switch werden folgende Kabeltypen empfohlen. W�
 |===
 
 
+[[software-deployment-requirements]]
 === Anforderungen an die Softwareimplementierung
 
 In der folgenden Tabelle sind die automatisch bereitgestellten Softwareanforderungen im Rahmen der Ansible-basierten BeeGFS-Implementierung aufgeführt.
@@ -179,6 +188,7 @@ In der folgenden Tabelle sind die automatisch bereitgestellten Softwareanforderu
 |===
 
 
+[[ansible-control-node-requirements]]
 === Ansible-Control-Node-Anforderungen
 
 Die BeeGFS auf NetApp Lösung wird über einen Ansible-Kontroll-Node implementiert und gemanagt. Weitere Informationen finden Sie im https://docs.ansible.com/ansible/latest/network/getting_started/basic_concepts.html["Ansible-Dokumentation"^].

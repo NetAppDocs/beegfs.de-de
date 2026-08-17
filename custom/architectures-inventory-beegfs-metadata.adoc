@@ -18,6 +18,7 @@ BeeGFS-Dienste werden mit Gruppenvariablen (Group_vars) konfiguriert.
 
 
 
+[[overview]]
 == Überblick
 
 In diesem Abschnitt wird die Definition des BeeGFS-Metadatendienstes erläutert. In den HA-Clustern für ein bestimmtes Dateisystem sollte mindestens ein Service dieses Typs vorhanden sein. Die Konfiguration dieses Services umfasst die folgenden Punkte:
@@ -30,6 +31,7 @@ In diesem Abschnitt wird die Definition des BeeGFS-Metadatendienstes erläutert.
 
 
 
+[[steps]]
 == Schritte
 
 link:architectures-plan-file-system.html["Planen Sie das Dateisystem"^]Erstellen Sie `group_vars/meta_<ID>.yml` für jeden Metadatendienst im Cluster eine Datei unter, und füllen Sie sie wie folgt aus, um auf den  Abschnitt zu verweisen:

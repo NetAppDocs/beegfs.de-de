@@ -18,6 +18,7 @@ Während die meisten Software-Konfigurationsaufgaben mithilfe der von NetApp zur
 
 
 
+[[set-up-file-nodes]]
 == Richten Sie die Datei-Nodes ein
 
 . Konfigurieren Sie das Netzwerk auf dem Baseboard Management Controller (BMC) jedes Servers.
@@ -54,6 +55,7 @@ subscription-manager repo-override --repo=rhel-9-for-x86_64-highavailability-rpm
 
 
 
+[[set-up-block-nodes]]
 == Richten Sie Block-Nodes ein
 
 Richten Sie die EF600 Block-Nodes ein, indem Sie den Managementport pro Controller konfigurieren.

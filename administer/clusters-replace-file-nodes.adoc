@@ -18,12 +18,14 @@ Ersetzen eines Dateiknotens, wenn der ursprüngliche Server fehlerhaft ist.
 
 
 
+[[overview]]
 == Überblick
 
 Dies bietet einen Überblick über die Schritte, die zum Austausch eines Datei-Nodes im Cluster erforderlich sind. Diese Schritte setzen voraus, dass der Datei-Node aufgrund eines Hardwareproblems ausgefallen ist und dass er durch einen neuen identischen File-Node ersetzt wurde.
 
 
 
+[[steps]]
 == Schritte
 
 . Ersetzen Sie den Datei-Node physisch und stellen Sie alle Kabel auf den Block-Node und das Storage-Netzwerk wieder her.

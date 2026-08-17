@@ -18,16 +18,19 @@ Fehlerbehebung für ein BeeGFS HA-Cluster.
 
 
 
+[[overview]]
 == Überblick
 
 In diesem Abschnitt wird erläutert, wie verschiedene Fehler und andere Szenarien untersucht und behoben werden können, die beim Betrieb eines BeeGFS HA-Clusters auftreten können.
 
 
 
+[[troubleshooting-guides]]
 == Leitfäden Zur Fehlerbehebung
 
 
 
+[[investigating-unexpected-failovers]]
 === Untersuchen Unerwarteter Failover
 
 Wenn ein Node unerwartet eingezäunt ist und seine Services auf einen anderen Node verschoben werden, sollte der erste Schritt darin bestehen, zu überprüfen, ob das Cluster auf mögliche Ressourcenausfälle an der Unterseite von hinweist `pcs status`. Normalerweise gibt es keine Daten, wenn das Fechten erfolgreich abgeschlossen wurde und die Ressourcen auf einem anderen Knoten neu gestartet wurden.
@@ -135,6 +138,7 @@ Wenn die Fechten-Aktion aus irgendeinem Grund fehlgeschlagen ist, können die Be
 
 
 
+[[address-failed-resource-actions-found-at-the-bottom-of-pcs-status]]
 === Adressen fehlgeschlagener Ressourcen Aktionen (am Ende des Stk-Status gefunden)
 
 Wenn eine Ressource, die zum Ausführen eines BeeGFS-Dienstes erforderlich ist, ausfällt, wird ein Failover durch den BeeGFS-Monitor ausgelöst. Wenn dies der Fall ist, werden wahrscheinlich keine „fehlgeschlagenen Ressourcenaktionen“ am Ende von aufgeführt `pcs status`, und Sie sollten die Schritte zum Thema link:clusters-failover-failback.html["Failback nach einem ungeplanten Failover"^]lesen.
@@ -211,10 +215,12 @@ Schritte zur Lösung:
 
 
 
+[[common-issues]]
 == Häufige Probleme
 
 
 
+[[beegfs-services-dont-failover-or-failback-when-requested]]
 === BeeGFS-Services führen bei Anforderung kein Failover oder Failback durch
 
 *Wahrscheinliche Ausgabe:* das `pcs resource relocate` Befehl ausführen wurde ausgeführt, aber nie erfolgreich abgeschlossen.
@@ -225,6 +231,7 @@ Schritte zur Lösung:
 
 
 
+[[one-node-in-pcs-status-shows-standby-on-fail-when-fencing-is-disabled]]
 === Ein Knoten im Stk-Status zeigt „Standby (ein-aus)“ an, wenn das Fechten deaktiviert ist
 
 *Wahrscheinliche Ursache:* Pacemaker konnte nicht erfolgreich bestätigen, dass alle Ressourcen auf dem Knoten, der ausgefallen ist, angehalten wurden.
@@ -237,6 +244,7 @@ Schritte zur Lösung:
 
 
 
+[[after-an-unexpected-failover-resources-show-started-on-fail-in-pcs-status-when-fencing-is-enabled]]
 === Nach einem unerwarteten Failover zeigen die Ressourcen „gestartet (ein-Fehler)“ im Stk-Status an, wenn das Fechten aktiviert ist
 
 *Wahrscheinliches Problem:* Es trat ein Problem auf, das einen Failover auslöste, Pacemaker konnte jedoch nicht überprüfen, ob der Knoten eingezäunt war. Dies kann passieren, weil Fechten falsch konfiguriert war oder es ein Problem mit dem Fechten Agent gab (Beispiel: Die PDU wurde vom Netzwerk getrennt).
@@ -255,10 +263,12 @@ An diesem Punkt sollten die Dienste den Failover beenden und auf einem anderen g
 
 
 
+[[common-troubleshooting-tasks]]
 == Häufige Fehlerbehebungsaufgaben
 
 
 
+[[restart-individual-beegfs-services]]
 === Starten Sie individuelle BeeGFS-Dienste neu
 
 Normalerweise, wenn ein BeeGFS-Service neu gestartet werden muss (z. B. um eine Konfigurationsänderung zu ermöglichen), sollte dies durch Aktualisierung des Ansible-Bestands und durch erneute Ausführung des Playbooks geschehen. In manchen Szenarien kann es wünschenswert sein, einzelne Services neu zu starten, um eine schnellere Fehlerbehebung zu ermöglichen, beispielsweise um das Protokollierungsniveau zu ändern, ohne auf die Ausführung des gesamten Playbooks zu warten.

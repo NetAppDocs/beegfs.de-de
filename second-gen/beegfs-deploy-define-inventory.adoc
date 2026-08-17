@@ -25,6 +25,7 @@ NOTE: Passen Sie in diesen und nachfolgenden Abschnitten nach Bedarf an, um den 
 
 
 
+[[step-1-create-the-ansible-inventory-file]]
 == Schritt: Die Ansible-Bestandsdatei erstellen
 
 .Schritte
@@ -54,6 +55,7 @@ In den nachfolgenden Abschnitten werden unter weitere Ansible-Gruppen erstellt `
 
 
 
+[[step-2-configure-the-inventory-for-a-management-metadata-and-storage-building-block]]
 == Schritt: Inventar für einen Management-, Metadaten- und Storage-Baustein konfigurieren
 
 Der erste Baustein im Cluster- oder Basis-Baustein muss den BeeGFS-Managementservice sowie Metadaten- und Storage-Services umfassen:
@@ -181,7 +183,7 @@ beegfs_targets:
 ....
 +
 
-NOTE: Die Volume-Größe wird als Prozentsatz des gesamten Storage-Pools angegeben (auch als Volume-Gruppe bezeichnet). NetApp empfiehlt, freie Kapazitäten in jedem Pool zu belassen, um Platz für die SSD-Überprovisionierung zu haben (weitere Informationen finden Sie unter https://www.netapp.com/pdf.html?item=/media/17009-tr4800pdf.pdf["Einführung in das NetApp EF600 Array"^]). Der Storage-Pool, `beegfs_m1_m2_m5_m6`, Weist auch 1% der Kapazität des Pools für den Management-Service. Somit für Metadaten-Volumes im Storage-Pool `beegfs_m1_m2_m5_m6`, Wenn 1,92-TB- oder 3,84-TB-Laufwerke verwendet werden, setzen Sie diesen Wert auf `21.25`; Für 7,5-TB-Laufwerke setzen Sie diesen Wert auf `22.25`; Und für 15,3-TB-Laufwerke ist dieser Wert auf festgelegt `23.75`.
+NOTE: Die Volume-Größe wird als Prozentsatz des gesamten Speicherpools (auch als Volume-Gruppe bezeichnet) angegeben. NetApp empfiehlt nachdrücklich, in jedem Pool etwas freie Kapazität zu belassen, um Raum für SSD-Überprovisionierung zu schaffen (weitere Informationen siehe  https://www.netapp.com/pdf.html?item=/media/17009-tr4800.pdf["Einführung in das NetApp EF600 Array"^]). Der Speicherpool, `beegfs_m1_m2_m5_m6`, reserviert außerdem 1 % der Pool-Kapazität für den Verwaltungsdienst. Daher sollte für Metadaten-Volumes im Speicherpool, `beegfs_m1_m2_m5_m6`, bei Verwendung von 1,92-TB- oder 3,84-TB-Laufwerken dieser Wert auf  `21.25` gesetzt werden; bei 7,65-TB-Laufwerken auf  `22.25`; und bei 15,3-TB-Laufwerken auf  `23.75`.
 
 +
 |===
@@ -269,6 +271,7 @@ NOTE: Informationen zur richtigen Größe finden Sie unter link:beegfs-deploy-re
 
 
 
+[[step-3-configure-the-inventory-for-a-metadata-storage-building-block]]
 == Schritt 3: Konfigurieren Sie den Bestand für einen Baustein Metadaten + Speicher
 
 In diesen Schritten wird beschrieben, wie ein Ansible-Inventar für BeeGFS-Metadaten + Storage-Baustein eingerichtet wird.
@@ -458,6 +461,7 @@ NOTE: Die richtige Größe finden Sie unter link:beegfs-deploy-recommended-volum
 
 
 
+[[step-4-configure-the-inventory-for-a-storage-only-building-block]]
 == Schritt 4: Konfigurieren Sie den Bestand für einen nur-Storage-Baustein
 
 In diesen Schritten wird beschrieben, wie Sie einen Ansible-Bestand für einen einzigen BeeGFS-Baustein einrichten. Der Hauptunterschied zwischen der Konfiguration für Metadaten + Storage und einem rein Storage-basierten Baustein besteht darin, dass alle Metadaten-Ressourcengruppen und Änderungen nicht mehr berücksichtigt werden `criteria_drive_count` Von 10 bis 12 für jeden Speicherpool.

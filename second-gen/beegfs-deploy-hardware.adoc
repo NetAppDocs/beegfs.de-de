@@ -48,7 +48,7 @@ image:driveslots.png["EF600 Laufwerksteckplätze"]
 
 
 
-. Verbinden Sie die Block- und File-Knoten mit dem link:beegfs-technology-requirements.html#block-file-cables["1 m InfiniBand HDR 200 GB Direct-Attach-Kupferkabel"], so dass sie mit der in der folgenden Abbildung gezeigten Topologie übereinstimmen.
+. Die Block- und Dateiknoten werden mithilfe der link:beegfs-technology-requirements.html#file-node-requirements["1 m InfiniBand HDR 200 GB Direct-Attach-Kupferkabel"] verbunden, sodass sie der in der folgenden Abbildung dargestellten Topologie entsprechen.
 +
 image:directattachcable-sr665v3.png["SR665V3 Direct-Attach-Verkabelung"]
 
@@ -56,7 +56,7 @@ image:directattachcable-sr665v3.png["SR665V3 Direct-Attach-Verkabelung"]
 
 NOTE: Die Nodes sind über mehrere Bausteine hinweg nie direkt miteinander verbunden. Jeder Baustein sollte als eigenständige Einheit behandelt werden und alle Kommunikation zwischen Bausteinen erfolgt über Netzwerk-Switches.
 
-. Verbinden Sie die übrigen InfiniBand-Ports auf dem Datei-Node mithilfe des spezifischen InfiniBand-Speicherswitters des Speichernetzwerks mit dem link:beegfs-technology-requirements.html#file-switch-cables["2 m InfiniBand-Kabel"] InfiniBand-Switch.
+. Die verbleibenden InfiniBand-Ports des Dateiknotens werden mit dem InfiniBand-Switch des Speichernetzwerks unter Verwendung des für Ihren link:beegfs-technology-requirements.html#storage-network-switch-requirements["2 m InfiniBand-Kabel"] InfiniBand-Speicher-Switch spezifischen Anschlusses verbunden.
 +
 Wenn Sie Splitterkabel verwenden, um den Speicher-Switch mit Dateiknoten zu verbinden, sollte ein Kabel vom Switch abzweigen und mit den hellgrünen Ports verbunden werden. Ein anderes Splitterkabel sollte sich vom Switch abzweigen und an die dunkelgrünen Ports anschließen.
 

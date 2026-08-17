@@ -18,10 +18,12 @@ Manuelle Schritte zur Einrichtung von Datei- und Block-Nodes vor der Ausführung
 
 
 
+[[file-nodes]]
 == File-Nodes
 
 
 
+[[configure-the-baseboard-management-controller-bmc]]
 === Konfigurieren des Baseboard Management Controllers (BMC)
 
 Ein Baseboard Management Controller (BMC), der manchmal als Service-Prozessor bezeichnet wird, ist der generische Name für die Out-of-Band-Management-Funktion, die in verschiedenen Server-Plattformen integriert ist, die Remote-Zugriff bieten können, selbst wenn das Betriebssystem nicht installiert ist oder nicht zugänglich ist. Anbieter vermarkten diese Funktionalität in der Regel mit ihrem eigenen Branding. Auf dem Lenovo SR665 wird beispielsweise der BMC als Lenovo XClarity Controller (XCC) bezeichnet.
@@ -33,12 +35,14 @@ NOTE: Wenn ein BMC-basiertes Fechten mit Redfish gewünscht wird, stellen Sie si
 
 
 
+[[tune-system-settings]]
 === Systemeinstellungen Einstellen
 
 Stellen Sie mithilfe der Benutzeroberfläche des System-Setup (BIOS/UEFI) sicher, dass Einstellungen auf maximale Leistung eingestellt sind. Die genauen Einstellungen und optimalen Werte variieren je nach verwendetes Servermodell. Es wird eine Anleitung zur Verfügung gestelltlink:../second-gen/beegfs-deploy-file-node-tuning.html["Verifizierte Datei-Node-Modelle"^], andernfalls beziehen Sie sich auf die Dokumentation und Best Practices des Serverherstellers, die auf Ihrem Modell basieren.
 
 
 
+[[install-an-operating-system]]
 === Installieren Sie ein Betriebssystem
 
 Installieren Sie ein unterstütztes Betriebssystem basierend auf den aufgeführten Dateiknotenlink:../second-gen/beegfs-technology-requirements.html#file-node-requirements["Hier"^]-Anforderungen. Beachten Sie die nachfolgenden Schritte, die auf Ihrer Linux-Distribution basieren.
@@ -56,6 +60,7 @@ subscription-manager repo-override --repo=rhel-9-for-x86_64-highavailability-rpm
 ....
 
 
+[[configure-management-network]]
 === Managementnetzwerk Konfigurieren
 
 Konfigurieren Sie alle erforderlichen Netzwerkschnittstellen für die bandinterne Verwaltung des Betriebssystems. Die genauen Schritte hängen von der jeweiligen Linux-Distribution und der verwendeten Version ab.
@@ -65,12 +70,14 @@ NOTE: Vergewissern Sie sich, dass SSH aktiviert ist und alle Managementoberfläc
 
 
 
+[[update-hca-and-hba-firmware]]
 === Aktualisieren der HCA- und HBA-Firmware
 
 Stellen Sie sicher, dass auf allen HBAs und HCAs unterstützte Firmware-Versionen ausgeführt link:https://imt.netapp.com/matrix/["NetApp Interoperabilitätsmatrix"^]werden, die auf dem aufgeführt sind, und aktualisieren Sie ggf.. Weitere Empfehlungen für NVIDIA ConnectX Adapter finden Sie link:../second-gen/beegfs-technology-requirements.html#file-node-requirements["Hier"^].
 
 
 
+[[block-nodes]]
 == Block-Nodes
 
 Befolgen Sie die Schritte zu link:https://docs.netapp.com/us-en/e-series/getting-started/getup-run-concept.html["Die Inbetriebnahme ist möglich mit E-Series"^] Um den Managementport an jedem Block Node Controller zu konfigurieren und optional den Namen des Storage-Arrays für jedes System festzulegen.

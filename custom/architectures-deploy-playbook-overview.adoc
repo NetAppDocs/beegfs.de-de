@@ -18,12 +18,14 @@ BeeGFS HA-Cluster implementieren und managen mithilfe von Ansible
 
 
 
+[[overview]]
 == Überblick
 
 In den vorherigen Abschnitten wurden die Schritte aufgeführt, mit denen ein Ansible-Inventar erstellt werden konnte, der ein BeeGFS HA-Cluster darstellt. In diesem Abschnitt wird die von NetApp entwickelte Ansible-Automatisierung für die Implementierung und das Management des Clusters vorgestellt.
 
 
 
+[[ansible-key-concepts]]
 == Ansible – Wichtige Konzepte
 
 Bevor Sie fortfahren, ist es hilfreich, sich mit ein paar Schlüsselkonzepten von Ansible vertraut zu machen:
@@ -53,6 +55,7 @@ Bevor Sie fortfahren, ist es hilfreich, sich mit ein paar Schlüsselkonzepten vo
 
 
 
+[[beegfs-ha-role-for-ansible-key-concepts]]
 == BeeGFS HA-Rolle für Ansible: Schlüsselkonzepte
 
 Die gesamte Automatisierung, die für das Implementieren und Managen jeder Version von BeeGFS auf NetApp erforderlich ist, ist als Ansible-Rolle verpackt und im Rahmen der verteilt link:https://galaxy.ansible.com/netapp_eseries/beegfs["NetApp E-Series Ansible Collection für BeeGFS"^]:

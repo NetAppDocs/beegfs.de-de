@@ -18,6 +18,7 @@ Um die Konfiguration für Datei- und Block-Nodes zu definieren, erstellen Sie ei
 
 
 
+[[step-1-define-configuration-for-all-building-blocks]]
 == Schritt 1: Konfiguration für alle Bausteine definieren
 
 Legen Sie die Konfiguration fest, die für alle Bausteine gilt, unabhängig davon, welches Konfigurationsprofil Sie für sie einzeln anwenden können.
@@ -78,6 +79,7 @@ bmc_password: <PASSWORD>
 
 
 
+[[step-2-define-configuration-for-individual-file-and-block-nodes]]
 == Schritt: Konfiguration für einzelne Datei- und Block-Nodes definieren
 
 Legen Sie die Konfiguration für einzelne Datei-Nodes und einzelne Baustein-Nodes fest.
@@ -174,6 +176,7 @@ eseries_controller_nvme_ib_port:
 
 
 
+[[step-3-define-configuration-that-should-apply-to-all-file-and-block-nodes]]
 == Schritt 3: Definieren Sie die Konfiguration, die für alle Datei- und Block-Nodes gelten soll
 
 Unter können Sie die gemeinsame Konfiguration für eine Gruppe von Hosts definieren `group_vars` In einem Dateinamen, der der Gruppe entspricht. Dadurch wird verhindert, dass eine gemeinsame Konfiguration an mehreren Orten wiederholt wird.
@@ -194,6 +197,7 @@ beegfs_ha_ntp_server_pools:  # Modify the NTP server addressess if desired.
 ....
 
 
+[[step-4-define-configuration-that-should-apply-to-all-file-nodes]]
 == Schritt 4: Definieren Sie die Konfiguration, die für alle Datei-Knoten gelten soll
 
 Die gemeinsame Konfiguration für Dateiknoten ist in einer Gruppe mit dem Namen definiert `ha_cluster`. In den Schritten in diesem Abschnitt wird die Konfiguration erstellt, die in der enthalten sein sollte `group_vars/ha_cluster.yml` Datei:
@@ -366,6 +370,7 @@ NOTE: Während der Verifizierungstests `randomrobin` Wurde in der Regel verwende
 
 
 
+[[step-5-define-the-configuration-for-the-common-block-node]]
 == Schritt 5: Definieren Sie die Konfiguration für den gemeinsamen Block-Node
 
 Die gemeinsame Konfiguration für Block-Knoten wird in einer Gruppe mit dem Namen definiert `eseries_storage_systems`. In den Schritten in diesem Abschnitt wird die Konfiguration erstellt, die in der enthalten sein sollte `group_vars/ eseries_storage_systems.yml` Datei:

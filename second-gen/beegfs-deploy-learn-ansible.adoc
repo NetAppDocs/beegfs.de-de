@@ -20,6 +20,7 @@ Der Ansible-Bestand ist eine Verzeichnisstruktur mit den Datei- und Block-Nodes 
 
 
 
+[[ansible-modules-and-roles]]
 == Ansible-Module und -Rollen
 
 Um die im Ansible Inventar beschriebene Konfiguration anzuwenden, verwenden Sie die verschiedenen Ansible Module und Rollen aus der NetApp E-Series Ansible Sammlung (verfügbar über https://github.com/netappeseries/beegfs/tree/master/roles/beegfs_ha_7_4["NetApp E-Series BeeGFS GitHub"^] ), die die End-to-End-Lösung implementieren.
@@ -33,6 +34,7 @@ NOTE: Obwohl die Implementierungsschritte versucht, genügend Details bereitzust
 
 
 
+[[inventory-layout-for-a-beegfs-ha-cluster]]
 == Bestandslayout für BeeGFS HA-Cluster
 
 Definieren Sie ein BeeGFS HA-Cluster mit der Ansible-Bestandsstruktur.

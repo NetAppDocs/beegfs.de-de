@@ -21,6 +21,7 @@ TIP: Definitionen für die in diesem Abschnitt verwendete Terminologie finden Si
 
 
 
+[[introduction]]
 == Einführung
 
 link:../second-gen/beegfs-solution-overview.html["NetApp-verifizierte Architekturen"]Einige Kunden und Partner bieten zwar vordefinierte Referenzkonfigurationen und Hinweise zur Größenbestimmung, möchten aber möglicherweise lieber benutzerdefinierte Architekturen entwickeln, die sich besser an die speziellen Anforderungen oder Hardwarepräferenzen anpassen. Einer der Hauptvorteile der Entscheidung für BeeGFS auf NetApp ist die Möglichkeit, BeeGFS HA-Cluster auf Shared-Festplatten mit Ansible zu implementieren. Dadurch wird das Cluster-Management vereinfacht und die Zuverlässigkeit mithilfe von NetApp entwickelten HA-Komponenten gesteigert. Die Implementierung benutzerdefinierter BeeGFS-Architekturen auf NetApp erfolgt noch immer mithilfe von Ansible und den Appliance-ähnlichen Ansatz auf einem flexiblen Spektrum an Hardware.
@@ -29,6 +30,7 @@ Dieser Abschnitt beschreibt die allgemeinen Schritte, die zur Implementierung vo
 
 
 
+[[deployment-overview]]
 == Implementierungsübersicht
 
 Die Bereitstellung eines BeeGFS-Dateisystems umfasst im Allgemeinen die folgenden Schritte:
@@ -63,6 +65,7 @@ Ansible übernimmt alle Softwareprovisionierung- und Konfigurationsaufgaben, z. 
 ====
 
 
+[[requirements]]
 == Anforderungen
 
 Unterstützung für BeeGFS in Ansible ist veröffentlicht am link:https://galaxy.ansible.com/netapp_eseries/beegfs["Ansible-Galaxie"] Als Sammlung von Rollen und Modulen zur Automatisierung der End-to-End-Implementierung und des Managements von BeeGFS HA-Clustern.
@@ -71,6 +74,7 @@ BeeGFS selbst ist nach einem <major>.<minor>.<patch> Versioning Schema versionie
 
 
 
+[[ansible-control-node]]
 === Ansible-Steuerungsknoten
 
 Dieser Node enthält Inventar und Playbooks, die zum Managen von BeeGFS verwendet werden. Dazu benötigen Sie:
@@ -84,6 +88,7 @@ Es empfiehlt sich auch, passwortlose SSH vom Steuerungsknoten auf alle BeeGFS Da
 
 
 
+[[beegfs-file-nodes]]
 === BeeGFS-Dateiknoten
 
 Dateiknoten müssen Red Hat Enterprise Linux (RHEL) 9.4 ausführen und Zugriff auf das HA-Repository mit den erforderlichen Paketen (Pacemaker, Corosync, Fence-Agents-All, Resource-Agents) haben. Beispielsweise kann der folgende Befehl ausgeführt werden, um das entsprechende Repository unter RHEL 9 zu aktivieren:
@@ -94,6 +99,7 @@ subscription-manager repo-override repo=rhel-9-for-x86_64-highavailability-rpms 
 ----
 
 
+[[beegfs-client-nodes]]
 === BeeGFS Client-Knoten
 
 Eine BeeGFS-Client-Ansible-Rolle steht zur Verfügung, um das BeeGFS-Client-Paket zu installieren und BeeGFS-Mount(s) zu verwalten. Diese Rolle wurde mit RHEL 9.4 und Ubuntu 22.04 getestet.

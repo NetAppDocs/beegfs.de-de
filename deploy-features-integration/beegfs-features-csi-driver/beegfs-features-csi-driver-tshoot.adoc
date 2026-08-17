@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: deploy-features-integration/beegfs-csi-driver/csi-driver-tshoot.html 
+permalink: deploy-features-integration/beegfs-features-csi-driver/beegfs-features-csi-driver-tshoot.html 
 keywords: BeeGFS Features, CSI, Driver, Troubleshoot, Troubleshooting 
 summary: Fehlerbehebung bei der Bereitstellung des BeeGFS CSI-Treibers. 
 ---
@@ -26,6 +26,7 @@ Für eine detaillierte Fehlerbehebung konsultieren Sie bittelink:https://github.
 
 
 
+[[kubernetes-setup-common-error-scenarios]]
 == Kubernetes-Einrichtung – Häufige Fehlerszenarien
 
 Beispielhafter Fehler beim Versuch, alle aktuell auf dem Knoten laufenden Pods abzurufen:
@@ -48,6 +49,7 @@ Bei der Bearbeitung solcher Probleme müssen mehrere wichtige Bereiche untersuch
 
 
 
+[[error-in-containerd]]
 == Fehler in containerd
 
 Überprüfen Sie den Status des containerd-Daemons:
@@ -75,6 +77,7 @@ journalctl -u containerd
 ----
 
 
+[[error-in-kubelet]]
 == Fehler in kubelet
 
 Überprüfen Sie den Status des Kubelet-Dienstes:
@@ -112,6 +115,7 @@ tail -f /var/log/syslog | grep kubelet
 ----
 
 
+[[swap-issue]]
 == Tauschproblem
 
 Falls Fehler im Zusammenhang mit „Swap“ auftreten, deaktivieren Sie Swap und starten Sie den Kubelet neu.
@@ -146,6 +150,7 @@ NOTE: Swap ist normalerweise bei der Installation des Betriebssystems standardm�
 
 
 
+[[troubleshooting-beegfs-client-and-helperd-configuration]]
 == Fehlerbehebung bei der BeeGFS-Client- und Helferkonfiguration
 
 . Überprüfen Sie die Konfiguration in `/etc/beegfs/beegfs-client.conf` Die
@@ -232,6 +237,7 @@ tuneNumWorkers                = 2
 
 
 
+[[troubleshooting-beegfs-controller-issues]]
 == Fehlerbehebung bei Problemen mit dem BeeGFS-Controller
 
 Nach der Bereitstellung der Overlays werden Sie möglicherweise einige Ressourcen mit dem Status PENDING in der Ausgabe von kubectl get all sehen.
@@ -256,6 +262,7 @@ kubectl describe pod <pod-name> -n beegfs-csi | grep -i image
 ----
 
 
+[[checking-pod-logs]]
 === Pod-Protokolle prüfen
 
 Wenn eine Pod nicht startet oder sich in einem `CrashLoopBackOff` Weitere Einzelheiten finden Sie in den Protokollen des jeweiligen Bundesstaates:

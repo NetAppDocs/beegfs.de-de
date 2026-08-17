@@ -18,6 +18,7 @@ Beachten Sie bei der Implementierung der BeeGFS auf NetApp-Lösung die Best Prac
 
 
 
+[[standard-conventions]]
 == Standardkonventionen
 
 Folgen Sie beim physischen Zusammenbau und Erstellen der Ansible-Bestandsdatei diesen Standardkonventionen (weitere Informationen finden Sie unter link:beegfs-deploy-create-inventory.html["Erstellen des Ansible-Inventars"]).
@@ -45,12 +46,14 @@ Ziel ist es, die Länge des Kabels zu minimieren, das oben auf den Rack Switches
 
 
 
+[[infiniband-storage-network-configuration]]
 == InfiniBand-Storage-Netzwerkkonfiguration
 
 Die Hälfte der InfiniBand-Ports an jedem Datei-Node werden für eine direkte Verbindung mit Block-Nodes verwendet. Die andere Hälfte ist mit den InfiniBand-Switches verbunden und wird für die BeeGFS-Client-Server-Konnektivität verwendet. Beim Bestimmen der Größe der IPoIB-Subnetze, die für BeeGFS-Clients und -Server verwendet werden, müssen Sie das erwartete Wachstum Ihres Compute/GPU-Clusters und BeeGFS-Dateisystems berücksichtigen. Wenn Sie von den empfohlenen IP-Bereichen abweichen müssen, beachten Sie, dass jede direkte Verbindung in einem einzelnen Baustein ein eigenes Subnetz hat und es keine Überschneidung mit Subnetzen gibt, die für die Client-Server-Konnektivität verwendet werden.
 
 
 
+[[direct-connects]]
 === Direkte Verbindungen
 
 Datei- und Block-Nodes innerhalb jedes Bausteins verwenden für ihre direkten Verbindungen immer die IPs in der folgenden Tabelle.
@@ -87,6 +90,7 @@ NOTE: Dieses Adressprogramm entspricht der folgenden Regel: Das dritte Oktett is
 |===
 
 
+[[beegfs-client-server-ipoib-addressing-schemes]]
 === IPoIB-Adressierungsschemata für BeeGFS-Client-Server
 
 Auf jedem Datei-Node werden mehrere BeeGFS-Serverservices ausgeführt (Management, Metadaten oder Storage). Damit jeder Service unabhängig vom anderen Datei-Node ein Failover durchführen kann, verfügt jeder über eindeutige IP-Adressen, die zwischen beiden Nodes schweben können (auch als logische Schnittstelle oder LIF bezeichnet).

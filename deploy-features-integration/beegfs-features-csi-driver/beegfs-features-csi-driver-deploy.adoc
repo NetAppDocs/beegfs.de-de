@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: deploy-features-integration/beegfs-csi-driver/csi-driver-deploy.html 
+permalink: deploy-features-integration/beegfs-features-csi-driver/beegfs-features-csi-driver-deploy.html 
 keywords: BeeGFS Features, CSI, Driver 
 summary: Bereitstellungsanleitung für den BeeGFS CSI-Treiber. 
 ---
@@ -18,12 +18,14 @@ Anleitung zur Bereitstellung des BeeGFS CSI-Treibers in einer Kubernetes-Umgebun
 
 
 
+[[air-gapped-deployment]]
 == Air-Gapped-Einsatz
 
 Für eine Air-Gapped (Offline-)Bereitstellung müssen sowohl die Kubernetes-YAML-Konfigurationsdateien als auch die erforderlichen Container-Images im Voraus auf einem System mit Internetzugang heruntergeladen werden.  Diese Dateien müssen dann auf den/die Zielknoten übertragen werden, auf dem/denen der CSI-Treiber installiert werden soll.
 
 
 
+[[retrieve-the-driver-and-images]]
 === Treiber und Bilder abrufen
 
 Führen Sie die folgenden Schritte aus, um den BeeGFS CSI-Treiber in einer abgeschotteten Umgebung bereitzustellen.
@@ -83,6 +85,7 @@ Wiederholen Sie diesen Exportbefehl für jedes benötigte Bild und ersetzen Sie 
 
 
 
+[[import-the-required-images]]
 === Importieren Sie die erforderlichen Bilder
 
 . Navigieren Sie zu `/home/<User>/beegfs-csi-images` Verzeichnis, in dem die Bilder gespeichert sind, und Import jedes Bildes mit containerd. Beispiel:
@@ -105,6 +108,7 @@ crictl images
 
 
 
+[[configure-and-deploy-the-csi-driver-overlays]]
 === Konfigurieren und Bereitstellen der CSI-Treiber-Overlays
 
 . Navigieren Sie zu `/home/<User>/beegfs-csi-driver` Verzeichnis.
@@ -189,6 +193,7 @@ NOTE: Der `patchesStrategicMerge` Dieser Abschnitt ermöglicht es Ihnen, benutze
 
 
 
+[[install-the-beegfs-csi-driver]]
 === Installieren Sie den BeeGFS CSI-Treiber
 
 . Installieren Sie den BeeGFS CSI-Treiber mithilfe Ihres benutzerdefinierten Overlays.  Dieser Schritt wendet alle Ihre Konfigurationsänderungen an, einschließlich der Verwendung lokal importierter Images und der aktualisierten Image-Pull-Richtlinie.
@@ -205,12 +210,14 @@ kubectl apply -k deploy/k8s/overlays/beegfs-overlay
 
 
 
+[[online-deployment]]
 == Online-Bereitstellung
 
 Wenn Ihre Kubernetes-Knoten über Internetzugang verfügen, können Sie den BeeGFS CSI-Treiber direkt bereitstellen, ohne Container-Images manuell herunterladen oder übertragen zu müssen.  Wenn die Pods bereitgestellt werden, laden sie automatisch die Images von Image-Hub herunter und starten die erforderlichen Dienste.
 
 
 
+[[retrieve-the-driver-repository]]
 === Treiber-Repository abrufen
 
 . Klonen Sie das BeeGFS CSI Driver GitHub-Repository auf Ihr lokales System:
@@ -223,6 +230,7 @@ git clone https://github.com/ThinkParQ/beegfs-csi-driver.git
 
 
 
+[[configure-the-driver]]
 === Konfigurieren Sie den Treiber
 
 . Navigieren Sie zum geklonten Repository-Verzeichnis und aktualisieren Sie gegebenenfalls die Konfigurationsdateien im Standard-Overlay-Verzeichnis:
@@ -258,6 +266,7 @@ NOTE: Der CSI-Treiber benötigt die Konfigurationsdatei unter folgendem Pfad: `/
 
 
 
+[[install-the-beegfs-csi-driver]]
 === Installieren Sie den BeeGFS CSI-Treiber
 
 . Installieren Sie das Standard-Overlay mit `kubectl` Die  Dadurch werden die benötigten Images automatisch aus ihren jeweiligen Registries abgerufen und alle erforderlichen Kubernetes-Ressourcen erstellt:
@@ -298,12 +307,14 @@ NOTE: Verwenden `kubectl apply -k` für Overlays (Verzeichnisse, die ein `kustom
 
 
 
+[[deploy-example-application]]
 == Beispielanwendung bereitstellen
 
 Nach der Installation des BeeGFS CSI-Treibers (entweder im Air-Gapped- oder Online-Modus) können Sie die Beispielanwendung bereitstellen, um Ihre Konfiguration zu überprüfen.  Dieses Beispiel beinhaltet eine StorageClass, einen PersistentVolumeClaim (PVC) und einen Pod, der den BeeGFS CSI-Treiber verwendet.
 
 
 
+[[before-deploying]]
 === Vor der Bereitstellung:
 
 . Ermitteln Sie die IP-Adresse des BeeGFS-Verwaltungsknotens:
@@ -355,6 +366,7 @@ allowVolumeExpansion: true
 
 
 
+[[deploy]]
 === Einsetzen
 
 . Die Beispielanwendungsdateien bereitstellen:

@@ -18,12 +18,14 @@ Lesen Sie, wie BeeGFS HA-Cluster nach der Implementierung verwaltet werden.
 
 
 
+[[overview]]
 == Überblick
 
 Dieser Abschnitt richtet sich an Cluster-Administratoren, die BeeGFS HA-Cluster nach ihrer Bereitstellung verwalten müssen. Selbst diejenigen, die mit Linux HA-Clustern vertraut sind, sollten diesen Leitfaden genau lesen, da es verschiedene Unterschiede beim Management des Clusters gibt, insbesondere im Hinblick auf die Neukonfiguration aufgrund der Verwendung von Ansible.
 
 
 
+[[key-concepts]]
 == Schlüsselkonzepte
 
 Während einige dieser Konzepte auf der Hauptseite vorgestellt werdenlink:../get-started/beegfs-terms.html["Begriffe und Konzepte"], ist es hilfreich, sie im Kontext eines BeeGFS HA-Clusters neu einzuführen:
@@ -50,6 +52,7 @@ Während einige dieser Konzepte auf der Hauptseite vorgestellt werdenlink:../get
 
 
 
+[[common-terminology]]
 == Allgemeine Terminologie
 
 **Failover:** jeder BeeGFS-Dienst hat einen bevorzugten Dateiknoten, auf dem er ausgeführt wird, es sei denn, der Knoten schlägt fehl. Wenn ein BeeGFS-Service auf einem nicht-bevorzugten/sekundären Dateiknoten ausgeführt wird, muss er sich im Failover befinden.

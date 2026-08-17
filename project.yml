@@ -128,15 +128,15 @@ sidebar:
     - title: BeeGFS CSI-Treiber
       entries:
       - title: Überblick
-        url: "/deploy-features-integration/beegfs-csi-driver/csi-driver-overview.html"
+        url: "/deploy-features-integration/beegfs-features-csi-driver/beegfs-features-csi-driver-overview.html"
       - title: Voraussetzungen
-        url: "/deploy-features-integration/beegfs-csi-driver/csi-driver-prereqs.html"
+        url: "/deploy-features-integration/beegfs-features-csi-driver/beegfs-features-csi-driver-prereqs.html"
       - title: Einsatz
-        url: "/deploy-features-integration/beegfs-csi-driver/csi-driver-deploy.html"
+        url: "/deploy-features-integration/beegfs-features-csi-driver/beegfs-features-csi-driver-deploy.html"
       - title: Überprüfung
-        url: "/deploy-features-integration/beegfs-csi-driver/csi-driver-verify.html"
+        url: "/deploy-features-integration/beegfs-features-csi-driver/beegfs-features-csi-driver-verify.html"
       - title: Fehlerbehebung
-        url: "/deploy-features-integration/beegfs-csi-driver/csi-driver-tshoot.html"
+        url: "/deploy-features-integration/beegfs-features-csi-driver/beegfs-features-csi-driver-tshoot.html"
     - title: TLS-Verschlüsselung für BeeGFS 8 konfigurieren
       url: "/deploy-features-integration/beegfs-tls/beegfs-tls-deploy.html"
   - title: BeeGFS-Cluster verwalten

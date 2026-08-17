@@ -18,6 +18,7 @@ Verwenden Sie Ansible, um die BeeGFS-Version, die auf Ihrem HA-Cluster läuft, z
 
 
 
+[[overview]]
 == Überblick
 
 BeeGFS folgt einem `major.minor.patch` Versionsschema. Die BeeGFS HA-Ansible-Rollen werden für jede unterstützte `major.minor` Version (z. B. `beegfs_ha_7_2` und `beegfs_ha_7_3`) bereitgestellt. Jede HA-Rolle ist auf die neueste BeeGFS-Patch-Version fixiert, die zum Zeitpunkt der Veröffentlichung der Ansible Sammlung verfügbar ist.
@@ -29,6 +30,7 @@ NOTE: Wenn Sie auf BeeGFS 8 aktualisieren, beachten Sie stattdessen die link:clu
 
 
 
+[[tested-upgrade-paths]]
 == Getestete Upgrade-Pfade
 
 Die folgenden Upgrade-Pfade wurden getestet und verifiziert:
@@ -69,12 +71,14 @@ Die folgenden Upgrade-Pfade wurden getestet und verifiziert:
 |===
 
 
+[[beegfs-upgrade-steps]]
 == Schritte beim BeeGFS-Upgrade
 
 In den folgenden Abschnitten werden die Schritte zum Aktualisieren der BeeGFS Ansible Sammlung und BeeGFS selbst beschrieben. Achten Sie besonders auf zusätzliche Schritte für die Aktualisierung von BeeGFS Major oder Minor Versionen.
 
 
 
+[[step-1-upgrade-beegfs-collection]]
 === Schritt: Upgrade der BeeGFS-Sammlung
 
 Bei Erfassungs-Upgrades mit Zugriff auf link:https://galaxy.ansible.com/netapp_eseries/beegfs["Ansible-Galaxie"^], Ausführen des folgenden Befehls:
@@ -93,12 +97,14 @@ Siehe link:https://docs.ansible.com/ansible/latest/collections_guide/collections
 
 
 
+[[step-2-update-ansible-inventory]]
 === Schritt 2: Aktualisieren Sie den Ansible-Bestand
 
 Nehmen Sie alle erforderlichen oder gewünschten Aktualisierungen an den Ansible-Inventardateien Ihres Clusters vor. Siehe den <<Hinweise zur Versionsaktualisierung>> Abschnitt unten für Details zu Ihren spezifischen Upgrade-Anforderungen. Siehe den link:../custom/architectures-inventory-overview.html["Ansible-Bestandsübersicht"^] Abschnitt für allgemeine Informationen zur Konfiguration Ihres BeeGFS HA-Inventars.
 
 
 
+[[step-3-update-ansible-playbook-when-updating-major-or-minor-versions-only]]
 === Schritt 3: Ansible-Playbook aktualisieren (nur bei Aktualisierung von Haupt- oder Nebenversionen)
 
 Wenn Sie zwischen Haupt- oder Unterversionen wechseln, aktualisieren Sie in der `playbook.yml` Datei, die zum Bereitstellen und Warten des Clusters verwendet wird, den Namen der `beegfs_ha_<VERSION>` Rolle, damit die gewünschte Version angezeigt wird. Wenn Sie beispielsweise BeeGFS 7.4 bereitstellen möchten, wäre dies `beegfs_ha_7_4`:
@@ -119,6 +125,7 @@ Weitere Informationen zum Inhalt dieser Playbook-Datei finden Sie im link:../cus
 
 
 
+[[step-4-run-the-beegfs-upgrade]]
 === Schritt 4: Führen Sie das BeeGFS-Upgrade aus
 
 So wenden Sie das BeeGFS-Update an:
@@ -144,10 +151,12 @@ Hinter den Kulissen übernimmt die BeeGFS HA-Rolle:
 
 
 
+[[version-upgrade-notes]]
 == Hinweise zur Versionsaktualisierung
 
 
 
+[[upgrading-from-beegfs-version-7-2-6-or-7-3-0]]
 === Upgrade von BeeGFS Version 7.2.6 oder 7.3.0
 
 

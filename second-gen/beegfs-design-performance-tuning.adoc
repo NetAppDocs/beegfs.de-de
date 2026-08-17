@@ -20,6 +20,7 @@ Obwohl BeeGFS Out-of-the-Box-Performance bietet, hat NetApp eine Reihe von empfo
 
 
 
+[[performance-tuning-for-file-nodes]]
 == Performance-Tuning für Datei-Nodes
 
 Zu den verfügbaren Tuning-Parametern, die Sie konfigurieren können, gehören folgende:
@@ -79,6 +80,7 @@ Sie können die maximale Größe für Leseanforderungen für NVIDIA-HCAs erhöhe
 
 
 
+[[performance-tuning-for-block-nodes]]
 == Performance-Tuning für Block-Nodes
 
 Basierend auf den Konfigurationsprofilen, die auf einen bestimmten BeeGFS-Baustein angewendet werden, ändern sich die auf den Block-Nodes konfigurierten Volume-Gruppen leicht. Beispiel mit einem EF600 Block-Node mit 24 Laufwerken:

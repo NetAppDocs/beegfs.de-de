@@ -18,12 +18,14 @@ Verwenden Sie PCs, um den Status des Clusters anzuzeigen.
 
 
 
+[[overview]]
 == Überblick
 
 Wird Ausgeführt `pcs status` Von jedem Cluster-Node aus können Sie den Gesamtstatus des Clusters und den Status jeder Ressource (z. B. BeeGFS-Services und deren Abhängigkeiten) am einfachsten einsehen. In diesem Abschnitt wird erklärt, was Sie in der Ausgabe von finden `pcs status` Befehl.
 
 
 
+[[understanding-the-output-from-pcs-status]]
 == Allgemeines zur Ausgabe von `pcs status`
 
 Laufen `pcs status` Auf jedem Clusterknoten, auf dem die Cluster-Dienste (Pacemaker und Corosync) gestartet werden. Oben in der Ausgabe wird eine Zusammenfassung des Clusters angezeigt:

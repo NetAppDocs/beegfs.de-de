@@ -18,6 +18,7 @@ Führen Sie die folgenden Schritte aus, um die Komponenten des HA-Clusters des E
 
 
 
+[[overview]]
 == Überblick
 
 Die NetApp E-Series Storage Arrays Ihres HA Clusters mit der neuesten Firmware auf dem neuesten Stand zu halten, gewährleistet optimale Performance und verbesserte Sicherheit. Firmware-Updates für das Storage Array werden über SANtricity OS-, NVSRAM- und Festplatten-Firmware-Dateien angewendet.
@@ -27,6 +28,7 @@ NOTE: Obwohl ein Upgrade der Storage Arrays während des Online-Betriebs des HA-
 
 
 
+[[block-node-upgrade-steps]]
 == Upgrade-Schritte für Block-Nodes
 
 Im Folgenden wird beschrieben, wie die Firmware der Storage-Arrays mithilfe der `Netapp_Eseries.Santricity` Ansible-Sammlung aktualisiert wird. Bevor Sie fortfahren, lesen link:https://docs.netapp.com/us-en/e-series/upgrade-santricity/overview-upgrade-consider-task.html["Upgrade-Überlegungen"^]Sie das  zur Aktualisierung von E-Series Systemen.

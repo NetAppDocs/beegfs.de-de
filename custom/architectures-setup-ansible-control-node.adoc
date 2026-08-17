@@ -18,6 +18,7 @@ Richten Sie einen Ansible-Steuerungsknoten ein, um das Dateisystem zu implementi
 
 
 
+[[overview]]
 == Überblick
 
 Ein Ansible-Steuerungsknoten ist eine physische oder virtuelle Linux-Maschine, die zum Verwalten des Clusters verwendet wird. Er muss folgende Anforderungen erfüllen:

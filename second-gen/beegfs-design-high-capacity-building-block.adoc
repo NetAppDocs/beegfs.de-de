@@ -10,7 +10,7 @@ summary: Das Design ist für einen Baustein mit hoher Kapazität unterschiedlich
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]
@@ -18,6 +18,7 @@ Bei der Entwicklung der BeeGFS-Standardlösung wurde auf Workloads mit hoher Per
 
 
 
+[[hardware-and-software-configuration]]
 == Hardware- und Softwarekonfiguration
 
 Hardware- und Softwarekonfiguration für den Baustein mit hoher Kapazität ist Standard. Es sei denn, die EF600 Controller sollten durch einen EF300 Controller ersetzt werden. Sie können zwischen 1 und 7 IOM-Erweiterungsfächern mit jeweils 60 Laufwerken pro Storage-Array anschließen, Insgesamt 2 bis 14 Erweiterungsfächer pro Baustein.
@@ -28,6 +29,7 @@ image:high-capacity-rack-diagram.png[""]
 
 
 
+[[sizing-guidelines]]
 == Richtlinien für die Dimensionierung
 
 Bei diesen Richtlinien zur Dimensionierung ist davon auszugehen, dass Bausteine mit hoher Kapazität mit einer NVMe-SSD-Volume-Gruppe von 2+2 für Metadaten im Basis-EF300-Gehäuse und 6 x 8+2 NL-SAS-Volume-Gruppen pro IOM-Erweiterungsfach für Storage konfiguriert sind.

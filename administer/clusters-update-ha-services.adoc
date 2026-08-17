@@ -18,12 +18,14 @@ Führen Sie diese Schritte aus, um Pacemaker- und Corosync-Pakete in einem HA-Cl
 
 
 
+[[overview]]
 == Überblick
 
 Durch ein Upgrade von Pacemaker und Corosync wird sichergestellt, dass der Cluster von neuen Funktionen, Sicherheits-Patches und Leistungsverbesserungen profitiert.
 
 
 
+[[upgrade-approach]]
 == Upgrade-Ansatz
 
 Es gibt zwei empfohlene Ansätze für das Upgrade eines Clusters: Ein rollierendes Upgrade oder eine vollständige Abschaltung des Clusters. Jeder Ansatz hat seine eigenen vor- und Nachteile. Der Aktualisierungsvorgang kann je nach Ihrer Pacemaker-Version variieren. Bestimmen Sie anhand der Dokumentation von ClusterLabslink:https://clusterlabs.org/projects/pacemaker/doc/3.0/Pacemaker_Administration/html/upgrading.html["Aktualisieren eines Pacemaker-Clusters"^], welche Vorgehensweise verwendet werden soll. Bevor Sie einen Upgrade-Ansatz verfolgen, müssen Sie Folgendes überprüfen:
@@ -35,6 +37,7 @@ Es gibt zwei empfohlene Ansätze für das Upgrade eines Clusters: Ein rollierend
 
 
 
+[[rolling-upgrade]]
 === Rollierendes Upgrade
 
 Bei dieser Methode wird jeder Node aus dem Cluster entfernt, aktualisiert und anschließend wieder in das Cluster eingeführt, bis die neue Version auf allen Nodes ausgeführt wird. Dieser Ansatz sorgt für einen unterbrechungsfreien Cluster, was ideal für größere HA-Cluster ist, birgt aber auch das Risiko, dass während des Prozesses gemischte Versionen ausgeführt werden. Dieser Ansatz sollte in einem Cluster mit zwei Nodes vermieden werden.
@@ -129,6 +132,7 @@ NOTE: Wenn der `Current DC` Bericht „Misted-Version“ meldet, wird ein Knoten
 
 
 
+[[complete-cluster-shutdown]]
 === Schließen Sie den Cluster ab
 
 Bei diesem Ansatz werden alle Cluster Nodes und Ressourcen heruntergefahren, die Nodes aktualisiert und das Cluster anschließend neu gestartet. Dieser Ansatz ist erforderlich, wenn die Pacemaker- und Corosync-Versionen keine Konfiguration mit gemischten Versionen unterstützen.

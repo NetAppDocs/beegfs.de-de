@@ -18,6 +18,7 @@ Schritte erforderlich, um Hardware zu installieren und zu verkabeln, die zum Aus
 
 
 
+[[plan-the-installation]]
 == Planen Sie die Installation
 
 Jedes BeeGFS-Dateisystem besteht aus einer Anzahl von Datei-Nodes, auf denen BeeGFS-Dienste über Backend-Storage ausgeführt werden, der von einer Anzahl von Block-Nodes bereitgestellt wird. Die Datei-Nodes sind in einem oder mehreren Hochverfügbarkeits-Clustern konfiguriert, um Fehlertoleranz für BeeGFS-Services zu bieten. Jeder Block-Node ist bereits ein aktiv/aktiv-HA-Paar. Die Mindestanzahl unterstützter File-Nodes in jedem HA-Cluster beträgt drei und die maximale Anzahl unterstützter File-Nodes in jedem Cluster ist zehn. BeeGFS-Filesysteme können über zehn Nodes hinaus skaliert werden, indem mehrere unabhängige HA-Cluster implementiert werden, die zusammen einen Single Filesystem Namespace bieten.
@@ -31,6 +32,7 @@ CAUTION: Stellen Sie sicher, dass die gewünschte Dateisystemarchitektur für ei
 
 
 
+[[rack-hardware]]
 == Rack-Hardware
 
 Bei der Planung der Installation ist es wichtig, dass alle Geräte in jedem Baustein in benachbarten Rack-Einheiten verfügbar sind. Als Best Practice empfiehlt es sich, Datei-Nodes sofort über Block-Nodes in jedem Baustein verfügbar zu machen. Befolgen Sie die Dokumentation für die Modelle der Datei und link:https://docs.netapp.com/us-en/e-series/getting-started/getup-run-concept.html["Block-Storage"^] Knoten, die Sie verwenden, wenn Sie Schienen und Hardware im Rack installieren.
@@ -45,6 +47,7 @@ image:beegfs-design-image3-small.png["Beispiel für eine BeeGFS Implementierung"
 
 
 
+[[cable-file-and-block-nodes]]
 == Kabeldatei- und Blockknoten
 
 Sie werden die HIC-Ports der Block-Nodes der E-Series normalerweise mit dem vorgesehenen Host Channel Adapter (für InfiniBand-Protokolle) oder den Host-Bus-Adaptern (für Fibre Channel und andere Protokolle) der Datei-Nodes verbinden. Die genaue Art und Weise, diese Verbindungen herzustellen, hängt von der gewünschten Dateisystemarchitektur ab, hier ist ein Beispiellink:../second-gen/beegfs-design-hardware-architecture.html["Basierend auf BeeGFS der zweiten Generation auf NetApp Verified Architecture"^]:
@@ -53,6 +56,7 @@ image:buildingblock-sr665v3.png["Beispielverkabelung von BeeGFS-Datei- zu Block-
 
 
 
+[[cable-file-nodes-to-the-client-network]]
 == Dateiknoten mit dem Client-Netzwerk verkabeln
 
 Jeder Datei-Node verfügt über eine bestimmte Anzahl von InfiniBand- oder Ethernet-Ports für BeeGFS-Client-Traffic. Je nach Architektur verfügt jeder Datei-Node über eine oder mehrere Verbindungen zu einem hochperformanten Client-/Storage-Netzwerk, möglicherweise zu mehreren Switches für Redundanz und höhere Bandbreite. Hier sehen Sie ein Beispiel für die Client-Verkabelung mithilfe redundanter Netzwerk-Switches, bei denen die in Dunkelgrün bzw. hellgrün hervorgehobenen Ports mit separaten Switches verbunden sind:
@@ -61,6 +65,7 @@ image:networkcable-sr665v3.png["Beispiel für BeeGFS-Client-Verkabelung"]
 
 
 
+[[connect-management-networking-and-power]]
 == Verbindung zwischen Management-Netzwerk und Stromversorgung
 
 Stellen Sie alle erforderlichen Netzwerkverbindungen für in-Band- und Out-of-Band-Netzwerke her.

@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: deploy-features-integration/beegfs-csi-driver/csi-driver-prereqs.html 
+permalink: deploy-features-integration/beegfs-features-csi-driver/beegfs-features-csi-driver-prereqs.html 
 keywords: BeeGFS Features, CSI, Driver 
 summary: Voraussetzungen für die Bereitstellung des BeeGFS CSI-Treibers 
 ---
@@ -18,6 +18,7 @@ Bevor Sie den BeeGFS CSI-Treiber bereitstellen und konfigurieren, stellen Sie si
 
 
 
+[[verify-kubernetes-setup]]
 == Überprüfen Sie die Kubernetes-Konfiguration.
 
 Führen Sie den folgenden Befehl aus, um den Status der Pods in Ihrem Kubernetes-Cluster zu überprüfen:
@@ -37,6 +38,7 @@ Wenn keine Pods ausgeführt werden, ist die Liste leer.  Andernfalls sollten die
 
 
 
+[[validate-beegfs-client-and-services]]
 == BeeGFS-Client und -Dienste validieren
 
 Überprüfen Sie mit folgendem Befehl, ob der BeeGFS-Cluster fehlerfrei funktioniert und alle Dienste erreichbar sind:

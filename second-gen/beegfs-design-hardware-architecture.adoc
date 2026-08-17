@@ -18,6 +18,7 @@ Die Hardware-Konfiguration für BeeGFS auf NetApp umfasst Datei-Nodes und Netzwe
 
 
 
+[[file-node-configuration]]
 == Konfiguration der Datei-Nodes
 
 File-Nodes haben zwei CPU-Sockets als separate NUMA-Zonen konfiguriert, die lokalen Zugriff auf eine gleiche Anzahl von PCIe-Steckplätzen und Arbeitsspeicher enthalten.
@@ -32,6 +33,7 @@ Die BeeGFS-Prozesse sind an eine bestimmte NUMA-Zone gebunden, um sicherzustelle
 
 
 
+[[network-cabling-configuration]]
 == Konfiguration der Netzwerkverkabelung
 
 Jeder Datei-Node ist innerhalb eines Bausteins mit zwei Block-Nodes verbunden. Dabei werden insgesamt vier redundante InfiniBand-Verbindungen verwendet. Zusätzlich verfügt jeder Datei-Node über vier redundante Verbindungen zum InfiniBand-Storage-Netzwerk.

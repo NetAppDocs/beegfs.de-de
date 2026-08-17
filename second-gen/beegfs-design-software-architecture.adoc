@@ -18,6 +18,7 @@ Die Software-Konfiguration für BeeGFS auf NetApp umfasst BeeGFS-Netzwerkkompone
 
 
 
+[[beegfs-network-configuration]]
 == BeeGFS-Netzwerkkonfiguration
 
 Die BeeGFS-Netzwerkkonfiguration besteht aus den folgenden Komponenten.
@@ -68,6 +69,7 @@ Stripe pattern details:
 ....
 
 
+[[ef600-block-node-configuration]]
 == Konfiguration der EF600 Block-Node
 
 Block-Nodes bestehen aus zwei aktiv/aktiv-RAID-Controllern mit gemeinsamem Zugriff auf denselben Satz an Laufwerken. In der Regel besitzt jeder Controller die Hälfte der im System konfigurierten Volumes, jedoch kann für den anderen Controller nach Bedarf die Aufgaben übernehmen.
@@ -86,6 +88,7 @@ Im vorherigen Beispiel kommunizieren Clients und Server Services lieber mit Stor
 
 
 
+[[beegfs-file-node-configuration]]
 == BeeGFS-Dateiknoten-Konfiguration
 
 Die BeeGFS Datei-Nodes sind in einem HA-Cluster (High Availability) konfiguriert, um den Failover von BeeGFS-Services zwischen mehreren Datei-Nodes zu ermöglichen.
@@ -96,6 +99,7 @@ NetApp hat mehrere Open Cluster Framework (OCF) Resource Agents entwickelt und e
 
 
 
+[[beegfs-ha-clusters]]
 == BeeGFS HA Cluster
 
 Wenn Sie einen BeeGFS-Dienst starten (mit oder ohne HA), müssen in der Regel einige Ressourcen vorhanden sein:

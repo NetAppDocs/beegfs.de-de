@@ -20,6 +20,7 @@ image:high-capacity-rack-diagram.png["Rackdiagramm mit hoher Kapazität"]
 
 
 
+[[controllers]]
 == Controller
 
 Wenn Sie Bausteine mit hoher Kapazität benötigen, sollten EF600 Controller durch EF300 Controller ersetzt werden, wobei jeweils eine Cascade HIC zur SAS-Erweiterung installiert ist. Jeder Block-Node verfügt über eine minimale Anzahl von NVMe-SSDs, die im Array-Gehäuse für BeeGFS-Metadaten-Storage befüllt sind, und wird an Erweiterungs-Shelfs mit NL-SAS-HDDs für BeeGFS-Storage-Volumes angeschlossen.
@@ -28,6 +29,7 @@ Die Konfiguration des Datei-Node zu Block-Nodes bleibt unverändert.
 
 
 
+[[drive-placement]]
 == Laufwerkplatzierung
 
 In jedem Block-Node sind mindestens 4 NVMe-SSDs für BeeGFS-Metadaten-Storage erforderlich. Diese Laufwerke sollten in den äußeren Steckplätzen des Gehäuses platziert werden.
@@ -36,6 +38,7 @@ image:high-capacity-drive-slots-diagram.png["Diagramm mit Laufwerksteckplätzen 
 
 
 
+[[expansion-trays]]
 == Erweiterungsfächer
 
 Der Baustein mit hoher Kapazität kann mit 1-7, 60 Laufwerkserweiterungsfächern pro Speicher-Array dimensioniert werden.

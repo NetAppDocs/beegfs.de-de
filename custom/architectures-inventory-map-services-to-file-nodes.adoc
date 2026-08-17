@@ -18,12 +18,14 @@ Geben Sie an, welche Datei-Nodes jeden BeeGFS-Dienst mit dem ausführen können 
 
 
 
+[[overview]]
 == Überblick
 
 In diesem Abschnitt wird die Erstellung des erläutert `inventory.yml` Datei: Dazu gehören alle Block-Nodes und die Angabe, welche Datei-Nodes jeden BeeGFS-Service ausführen können.
 
 
 
+[[steps]]
 == Schritte
 
 Erstellen Sie die Datei `inventory.yml` Und füllen Sie es wie folgt aus:
