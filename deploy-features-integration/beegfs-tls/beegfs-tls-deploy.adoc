@@ -10,7 +10,7 @@ summary: Konfigurieren Sie die TLS-Verschlüsselung für eine sichere Kommunikat
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ../../media/
+:imagesdir: ../media/
 
 
 [role="lead"]
