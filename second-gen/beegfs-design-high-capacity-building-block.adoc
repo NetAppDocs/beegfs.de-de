@@ -25,7 +25,7 @@ Hardware- und Softwarekonfiguration für den Baustein mit hoher Kapazität ist S
 
 Unternehmen, die ein High-Capacity-Baustein-Design implementieren, verwenden wahrscheinlich nur die Basis-Bausteinkonfiguration, die aus BeeGFS-Management, Metadaten und Storage-Services für jeden Node besteht. Um die Kosteneffizienz zu steigern, sollten Storage-Nodes mit hoher Kapazität Metadaten-Volumes auf den NVMe-Laufwerken im EF300-Controller-Gehäuse bereitstellen und Storage-Volumes für die NL-SAS-Laufwerke in den Erweiterungsfächern bereitstellen.
 
-image:high-capacity-rack-diagram.png[""]
+image:high-capacity-rack-diagram.png["Ein Diagramm, das ein BeeGFS Rack mit einer hohen Kapazität mit EF300 NVMe und NL-SAS IOM-Erweiterungseinschüben zeigt"]
 
 
 
