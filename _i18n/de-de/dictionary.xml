@@ -2305,4 +2305,5 @@
   <block id="c6c1a150fe2c0ea553b51e7aa7980236" category="list-text">Die verbleibenden InfiniBand-Ports des Dateiknotens werden mit dem InfiniBand-Switch des Speichernetzwerks unter Verwendung des für Ihren <block ref="6641f55c02ab74028026a655dbf4927b" category="inline-link-macro-rx"></block> InfiniBand-Speicher-Switch spezifischen Anschlusses verbunden.</block>
   <block id="bba78d7694815dc44320a2e751daa486" category="inline-image-macro">Ein Diagramm, das ein BeeGFS Rack mit einer hohen Kapazität mit EF300 NVMe und NL-SAS IOM-Erweiterungseinschüben zeigt</block>
   <block id="1155b61fff96aa3c1a731c367cdcc208" category="paragraph"><block ref="1155b61fff96aa3c1a731c367cdcc208" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="5d19eac40cba34daeadf75a699707ab3" category="summary">Wann Ansible oder das Befehlszeilen-Tool pcs zur Verwaltung eines BeeGFS HA Clusters verwendet werden, hängt vom jeweiligen Anwendungsfall ab. Ansible wird für die Bereitstellung und für Konfigurationsänderungen verwendet, pcs für temporäre Änderungen des Clusterstatus.</block>
 </blocks>
