@@ -21,7 +21,7 @@ Der Ansible-Bestand ist ein Satz von Konfigurationsdateien, die das gewünschte 
 [[overview]]
 == Überblick
 
-Es wird empfohlen, die standardmäßigen Ansible-Methoden für die Organisation des zu befolgen link:https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html["Inventar"], Einschließlich der Verwendung von link:https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html#organizing-host-and-group-variables["Unterverzeichnisse/Dateien"] Anstatt den gesamten Bestand in einer Datei zu speichern.
+Es wird empfohlen, bei der Organisation Ihrer link:https://docs.ansible.com/projects/ansible/latest/inventory_guide/intro_inventory.html["Inventar"] die üblichen Ansible-Praktiken zu befolgen, einschließlich der Verwendung von link:https://docs.ansible.com/projects/ansible/latest/inventory_guide/intro_inventory.html#organizing-host-and-group-variables["Unterverzeichnisse/Dateien"] anstelle der Speicherung des gesamten Inventars in einer einzigen Datei.
 
 Der Ansible-Bestand für ein einzelnes BeeGFS HA-Cluster ist wie folgt organisiert:
 

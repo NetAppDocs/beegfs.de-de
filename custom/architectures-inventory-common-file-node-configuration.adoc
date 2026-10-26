@@ -51,7 +51,7 @@ ansible_become_password: <PASSWORD>
 ----
 +
 
-WARNING: Speichern Sie Passwörter insbesondere für Produktionsumgebungen nicht im Klartext. Verwenden Sie stattdessen Ansible Vault (siehe link:https://docs.ansible.com/ansible/latest/vault_guide/index.html["Verschlüsseln von Inhalten mit Ansible Vault"^]) Oder der `--ask-become-pass` Option beim Ausführen des Playbooks. Wenn der `ansible_ssh_user` Ist bereits root, dann können Sie optional auslassen `ansible_become_password`.
+WARNING: Insbesondere in Produktionsumgebungen sollten Passwörter nicht im Klartext gespeichert werden. Stattdessen sollten Ansible Vault (siehe link:https://docs.ansible.com/projects/ansible/latest/vault_guide/index.html["Verschlüsseln von Inhalten mit Ansible Vault"^]) oder die  `--ask-become-pass` Option beim Ausführen des Playbooks verwendet werden. Wenn  `ansible_ssh_user` bereits root ist, können Sie  `ansible_become_password` optional weglassen.
 
 . Wenn Sie statische IPs in ethernet- oder InfiniBand-Schnittstellen konfigurieren (zum Beispiel Cluster-IPs) und mehrere Schnittstellen im gleichen IP-Subnetz sind (z. B. wenn ib0 192.168.1.10/24 verwendet und ib1 192.168.1.11/24 verwendet), Zusätzliche IP-Routing-Tabellen und -Regeln müssen so eingerichtet sein, dass Multi-Homed-Unterstützung ordnungsgemäß funktioniert. Aktivieren Sie einfach den mitgelieferten Konfigurationshaken für Netzwerkschnittstellen wie folgt:
 +
