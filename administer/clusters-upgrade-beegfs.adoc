@@ -93,7 +93,7 @@ Laden Sie die Sammlung von herunter, um Offline-Sammlungs-Upgrades von zu erhalt
 ----
 ansible-galaxy collection install netapp_eseries-beegfs-<VERSION>.tar.gz --upgrade
 ----
-Siehe link:https://docs.ansible.com/ansible/latest/collections_guide/collections_installing.html["Sammlungen Werden Installiert"^] Finden Sie weitere Informationen.
+Weitere Informationen enthält link:https://docs.ansible.com/projects/ansible/latest/collections_guide/collections_installing.html["Sammlungen Werden Installiert"^].
 
 
 

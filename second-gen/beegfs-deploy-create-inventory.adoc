@@ -42,7 +42,7 @@ Sofern nicht anders angegeben, werden alle in diesem Schritt erstellten Dateien 
 +
 `packages`
 
-. Erstellen Sie ein Unterverzeichnis für Cluster-Passwörter und sichern Sie die Datei durch Verschlüsselung mit Ansible Vault (siehe https://docs.ansible.com/ansible/latest/user_guide/vault.html["Verschlüsseln von Inhalten mit Ansible Vault"^]):
+. Für Clusterpasswörter wird ein Unterverzeichnis erstellt, und die Datei wird mit Ansible Vault verschlüsselt (siehe https://docs.ansible.com/projects/ansible/latest/vault_guide/index.html["Verschlüsseln von Inhalten mit Ansible Vault"^]):
 +
 .. Erstellen Sie das Unterverzeichnis `group_vars/all`.
 .. Erstellen Sie im `group_vars/all` Verzeichnis eine Passwortdatei mitder Bezeichnung `passwords.yml`.
@@ -182,7 +182,7 @@ eseries_controller_nvme_ib_port:
 Unter können Sie die gemeinsame Konfiguration für eine Gruppe von Hosts definieren `group_vars` In einem Dateinamen, der der Gruppe entspricht. Dadurch wird verhindert, dass eine gemeinsame Konfiguration an mehreren Orten wiederholt wird.
 
 .Über diese Aufgabe
-Hosts können sich in mehr als einer Gruppe befinden. Ansible zur Laufzeit wählt Ansible aus, welche Variablen auf Basis seiner variablen Rangfolge für einen bestimmten Host gelten. (Weitere Informationen zu diesen Regeln finden Sie in der Ansible-Dokumentation für https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html["Variablen verwenden"^].)
+Hosts können mehreren Gruppen angehören, und Ansible wählt zur Laufzeit anhand seiner Variablenprioritätsregeln aus, welche Variablen für einen bestimmten Host gelten. (Weitere Informationen zu diesen Regeln enthält die Ansible-Dokumentation  https://docs.ansible.com/projects/ansible/latest/playbook_guide/playbooks_variables.html["Variablen verwenden"^].)
 
 Host-zu-Gruppe-Zuweisungen werden in der tatsächlichen Ansible-Bestandsdatei definiert, die gegen Ende dieses Vorgangs erstellt wird.
 

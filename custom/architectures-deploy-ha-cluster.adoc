@@ -35,7 +35,7 @@ In diesem Abschnitt wird beschrieben, wie Sie das Standard-Playbook zur Bereitst
 
 Erstellen Sie die Datei `playbook.yml` Und füllen Sie es wie folgt aus:
 
-. Definieren Sie zunächst einen Satz von Aufgaben (allgemein als A bezeichnet) link:https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html#playbook-syntax["Spielen"^]) Die nur auf Block-Nodes der NetApp E-Series ausgeführt werden sollte. Wir verwenden eine Pause-Aufgabe, um vor dem Ausführen der Installation eine Aufforderung zu geben (um versehentliche Playbook-Läufe zu vermeiden), und importieren dann die `nar_santricity_management` Rolle: Diese Rolle übernimmt die Anwendung aller in definierten allgemeinen Systemkonfiguration `group_vars/eseries_storage_systems.yml` Oder einzeln `host_vars/<BLOCK NODE>.yml` Dateien:
+. Zunächst wird ein Satz von Aufgaben definiert (üblicherweise als link:https://docs.ansible.com/projects/ansible/latest/playbook_guide/playbooks_intro.html#playbook-syntax["Spielen"^] bezeichnet), der nur auf NetApp E-Series Blockknoten ausgeführt werden soll. Vor der Ausführung der Installation wird eine Pausenaufgabe verwendet, um eine Bestätigung anzufordern und so versehentliche Playbook-Ausführungen zu vermeiden; anschließend wird die  `nar_santricity_management` Rolle importiert. Diese Rolle übernimmt die Anwendung aller allgemeinen Systemkonfigurationen, die in  `group_vars/eseries_storage_systems.yml` oder in einzelnen  `host_vars/<BLOCK NODE>.yml` Dateien definiert sind.
 +
 [source, yaml]
 ----

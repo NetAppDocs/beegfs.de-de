@@ -103,7 +103,7 @@ ansible-playbook -i inventory.yml playbook.yml --forks 20
 ....
 +
 
-NOTE: Insbesondere bei größeren Bereitstellungen `forks` wird empfohlen, die Standardanzahl von Gabeln (5) mit dem Parameter zu überschreiben, um die Anzahl der Hosts zu erhöhen, die Ansible parallel konfiguriert. (Weitere Informationen finden Sie unter https://docs.ansible.com/ansible/latest/user_guide/playbooks_strategies.html["Kontrolle der Playbook-Ausführung"^].) Die Einstellung für den maximalen Wert hängt von der Verarbeitungsleistung ab, die auf dem Ansible-Steuerungsknoten verfügbar ist. Das oben genannte Beispiel von 20 wurde auf einem virtuellen Ansible-Steuerungsknoten mit 4 CPUs (Intel(R) Xeon(R) Gold 6146 CPU @ 3,20 GHz) ausgeführt.
+NOTE: Insbesondere bei größeren Bereitstellungen wird empfohlen, die Standardanzahl der Forks (5) mit dem Parameter `forks`zu überschreiben, um die Anzahl der Hosts zu erhöhen, die Ansible parallel konfiguriert. (Weitere Informationen unter https://docs.ansible.com/projects/ansible/latest/playbook_guide/playbooks_strategies.html["Kontrolle der Playbook-Ausführung"^].) Die Einstellung des Maximalwerts hängt von der verfügbaren Rechenleistung des Ansible-Kontrollknotens ab. Das obige Beispiel mit 20 lief auf einem virtuellen Ansible-Kontrollknoten mit 4 CPUs (Intel(R) Xeon(R) Gold 6146 CPU @ 3.20GHz).
 
 +
 Je nach Größe der Implementierung und Netzwerk-Performance zwischen dem Ansible Control Node und BeeGFS File- und Block-Nodes kann die Implementierungszeit variieren.
