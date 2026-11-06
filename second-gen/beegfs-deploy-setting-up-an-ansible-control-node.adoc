@@ -16,7 +16,7 @@ summary: Um einen Ansible-Steuerungsknoten einzurichten, identifizieren Sie eine
 [role="lead"]
 Zum Einrichten eines Ansible-Steuerknotens müssen Sie eine virtuelle oder physische Maschine mit Netzwerkzugriff auf alle Datei- und Block-Nodes zuweisen, die für die BeeGFS auf NetApp Lösung implementiert werden.
 
-Eine Liste der empfohlenen Paketversionen finden Sie imlink:beegfs-technology-requirements.html#ansible-control-node-requirements["Technische Anforderungen"]. Die folgenden Schritte wurden auf Ubuntu 22.04 getestet. Für spezifische Schritte zu Ihrer bevorzugten Linux-Distribution, siehe https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html["Ansible-Dokumentation"^].
+Eine Liste der empfohlenen Paketversionen ist in link:beegfs-technology-requirements.html#ansible-control-node-requirements["Technische Anforderungen"] zu finden. Die folgenden Schritte wurden unter Ubuntu 22.04 getestet. Spezifische Schritte für Ihre bevorzugte Linux-Distribution sind in  https://docs.ansible.com/projects/ansible/latest/installation_guide/intro_installation.html["Ansible-Dokumentation"^] beschrieben.
 
 . Installieren Sie über Ihren Ansible Control Node die folgenden Pakete für Python und Python Virtual Environment.
 +
